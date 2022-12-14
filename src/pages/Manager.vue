@@ -6,10 +6,10 @@
             <h1 class="hello">Hello, {{ name }}!</h1>
             #ЭТО СТРАНИЦА МОДЕРАТОРА
             <!-- EDITOR -->
-            <creator-product v-show="$store.state.ManagerModule.isCreatedProduct"></creator-product> 
-            <editor-product v-show="$store.state.ManagerModule.isEditorProduct"></editor-product>
-            <promotion-product v-show="$store.state.ManagerModule.isPromotion"></promotion-product>
-            <event-product v-show="$store.state.ManagerModule.isEvent"></event-product>
+            <manager-tools-block @closeTools="closeCreator" :title="'Workbench'" :show="isCreatedProduct"></manager-tools-block> 
+            <manager-tools-block @closeTools="closeEditor" :title="'Editor'" :show="isEditorProduct"></manager-tools-block>
+            <manager-tools-block @closeTools="closePromotion" :title="'Announce a promotion'" :show="isPromotion"></manager-tools-block>
+            <manager-tools-block @closeTools="closeEvent" :title="'Announce a event'" :show="isEvent"></manager-tools-block>
             <!-- ИСТОРИЯ РЕДАКТИРОВАНИЯ И СОЗДАНИЯ КАРТОЧЕК ТОВАРА -->
             <div class="history-editor">
                 <div class="history-editor-navbar">
@@ -18,23 +18,24 @@
             </div>
         </div>
         <menu-manager>
-            <button-comp @click="$store.commit('ManagerModule/openCreator')" class="option">Create product</button-comp>
-            <button-comp @click="$store.commit('ManagerModule/openEditor')" class="option">Edit product</button-comp>
-            <button-comp @click="$store.commit('ManagerModule/openPromotion')" class="option">Announce a promotion</button-comp>
-            <button-comp @click="$store.commit('ManagerModule/openEvent')" class="option">Announce a event</button-comp>
+            <button-comp @click="openCreator" class="option">Create product</button-comp>
+            <button-comp @click="openEditor" class="option">Edit product</button-comp>
+            <button-comp @click="openPromotion" class="option">Announce a promotion</button-comp>
+            <button-comp @click="openEvent" class="option">Announce a event</button-comp>
             <button-comp @click="$router.push('/manager/chat')" class="option">Chat</button-comp>
         </menu-manager>
     </div>
 </template>
 
 <script>
-import CreatorProduct from '@/components/ManagerPage/CreatorProduct.vue'
+// import CreatorProduct from '@/components/ManagerPage/CreatorProduct.vue'
 import EditorProduct from '@/components/ManagerPage/EditorProduct.vue'
 import PromotionProduct from '@/components/ManagerPage/Promotion.vue'
-import EventProduct from '@/components/ManagerPage/EventPeoduct.vue'
+import EventProduct from '@/components/ManagerPage/EventProduct.vue'
+import { mapState, mapMutations } from 'vuex'
 export default {
     components: {
-        CreatorProduct, 
+        // CreatorProduct, 
         EditorProduct,
         PromotionProduct,
         EventProduct,
@@ -44,7 +45,29 @@ export default {
             name: 'Tomas',
         }
     },
-
+    methods:{
+        ...mapMutations({
+            openCreator: 'ManagerModule/openCreator',
+            closeCreator: 'ManagerModule/closeCreator',
+            openEditor: 'ManagerModule/openEditor',
+            closeEditor: 'ManagerModule/closeEditor',
+            openPromotion: 'ManagerModule/openPromotion',
+            closePromotion: 'ManagerModule/closePromotion',
+            openEvent: 'ManagerModule/openEvent',
+            closeEvent: 'ManagerModule/closeEvent',
+        }),
+        // closeTools(){
+        //     this.$store.state.ManagerModule.isEditorProduct
+        // }
+    },
+    computed: {
+        ...mapState({
+            isCreatedProduct: state => state.ManagerModule.isCreatedProduct,
+            isEditorProduct: state => state.ManagerModule.isEditorProduct,
+            isPromotion: state => state.ManagerModule.isPromotion,
+            isEvent: state => state.ManagerModule.isEvent
+        })
+    }
 }
 </script>
 <style lang="scss" scoped>

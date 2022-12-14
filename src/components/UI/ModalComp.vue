@@ -28,11 +28,12 @@ export default {
     background-color: rgba(0,0,0,.5);
 }
 .modal-block{
-    width: max-content;
-    height: max-content;
-    border: $border;
-    border-radius: $radius;
-    background-color: white;
+    // width: max-content;
+    // height: max-content;
+    // border: $border;
+    // border-radius: $radius;
+    max-width: 90%;
+    // background-color: white;
     margin: auto;
 }
 </style>

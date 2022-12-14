@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import { ManagerModule } from './ManagerModule'
+import { OwnerModule } from './OwnerModule'
 
 export default createStore({
   state: {
@@ -11,6 +12,7 @@ export default createStore({
   actions: {
   },
   modules: {
-    ManagerModule: ManagerModule
+    ManagerModule: ManagerModule,
+    OwnerModule: OwnerModule
   },
 })
