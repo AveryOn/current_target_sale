@@ -9,11 +9,10 @@ export default {
 <style lang="scss" scoped>
 .btn{
     margin: 5px;
-    padding: 10px 15px;
+    padding: 8px 15px;
     border-radius: $radius;
-    border: 1px solid rgba(0,0,0,0);
+    border: $border;
     color: $or-wh-txt;
-    font-size: 15px;
     &:hover{
         background-color: $color-orange-white;
         color: white;
