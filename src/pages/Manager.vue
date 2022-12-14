@@ -6,10 +6,18 @@
             <h1 class="hello">Hello, {{ name }}!</h1>
             #ЭТО СТРАНИЦА МОДЕРАТОРА
             <!-- EDITOR -->
-            <manager-tools-block @closeTools="closeCreator" :title="'Workbench'" :show="isCreatedProduct"></manager-tools-block> 
-            <manager-tools-block @closeTools="closeEditor" :title="'Editor'" :show="isEditorProduct"></manager-tools-block>
-            <manager-tools-block @closeTools="closePromotion" :title="'Announce a promotion'" :show="isPromotion"></manager-tools-block>
-            <manager-tools-block @closeTools="closeEvent" :title="'Announce a event'" :show="isEvent"></manager-tools-block>
+            <manager-tools-block @closeTools="closeCreator" :title="'Workbench'" :show="isCreatedProduct">
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
+            </manager-tools-block> 
+            <manager-tools-block @closeTools="closeEditor" :title="'Editor'" :show="isEditorProduct">
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
+            </manager-tools-block>
+            <manager-tools-block @closeTools="closePromotion" :title="'Announce a promotion'" :show="isPromotion">
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
+            </manager-tools-block>
+            <manager-tools-block @closeTools="closeEvent" :title="'Announce a event'" :show="isEvent">
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
+            </manager-tools-block>
             <!-- ИСТОРИЯ РЕДАКТИРОВАНИЯ И СОЗДАНИЯ КАРТОЧЕК ТОВАРА -->
             <div class="history-editor">
                 <div class="history-editor-navbar">
@@ -28,14 +36,15 @@
 </template>
 
 <script>
-// import CreatorProduct from '@/components/ManagerPage/CreatorProduct.vue'
+import CreatorProduct from '@/components/ManagerPage/CreatorProduct.vue'
 import EditorProduct from '@/components/ManagerPage/EditorProduct.vue'
 import PromotionProduct from '@/components/ManagerPage/Promotion.vue'
 import EventProduct from '@/components/ManagerPage/EventProduct.vue'
-import { mapState, mapMutations } from 'vuex'
+import ManagerToolMixin from '@/mixins/ManagerToolMixin'
 export default {
+    mixins: [ManagerToolMixin],
     components: {
-        // CreatorProduct, 
+        CreatorProduct, 
         EditorProduct,
         PromotionProduct,
         EventProduct,
@@ -45,29 +54,7 @@ export default {
             name: 'Tomas',
         }
     },
-    methods:{
-        ...mapMutations({
-            openCreator: 'ManagerModule/openCreator',
-            closeCreator: 'ManagerModule/closeCreator',
-            openEditor: 'ManagerModule/openEditor',
-            closeEditor: 'ManagerModule/closeEditor',
-            openPromotion: 'ManagerModule/openPromotion',
-            closePromotion: 'ManagerModule/closePromotion',
-            openEvent: 'ManagerModule/openEvent',
-            closeEvent: 'ManagerModule/closeEvent',
-        }),
-        // closeTools(){
-        //     this.$store.state.ManagerModule.isEditorProduct
-        // }
-    },
-    computed: {
-        ...mapState({
-            isCreatedProduct: state => state.ManagerModule.isCreatedProduct,
-            isEditorProduct: state => state.ManagerModule.isEditorProduct,
-            isPromotion: state => state.ManagerModule.isPromotion,
-            isEvent: state => state.ManagerModule.isEvent
-        })
-    }
+
 }
 </script>
 <style lang="scss" scoped>
