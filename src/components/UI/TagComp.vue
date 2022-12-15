@@ -1,0 +1,29 @@
+<template>
+    <div class="tag">
+        #{{ tag.name }}
+    </div>
+</template>
+<script>
+export default {
+    name: 'tag-comp',
+    props: {
+        tag: {
+            type: Object,
+            required: true,
+        }
+    }
+}
+</script>
+<style lang="scss" scoped>
+.tag{
+    background-color: rgba(0,0,0, .15);
+    border-radius: $radius;
+    padding: 0 10px;
+    margin: 0 5px;
+    color: rgb(237, 135, 19);
+    &:hover{
+        cursor: pointer;
+        background-color: rgba(0,0,0, .2);
+    }
+}
+</style>

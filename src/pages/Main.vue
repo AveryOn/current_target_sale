@@ -5,6 +5,7 @@
         #это главная страница
         <!-- АКЦИОННЫЙ БЛОК -->
         <div class="current-info-block">
+            <h1 class="header-info">the site is currently under development</h1>
         </div>
         <!-- ТИТУЛЬНЫЙ БЛОК ТОВАРОВ ПО АКЦИИ -->
         <div class="block-products-promotion">
@@ -18,6 +19,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@include h1-gradient-blue;
+.header-info{
+    font-size: 2em;
+}
 .MainBlock{
     display: flex; 
     flex-direction: column;
