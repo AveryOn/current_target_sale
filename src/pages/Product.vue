@@ -1,7 +1,8 @@
+<!-- СТРАНЦИА ВЫБРАННОГО ТОВАРА -->
 <template>
     <div class="Product-page">
         <h1>Page Block ID</h1>
-        <!-- ПРОСТО КОНТЕЙНЕР ДЛЯ ВНУТРЕННЕГО КОНТЕНТА -->
+        <!-- КОНТЕЙНЕР ДЛЯ ВНУТРЕННЕГО КОНТЕНТА -->
         #product-container
         <div class="product-container">
             #product-content
@@ -27,6 +28,7 @@
     </div>
 </template>
 <script>
+// ИМПОРТ ОСНОВНЫХ ЭЛЕМЕНТОВ СТРАНИЦЫ
 import CommentsBlock from '@/components/ProductPage/CommentsBlock.vue'
 import DescrBlock from '@/components/ProductPage/DescrBlock.vue'
 import MetadataBlock from '@/components/ProductPage/MetadataBlock.vue'

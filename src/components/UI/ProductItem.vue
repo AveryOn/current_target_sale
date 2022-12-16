@@ -1,3 +1,4 @@
+<!-- ЕДИНИЦА ТОВАРА ( КАРТОЧКА ТОВАРА )-->
 <template>
     <div class="product-item">
         <slot></slot>

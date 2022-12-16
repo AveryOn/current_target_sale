@@ -1,3 +1,4 @@
+<!-- ПАНЕЛЬ ОТОБРАЖАЮЩАЯ СПИСОК МОДЕРАТОРОВ И ИХ МЕТАДАННЫЕ -->
 <template>
     <div class="list-moderator">
         <h1-comp>List Moderators</h1-comp>

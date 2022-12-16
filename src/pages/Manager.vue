@@ -1,5 +1,5 @@
-<template>
 <!-- СТРАНИЦА МОДЕРАТОРА МАГАЗИНА -->
+<template>
     <div class="Manager-page">
         <!-- ОСНОВНАЯ ЛЕНТА -->
         <div class="Main-page-child">
@@ -25,6 +25,7 @@
                 </div>
             </div>
         </div>
+        <!-- МЕНЮ ДЕЙСТВИЙ МОДЕРАТОРА -->
         <menu-manager>
             <button-comp @click="openCreator" class="option">Create product</button-comp>
             <button-comp @click="openEditor" class="option">Edit product</button-comp>
@@ -36,6 +37,7 @@
 </template>
 
 <script>
+// ИМПОРТ ВСЕХ ИНСТРУМЕНТОВ ДОСТУПНЫХ МОДЕРАТОРУ
 import CreatorProduct from '@/components/ManagerPage/CreatorProduct.vue'
 import EditorProduct from '@/components/ManagerPage/EditorProduct.vue'
 import PromotionProduct from '@/components/ManagerPage/Promotion.vue'

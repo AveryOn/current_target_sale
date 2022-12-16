@@ -1,5 +1,5 @@
+<!-- СТРАНИЦА ВЛАДЕЛЬЦА -->
 <template>
-    <!-- СТРАНИЦА ВЛАДЕЛЬЦА -->
     <div class="main-owner-page">
         <!-- ТИТУЛЬНИК. ШАПКА -->
         <div class="navbar-owner-page">
@@ -59,7 +59,7 @@ import CreatorProduct from '@/components/ManagerPage/CreatorProduct.vue'
 import EditorProduct from '@/components/ManagerPage/EditorProduct.vue'
 import PromotionProduct from '@/components/ManagerPage/Promotion.vue'
 import EventProduct from '@/components/ManagerPage/EventProduct.vue'
-// Миксин OwnerManagerTools
+// Миксин OwnerManagerTools 
 import OwnerToolMixin from '@/mixins/OwnerToolMixin'
 export default {
     // ЛОГИКА ПО УПРАВЛЕНИЮ ПАНЕЛЬЮ МОДЕРАТОРА

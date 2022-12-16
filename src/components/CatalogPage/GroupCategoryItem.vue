@@ -1,7 +1,10 @@
+<!-- БЛОК - ГРУППА С НАБОРОМ КАРТОЧЕК КАТЕГОРИЙ ТОВАРОВ -->
 <template>
     <div class="group-block-category">
         <h1 class="title-group-block">{{ title }}</h1>
         <div class="body-group-category">
+            <!-- ЭТО ГИБКИЙ КОНТЕЙНЕР СЛУЖИТ ДЛЯ ЦЕНТРОВАНИЯ И ВЫРАВНИВАНИЯ 
+                КАРТОЧЕК КАТЕГОРИЙ ВНУТРИ СЕБЯ -->
             <div class="body-group-category-container">
                 <slot></slot>
             </div>

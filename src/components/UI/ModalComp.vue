@@ -1,3 +1,4 @@
+<!-- МОДАЛЬНОЕ ОКНО -->
 <template>
     <div v-show="show" class="modal-background">
         <div @click.stop class="modal-block">

@@ -1,3 +1,4 @@
+<!-- ПАНЕЛЬ ВЫВОДИТ СТАТИСТИКУ ИНТЕРНЕТ МАГАЗИНА -->
 <template>
     <div class="statistics">
         <h1-comp>Statistics</h1-comp>

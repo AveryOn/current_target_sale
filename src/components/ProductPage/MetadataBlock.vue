@@ -1,3 +1,4 @@
+<!-- БЛОК С ХАРАКТЕРИСТИКАМИ ТОВАРА -->
 <template>
     <div class="metadata-block">
         <h2>Meta Data Block:</h2>

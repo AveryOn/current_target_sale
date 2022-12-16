@@ -1,3 +1,4 @@
+// ХРАНИЛИЩЕ ДЛЯ СТРАНИЦЫ ВЛАДЕЛЬЦА САЙТА
 export const OwnerModule = {
     state: () => ({
         isCreatedProduct: false,
@@ -7,6 +8,7 @@ export const OwnerModule = {
         isShowManagerToolModal: false,
     }),
     mutations: {
+        // ЗАКРЫТЫИЕ МОДАЛЬНОГОКНА ВМЕСТЕ С ПАНЕЛЯМИ ИНСТРУМЕНТОВ
         closeModal(state){
             state.isShowManagerToolModal = false
             state.isCreatedProduct = false

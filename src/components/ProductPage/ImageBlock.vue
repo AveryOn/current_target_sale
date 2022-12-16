@@ -1,3 +1,4 @@
+<!-- БЛОК С ОТРИСОВКОЙ ИЗОБРАЖЕНИЙ ТОВАРА -->
 <template>
     <div class="image-block">
         IMAGE BLOCK

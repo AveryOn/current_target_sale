@@ -1,3 +1,5 @@
+<!-- ПАНЕЛЬ ФИЛЬТРОВ КОТОРАЯ УПРАВЛЯЕТ СОРТИРОВКОЙ ТОВАРА
+    НА ДАННЫЙ МОМЕНТ АДАПТИРОВАНА ТОЛЬКО ПОД СТРАНИЦУ SortedCatalog -->
 <template>
     <div class="filter-panel">
         <h2 class="filter-panel-header">Filter panel</h2>

@@ -1,3 +1,4 @@
+<!-- БЛОК С КОММЕНТАРИЯМИ -->
 <template>
 <h1>Comments Block</h1> 
 <div class="comments-block">

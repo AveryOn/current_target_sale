@@ -1,3 +1,4 @@
+// МИКСИН ИСПОЛЬЗЮЩИЙСЯ ДЛЯ УПРОЩЕНИЯ ПОЛУЧЕНИЙ ДАННЫХ С ХРАНИЛИЩА
 import { mapMutations,  mapState} from 'vuex'
 
 export default {

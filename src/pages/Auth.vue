@@ -1,3 +1,4 @@
+<!-- СТРАНИЦА АЦТЕНТИФИКАЦИИ -->
 <template>
     <div>Page Auth</div>
     <div class="Auth-Page">

@@ -1,3 +1,4 @@
+<!-- БЛОК С ОПИСАНИЕМ ТОВАРА -->
 <template>
     <div class="description-block">Description Block Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sequi, doloribus adipisci. Vitae, id, in quas sunt architecto sequi blanditiis nulla illo assumenda iste voluptas, minus eius dolorum iure vero ducimus.</div>
 </template>

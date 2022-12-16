@@ -6,6 +6,8 @@
     <h1>Category</h1>
     <div class="main-block-category">
         <div class="body-block-category">
+                    <!-- ГРУППА БЛОКОВ КАТЕГОРИЙ ТОВАРА
+                        СОДЕРЖИТ В СЕБЕ ХАРАКТЕРНЫЕ ДЛЯ СВОЕЙ НАПРАВЛЕННОСТИ КАТЕГОРИИ ТОВАРА -->
                     <group-category-item :title="'Prepare for Winter!'">
                         <category-item v-for="(item, index) in 6" class="category-item" :key="index">{{index+1}}</category-item>
                     </group-category-item>

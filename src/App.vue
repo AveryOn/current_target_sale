@@ -1,4 +1,6 @@
+<!-- ГЛАВНЫЙ СОМПОНЕНТ DOM-ДЕРЕВА-->
 <template>
+    <!-- СЮДА ВСТРАИВАЮТСЯ ВСЕ КОМПОНЕНТЫ И СТРАНИЦЫ  -->
     <router-view></router-view>
 </template>
 <script>

@@ -1,3 +1,4 @@
+// ХРАНИИЩЕ ДЛЯ ДЕЙСТВИЙ ПО МОДЕРАЦИИ МАГАЗИНА
 export const ManagerModule = {
     state: () => ({
         isCreatedProduct: false,
