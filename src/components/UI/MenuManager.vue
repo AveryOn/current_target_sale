@@ -39,16 +39,6 @@ export default {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-.option{
-    display: flex;
-    align-self: flex-start;
-    align-items: center;
-    justify-content: center;
-    width: 90%;
-    border: $border;
-    font-size: 18px;
-    margin: 10px;
-}
 </style>
 
 

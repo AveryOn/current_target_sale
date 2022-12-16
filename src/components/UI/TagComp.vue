@@ -21,7 +21,7 @@ export default {
     border-radius: $radius;
     padding: 0 10px;
     margin: 0 5px;
-    color: rgb(237, 135, 19);
+    color: $or-wh-txt;
     &:hover{
         cursor: pointer;
         background-color: rgba(0,0,0, .2);
