@@ -1,6 +1,8 @@
 <!-- КОМПОНЕНТ ОТВЕЧАЮЩИЙ ЗА ОТРИСОВКУ ТОВАРА ПО ВЫБРАННОЙ КАТЕГОРИИ -->
 <template>
     <div class="main-sorted-catalog">
+        <!-- ПОИСКОВАЯ СТРОКА -->
+        <input-comp placeholder="Search..." class="search"></input-comp>
         <!-- ПАНЕЛЬ С ТЕГАМИ -->
         <tag-bar :tags="tags"></tag-bar>
         <div class="body-sorted-catalog">
@@ -47,13 +49,22 @@ export default {
     display: flex;
     flex-direction: column;
     width: 100%;
+    .search{
+        display: flex;
+        align-self: flex-start;
+        margin: 10px 30px 10px 10px;
+        padding-left:30px;
+        &:focus{
+            width: 50%;
+            box-shadow: 2px 2px 5px black;
+        }
+    }
     .body-sorted-catalog{
         display: flex;
         min-height: 80vh;
         align-items: stretch;
         justify-content: space-around;
         margin: 20px 0 20px 0;
-
     }
 
     .items-block-sorted{
@@ -62,6 +73,8 @@ export default {
         width: 78%;
         border: $border;
         border-radius: $radius;
+        box-shadow: $shadow;
+        background-color: white;
         hr{
             width: 95%;
             margin: 0 auto;

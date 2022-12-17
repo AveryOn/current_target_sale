@@ -31,7 +31,8 @@ export default {
 .manager-product{
     display: flex;
     flex-direction: column;
-    margin-top: 50px;
+    // margin-top: 50px;
+    margin-bottom: 20px;
     min-width: 80%;
     min-height: 40vh;
     border: $border;

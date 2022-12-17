@@ -4,10 +4,8 @@
 -->
 <template>
     <div class="manager-panel">
-        <div class="options-bar">
-            <h2 class="descr-options-bar">Panel of Manager</h2>
-            <slot></slot>
-        </div>
+        <h2 class="descr-options-bar">Panel of Manager</h2>
+        <slot></slot>
     </div>
 </template>
 <script>
@@ -17,17 +15,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 
+
 .manager-panel{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.options-bar{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    width: max-content;
+    align-content: stretch;
     margin: 30px;
     padding: 10px;
     border: $border; 
@@ -35,6 +29,8 @@ export default {
     align-self: flex-start;
 }
 .descr-options-bar{
+    display: flex;
+    flex-wrap: wrap;
     background-image: linear-gradient(to right, #fc3b22, $color-orange-white);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

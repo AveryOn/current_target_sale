@@ -15,9 +15,17 @@ export default {
     border: $border;
     color: $or-wh-txt;
     &:hover{
-        background-color: $color-orange-white;
+        // background-color: $color-orange-white;
+        background: $background-gr;
         color: white;
         cursor: pointer;
+    }
+    &:focus{
+        outline-style: dashed;
+        outline-color: rgb(223, 218, 218);
+        outline-width: 2px;
+        // border-left: 2px solid rgb(124, 80, 8);
+        // border-right: 2px solid rgb(124, 80, 8);
     }
 }
 </style>

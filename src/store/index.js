@@ -6,11 +6,18 @@ import { CatalogModule } from './CatalogModule'
 
 export default createStore({
   state: {
-    isAuth: {prefix: 'manager'}
+    isAuth: {prefix: 'manager'},
+    isMiniChat: false,
   },
   getters: {
   },
   mutations: {
+    openMiniChat(state){
+      state.isMiniChat = true
+    },
+    closeMiniChat(state){
+      state.isMiniChat = false
+    }
   },
   actions: {
   },

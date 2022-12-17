@@ -20,7 +20,7 @@ export default {
     background-color: rgba(0,0,0, .15);
     border-radius: $radius;
     padding: 0 10px;
-    margin: 0 5px;
+    margin: 1px 5px;
     color: $or-wh-txt;
     &:hover{
         cursor: pointer;

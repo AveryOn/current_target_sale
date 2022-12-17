@@ -1,6 +1,8 @@
 <!-- ГЛАВНАЯ СТРАНИЦА -->
 <template>
     <div class="MainBlock">
+        <!-- ПОИСКОВАЯ СТРОКА -->
+        <input-comp placeholder="Search..." class="search-input"></input-comp>
         <!-- ЭТО ГРАДИЕНТНЫЙ ЗАГОЛОВОК -->
         <h1 class="header-text">Welcome to our store!</h1>
         #это главная страница
@@ -30,8 +32,8 @@ export default {
     align-items: center; 
     margin: 5px;
     min-height: 100vh;
-    border: 1px solid $color-orange-white;
-    border-radius: $radius;
+    // border: 1px solid $color-orange-white;
+    // border-radius: $radius;
     .header-text{
         margin: 20px 0 0 35px;
         font: {
@@ -43,6 +45,17 @@ export default {
         -webkit-background-clip: text;
         align-self: flex-start;
     }
+    .search-input{
+        position: sticky;
+        top: 10px;
+        width: 50%;
+        margin: 20px 10px;
+        padding: 15px 20px;
+        background-color: rgba(255,255,255, .9);
+        &:focus{
+            width: 70%;
+        }
+    }
     .current-info-block{
         display: flex;
         min-width: 95%;
@@ -50,13 +63,17 @@ export default {
         margin: 20px;
         border: $border;
         border-radius: $radius;
+        box-shadow: $shadow;
+        background-color: white;
     }
     .block-products-promotion{
         min-width: 95%;
         min-height: 60vh;
         border: $border;  
         border-radius: $radius; 
-        margin: 20px;     
+        margin: 20px;
+        box-shadow: $shadow;
+        background-color: white;
     }
 }
 </style>

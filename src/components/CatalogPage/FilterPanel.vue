@@ -15,7 +15,7 @@ export default {
 @include h2-gradient;
 .filter-panel{
     position: sticky;
-    top: 40px;
+    top: 50px;
     z-index: 9;
     display: flex;
     flex-direction: column;
@@ -25,6 +25,8 @@ export default {
     border: $border;
     border-radius: $radius;
     padding-bottom: 20px;
+    box-shadow: $shadow;
+    background-color: white;
 }
 .filter-panel-header{
     display: flex;

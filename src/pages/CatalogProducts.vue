@@ -37,8 +37,8 @@ hr{
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    border: $border;
-    border-radius: $radius;
+    // border: $border;
+    // border-radius: $radius;
     .header-bar{
         display: flex;
         width: 100%;

@@ -13,7 +13,7 @@ export default {
 .list-moderator{
     display: flex;
     min-width: 100%;
-    min-height: 20vh;
+    min-height: 50vh;
     border: $border;
     border-radius: $radius;
     margin-top: 20px;

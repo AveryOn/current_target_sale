@@ -1,6 +1,5 @@
 <!-- СТРАНИЦА АЦТЕНТИФИКАЦИИ -->
 <template>
-    <div>Page Auth</div>
     <div class="Auth-Page">
         <!-- ОПИСАНИЕ МАГАЗИНА -->
         <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione officia temporibus reprehenderit architecto autem recusandae ad adipisci, neque eum blanditiis perferendis velit eaque praesentium commodi maiores fugiat eos in itaque!</p>
@@ -44,12 +43,16 @@ export default {
     .description{
         width: 30%;
         height: max-content;
-        background-color: rgba(0,0,0, .25);
         padding: 40px 20px;
-        border-left: 4px solid $color-orange-white;
+        box-shadow: $shadow;
+        background-color: white;
         border: {
             top-right-radius: $radius;
             bottom-right-radius: $radius;
+            left: 4px solid $color-orange-white;
+            top: $border;
+            right: $border;
+            bottom: $border;
         }
     }
     .auth-form{
@@ -60,13 +63,17 @@ export default {
         border: $border;
         border-radius: $radius;
         padding: 30px;
+        box-shadow: $shadow;
+        background-color: white;
         // background: linear-gradient(to right, #fc3b22, $color-orange-white);
-        background-color: rgba(0,0,0, .25);
     }
     .summary-auth-form{
         display: flex;
         margin: 20px 0 30px 0;
         justify-content: center;
+        background-image: linear-gradient(90deg, #fc3b22, $color-orange-white);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     .p{
         margin: 30px 0 5px 5px;
@@ -74,6 +81,7 @@ export default {
     .btn-confirm{
         display: flex;
         align-self: flex-end;
+        margin-top: 20px;
     }
 }
 

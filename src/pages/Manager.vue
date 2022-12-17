@@ -2,37 +2,43 @@
 <template>
     <div class="Manager-page">
         <!-- ОСНОВНАЯ ЛЕНТА -->
-        <div class="Main-page-child">
+        <div class="header-block">
             <h1 class="hello">Hello, {{ name }}!</h1>
             #ЭТО СТРАНИЦА МОДЕРАТОРА
-            <!-- EDITOR -->
-            <manager-tools-block @closeTools="closeCreator" :title="'Workbench'" :show="isCreatedProduct">
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
-            </manager-tools-block> 
-            <manager-tools-block @closeTools="closeEditor" :title="'Editor'" :show="isEditorProduct">
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
-            </manager-tools-block>
-            <manager-tools-block @closeTools="closePromotion" :title="'Announce a promotion'" :show="isPromotion">
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
-            </manager-tools-block>
-            <manager-tools-block @closeTools="closeEvent" :title="'Announce a event'" :show="isEvent">
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
-            </manager-tools-block>
-            <!-- ИСТОРИЯ РЕДАКТИРОВАНИЯ И СОЗДАНИЯ КАРТОЧЕК ТОВАРА -->
-            <div class="history-editor">
-                <div class="history-editor-navbar">
-                    <h2 class="h2-history-editor">History of created and edited cards</h2>
+        </div>
+        <div class="Main-page-child-container">
+            <div class="Main-page-child">
+                <!-- EDITOR -->
+                <manager-tools-block @closeTools="closeCreator" :title="'Workbench'" :show="isCreatedProduct">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
+                </manager-tools-block> 
+                <manager-tools-block @closeTools="closeEditor" :title="'Editor'" :show="isEditorProduct">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
+                </manager-tools-block>
+                <manager-tools-block @closeTools="closePromotion" :title="'Announce a promotion'" :show="isPromotion">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
+                </manager-tools-block>
+                <manager-tools-block @closeTools="closeEvent" :title="'Announce a event'" :show="isEvent">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
+                </manager-tools-block>
+                <!-- ИСТОРИЯ РЕДАКТИРОВАНИЯ И СОЗДАНИЯ КАРТОЧЕК ТОВАРА -->
+                <div class="history-editor">
+                    <div class="history-editor-navbar">
+                        <h2 class="h2-history-editor">History of created and edited cards</h2>
+                    </div>
                 </div>
             </div>
+            <!-- МЕНЮ ДЕЙСТВИЙ МОДЕРАТОРА -->
+            <div class="manager-side-bar">
+                <menu-manager class="menu-manager">
+                    <button-comp @click="openCreator" class="option">Create product</button-comp>
+                    <button-comp @click="openEditor" class="option">Edit product</button-comp>
+                    <button-comp @click="openPromotion" class="option">Announce a promotion</button-comp>
+                    <button-comp @click="openEvent" class="option">Announce a event</button-comp>
+                    <button-comp @click="$router.push('/manager/chat')" class="option">Chat</button-comp>
+                </menu-manager>
+            </div>
         </div>
-        <!-- МЕНЮ ДЕЙСТВИЙ МОДЕРАТОРА -->
-        <menu-manager>
-            <button-comp @click="openCreator" class="option">Create product</button-comp>
-            <button-comp @click="openEditor" class="option">Edit product</button-comp>
-            <button-comp @click="openPromotion" class="option">Announce a promotion</button-comp>
-            <button-comp @click="openEvent" class="option">Announce a event</button-comp>
-            <button-comp @click="$router.push('/manager/chat')" class="option">Chat</button-comp>
-        </menu-manager>
     </div>
 </template>
 
@@ -62,17 +68,29 @@ export default {
 <style lang="scss" scoped>
 .Manager-page{
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-content: stretch;
     min-height: 100vh;
     border: $border;
     border-radius: $radius;
+    .header-block{
+        display: flex;
+        align-items: center;
+        margin: 0 0 30px 30px;
+    }
+    .Main-page-child-container{
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+        align-content: stretch;
+    }
     .Main-page-child{
         display: flex;
         flex-direction: column;
         margin-left: 10px;
-        width: 80%;
+        width: 75%;
     }
-
     .hello{
         font-size: 3.5em;
         margin-top: 50px;
@@ -80,7 +98,16 @@ export default {
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-
+    .manager-side-bar{
+        display: flex;
+        flex-direction: column;
+        width: 20%;
+    }
+    .menu-manager{
+        position: sticky;
+        top: 20px;
+        margin: 0 auto;
+    }
     .history-editor{
         display: flex;
         flex-direction: column;
@@ -88,7 +115,7 @@ export default {
         min-height: 60vh;
         border: $border;
         border-radius: $radius;
-        margin: 50px 0 50px 0;
+        margin: 0 0 50px 0;
     }
     .history-editor-navbar{
         display: flex;
@@ -103,6 +130,7 @@ export default {
         -webkit-text-fill-color: transparent;
     }
     .option{
+        display: flex;
         width: 90%;
     }
 }

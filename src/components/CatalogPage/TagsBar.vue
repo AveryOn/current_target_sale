@@ -16,6 +16,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .tags-bar{
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
     position: sticky;
     top: 5px;
     display: flex;
@@ -23,7 +26,8 @@ export default {
     border-radius: $radius;
     margin: 0 10px;
     padding: 5px 20px;
-    background-color: rgba(255, 255, 255, .7);
+    background-color: white;
+    box-shadow: $shadow;
 }
 
 </style>

@@ -40,7 +40,7 @@
                 <list-moderator></list-moderator>
             </div>
             <!-- ПАНЕЛЬ ИНСТРУМЕНТОВ МОДЕРАТОРА -->
-            <menu-manager>
+            <menu-manager class="menu-manager">
                 <button-comp @click="openCreator" class="option">Create product</button-comp>
                 <button-comp @click="openEditor" class="option">Edit product</button-comp>
                 <button-comp @click="openPromotion" class="option">Announce a promotion</button-comp>
@@ -110,12 +110,15 @@ h1{
         justify-content: space-evenly;
         min-width: 98%;
         margin-top: 40px;
-        border: $border;
     }
     .basic-info{
         display: flex;
         flex-direction: column;
         min-width: 70%;
+    }
+    .menu-manager{
+        position: sticky;
+        top: 20px;
     }
     .option{
         width: 90%;

@@ -15,6 +15,6 @@ export default {
     border: $border;
     border-radius: $radius;
     min-width: 70%;
-    min-height: 20vh;
+    min-height: 50vh;
 }  
 </style>
