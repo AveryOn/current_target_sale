@@ -95,8 +95,8 @@ h1{
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    border: $border;
-    border-radius: $radius;
+    // border: $border;
+    // border-radius: $radius;
     .navbar-owner-page{
         display: flex;
         align-self: flex-start;

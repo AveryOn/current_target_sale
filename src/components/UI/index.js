@@ -7,6 +7,7 @@ import MenuManager from '@/components/UI/MenuManager'
 import ManagerToolsBlock from '@/components/UI/ManagerToolsBlock'
 import ProductItem from '@/components/UI/ProductItem'
 import TagComp from '@/components/UI/TagComp'
+import buttonUp from '@/components/UI/buttonUp'
  
 export default [
     ButtonComp,
@@ -18,4 +19,5 @@ export default [
     ManagerToolsBlock,
     ProductItem,
     TagComp,
+    buttonUp,
 ]

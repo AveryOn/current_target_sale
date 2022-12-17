@@ -1,7 +1,7 @@
 <template>
-    <div class="navbar">
+    <div @click="showLog" ref="navbar" class="navbar">
         <div class="title">
-            <div class="logo">
+            <div @click="scrl" class="logo">
                 <div class="logo-in"></div>
             </div>
             <h1 @click="$router.push('/')">Current Target Sale</h1>
@@ -21,7 +21,11 @@
 </template>
 <script>
 export default {
-    
+    methods: {
+        scrl(){
+            window.scroll(0, 100)
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>

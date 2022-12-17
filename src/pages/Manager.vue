@@ -72,8 +72,8 @@ export default {
     justify-content: space-evenly;
     align-content: stretch;
     min-height: 100vh;
-    border: $border;
-    border-radius: $radius;
+    // border: $border;
+    // border-radius: $radius;
     .header-block{
         display: flex;
         align-items: center;
@@ -116,6 +116,8 @@ export default {
         border: $border;
         border-radius: $radius;
         margin: 0 0 50px 0;
+        background-color: white;
+        box-shadow: $shadow;
     }
     .history-editor-navbar{
         display: flex;

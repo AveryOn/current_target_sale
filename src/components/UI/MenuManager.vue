@@ -27,6 +27,7 @@ export default {
     border: $border; 
     border-radius: $radius;
     align-self: flex-start;
+    box-shadow: $shadow;
 }
 .descr-options-bar{
     display: flex;

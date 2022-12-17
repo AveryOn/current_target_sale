@@ -17,5 +17,7 @@ export default {
     border: $border;
     border-radius: $radius;
     margin-top: 20px;
+    background-color: white;
+    box-shadow: $shadow;
 }
 </style>

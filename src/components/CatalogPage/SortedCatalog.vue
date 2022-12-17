@@ -56,7 +56,6 @@ export default {
         padding-left:30px;
         &:focus{
             width: 50%;
-            box-shadow: 2px 2px 5px black;
         }
     }
     .body-sorted-catalog{

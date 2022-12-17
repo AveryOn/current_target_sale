@@ -8,6 +8,7 @@ export default createStore({
   state: {
     isAuth: {prefix: 'manager'},
     isMiniChat: false,
+    isButtonUp: false,
   },
   getters: {
   },
@@ -17,7 +18,13 @@ export default createStore({
     },
     closeMiniChat(state){
       state.isMiniChat = false
-    }
+    },
+    showButtonUp(state){
+      state.isButtonUp = true
+    },
+    hideButtonUp(state){
+      state.isButtonUp = false
+    },
   },
   actions: {
   },

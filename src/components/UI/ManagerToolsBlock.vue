@@ -38,6 +38,7 @@ export default {
     border: $border;
     border-radius: $radius;
     background-color: white;
+    box-shadow: $shadow;
 }
 .manager-navbar{
     display: flex;

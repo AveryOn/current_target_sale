@@ -28,14 +28,11 @@ export default {
     right: 0;
     bottom: 0;
     background-color: rgba(0,0,0,.5);
+    transition: display 1s ease-in;
 }
 .modal-block{
-    // width: max-content;
-    // height: max-content;
-    // border: $border;
-    // border-radius: $radius;
-    max-width: 90%;
-    // background-color: white;
+    max-width: 80%;
+    height: max-content;
     margin: auto;
 }
 </style>
