@@ -7,20 +7,17 @@
     </div>
 </template>
 <script>
+import ShowTemplate from '@/mixins/ShowTemplate';
 export default {
     name: 'modal-comp',
-    props: {
-        show: {
-            type: Boolean,
-            default: false
-        }
-    }
+    mixins: [ShowTemplate],
 }
 </script>
 <style lang="scss" scoped>
 .modal-background{
     position: fixed;
     display: flex;
+    justify-content: center;
     align-items: center;
     z-index: 999;
     top: 0;
@@ -28,11 +25,6 @@ export default {
     right: 0;
     bottom: 0;
     background-color: rgba(0,0,0,.5);
-    transition: display 1s ease-in;
-}
-.modal-block{
-    max-width: 80%;
-    height: max-content;
-    margin: auto;
+    padding: 0 50px;
 }
 </style>

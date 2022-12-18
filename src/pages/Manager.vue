@@ -9,15 +9,23 @@
         <div class="Main-page-child-container">
             <div class="Main-page-child">
                 <!-- EDITOR -->
+                <!-- Блок создания нового товара -->
                 <manager-tools-block @closeTools="closeCreator" :title="'Workbench'" :show="isCreatedProduct">
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
                 </manager-tools-block> 
+                <!-- Блок редактирования товара -->
                 <manager-tools-block @closeTools="closeEditor" :title="'Editor'" :show="isEditorProduct">
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
                 </manager-tools-block>
+                <!-- Блок Создания новой группы товара -->
+                <manager-tools-block @closeTools="closeCreateGroup" :title="'Create new Group'" :show="isCreatedGroup">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
+                </manager-tools-block>
+                <!-- Блок Обьявления Скидок -->
                 <manager-tools-block @closeTools="closePromotion" :title="'Announce a promotion'" :show="isPromotion">
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
                 </manager-tools-block>
+                <!-- Блок Обьявления Эвентов -->
                 <manager-tools-block @closeTools="closeEvent" :title="'Announce a event'" :show="isEvent">
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut id cumque corrupti assumenda rem eum nihil nobis sint, soluta voluptatibus aliquid perferendis quos voluptatem laborum mollitia earum itaque error. Blanditiis.</p>
                 </manager-tools-block>
@@ -33,6 +41,7 @@
                 <menu-manager class="menu-manager">
                     <button-comp @click="openCreator" class="option">Create product</button-comp>
                     <button-comp @click="openEditor" class="option">Edit product</button-comp>
+                    <button-comp @click="openCreateGroup" class="option">Create Group</button-comp>
                     <button-comp @click="openPromotion" class="option">Announce a promotion</button-comp>
                     <button-comp @click="openEvent" class="option">Announce a event</button-comp>
                     <button-comp @click="$router.push('/manager/chat')" class="option">Chat</button-comp>

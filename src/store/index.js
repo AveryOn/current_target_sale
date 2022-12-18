@@ -4,6 +4,8 @@ import { ManagerModule } from './ManagerModule'
 import { OwnerModule } from './OwnerModule'
 import { CatalogModule } from './CatalogModule'
 import { CartModule } from './CartModule'
+import { SettingsModule } from './SettingsModule'
+import { AuthModule } from './AuthModule'
 
 export default createStore({
   state: {
@@ -34,5 +36,7 @@ export default createStore({
     OwnerModule: OwnerModule,
     CatalogModule: CatalogModule,
     CartModule: CartModule,
+    SettingsModule: SettingsModule,
+    AuthModule: AuthModule,
   },
 })

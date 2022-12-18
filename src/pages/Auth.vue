@@ -8,21 +8,51 @@
             <!-- ОПИСАНИЕ МАГАЗИНА -->
             <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione officia temporibus reprehenderit architecto autem recusandae ad adipisci, neque eum blanditiis perferendis velit eaque praesentium commodi maiores fugiat eos in itaque!</p>
             <!-- ФОРМА АУТЕНТИФИКАЦИИ -->
-            <div class="auth-form">
-                    <h3 class="summary-auth-form">Input your credentials</h3>
-                    <p class="p">Enter your email or username</p>
-                    <input-comp 
-                    v-model="username" 
-                    class="input" 
-                    type="text"
-                    placeholder="Email or username..."/>
-                    <p class="p">Enter your password</p>
-                    <input-comp 
-                    v-model="password" 
-                    class="input" 
-                    type="password"
-                    placeholder="Password..."/>
+            <!-- Блок авторизации -->
+            <div v-if="!$store.state.AuthModule.isRegistration" class="auth-form">
+                <h2 class="summary-auth-form">Login</h2>
+                <p class="p">Enter your email or username</p>
+                <input-comp
+                v-model="username" 
+                class="input" 
+                type="text"
+                placeholder="Email or username..."/>
+                <p class="p">Enter your password</p>
+                <input-comp
+                v-model="password" 
+                class="input" 
+                type="password"
+                placeholder="Password..."/>
+                <div class="auth-btns">
+                    <a @click="$store.commit('AuthModule/openRegBlock')" class="reg-href">Registration...</a>
                     <button-comp class="btn-confirm">Confirm</button-comp>
+                </div>
+            </div>
+            <!-- Блок Регистрации -->
+            <div v-else class="auth-form">
+                <h2 class="summary-auth-form">Registration</h2>
+                <p class="p">Enter your Email</p>
+                <input-comp 
+                v-model="email" 
+                class="input" 
+                type="text"
+                placeholder="Email..."/>
+                <p class="p">Enter your Username</p>
+                <input-comp 
+                v-model="username" 
+                class="input" 
+                type="text"
+                placeholder="Email or username..."/>
+                <p class="p">Enter your Password</p>
+                <input-comp
+                v-model="password" 
+                class="input" 
+                type="password"
+                placeholder="Password..."/>
+                <div class="auth-btns">
+                    <a @click="$store.commit('AuthModule/closeRegBlock')" class="reg-href">Login-></a>
+                    <button-comp class="btn-confirm">Confirm</button-comp>
+                </div>
             </div>
         </div>
     </div>
@@ -31,6 +61,7 @@
 export default {
     data(){
         return{
+            email: '',
             username: '',
             password: '', 
         }
@@ -106,10 +137,24 @@ export default {
     .p{
         margin: 30px 0 5px 5px;
     }
-    .btn-confirm{
+    .auth-btns{
         display: flex;
-        align-self: flex-end;
-        margin-top: 20px;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        .reg-href{
+            color: $or-wh-txt;
+            margin-top: 20px;
+            &:hover{
+                cursor: pointer;
+                text-decoration:solid;
+            }
+        }
+        .btn-confirm{
+            display: flex;
+            align-self: flex-end;
+            margin: 20px 0 0 auto;
+        }
     }
 }
 

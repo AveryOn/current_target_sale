@@ -1,7 +1,8 @@
 // ХРАНИИЩЕ ДЛЯ ДЕЙСТВИЙ ПО МОДЕРАЦИИ МАГАЗИНА
 export const ManagerModule = {
     state: () => ({
-        isCreatedProduct: false,
+        isCreatedProduct: true,
+        isCreatedGroup: false,
         isEditorProduct: false,
         isPromotion: false,
         isEvent: false,
@@ -23,6 +24,15 @@ export const ManagerModule = {
         },
         closeEditor(state){
             state.isEditorProduct = false
+            console.log('Editor: ', state.isEditorProduct)
+        },
+        // ОКНО СОЗДАНИЯ НОВОЙ ГРУППЫ ТОВАРА
+        openCreateGroup(state){
+            state.isCreatedGroup = true
+            console.log('Editor: ', state.isEditorProduct)
+        },
+        closeCreateGroup(state){
+            state.isCreatedGroup = false
             console.log('Editor: ', state.isEditorProduct)
         },
         // ОКНО АКЦИЙ

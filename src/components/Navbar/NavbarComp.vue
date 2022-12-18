@@ -7,15 +7,10 @@
             <h1 @click="$router.push('/')">Current Target Sale</h1>
         </div>
         <div class="btns">
-            <div class="btns-navigate">
-                <button-comp @click="$router.push({name: 'main'})" title="Home" class="btn-navigate">Home</button-comp>
-                <button-comp @click="$router.push({name: 'catalog'})" title="Catalog" class="btn-navigate">Catalog</button-comp>
-                <button-comp title="Settings" class="btn-navigate">Settings</button-comp>
-            </div>
-            <div class="btns-options">
-                <button-comp @click="$router.push({name: 'cart'})" title="Busket" class="btn-i">Cart</button-comp>
-                <button-comp @click="$router.push({name: 'auth'})" title="Login and Registred" class="btn-i">Login -></button-comp>
-            </div>
+                <!-- ЛЕВОСТОРОННИЕ КНОПКИ -->
+                <slot name="btnsLeft"></slot>
+                <!-- ПРАВОСТОРОННИЕ КНОПКИ -->
+                <slot name="btnsRight"></slot>
         </div>
     </div>
 </template>
@@ -81,12 +76,6 @@ h1{
     display: flex;
     justify-content: space-between;
     margin: 10px 30px 10px 30px;
-}
-.btns-navigate{
-    display: flex;
-}
-.btns-options{
-    display: flex;
 }
 .btn-i .btns-navigate{
     &:hover{

@@ -1,6 +1,6 @@
 <template>
      <div class="minichat">
-        <div @click="$store.commit('closeMiniChat')" class="close-btn">x</div>
+        <button-close-mini @click="$store.commit('closeMiniChat')"></button-close-mini>
         <div class="message-content"></div>
         <div class="input-block">
             <div>file</div>
@@ -27,24 +27,6 @@ export default {
     box-shadow: $shadow;
     background-color: white;
     border-radius: $radius;
-}
-.close-btn{
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2em;
-    height: 2em;
-    top: -15px;
-    right: -10px;
-    background-color: red;
-    padding: 5px;
-    border-radius: 50%;
-    font-size: 17px;
-    &:hover{
-        cursor: pointer;
-        rotate: -95deg;
-    }
 }
 .message-content{
     height: 90vh;

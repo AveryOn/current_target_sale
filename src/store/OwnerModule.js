@@ -3,6 +3,7 @@ export const OwnerModule = {
     state: () => ({
         isCreatedProduct: false,
         isEditorProduct: false,
+        isCreatedGroup: false,
         isPromotion: false,
         isEvent: false,
         isShowManagerToolModal: false,
@@ -13,6 +14,7 @@ export const OwnerModule = {
             state.isShowManagerToolModal = false
             state.isCreatedProduct = false
             state.isEditorProduct = false
+            state.isCreatedGroup = false
             state.isPromotion = false
             state.isEvent = false
         },
@@ -27,6 +29,12 @@ export const OwnerModule = {
             state.isEditorProduct = true
             state.isShowManagerToolModal = true
             console.log('Editor: ', state.isEditorProduct)
+        },
+        // ОКНО СОЗДАНИЯ НОВОЙ ГРУППЫ ТОВАРА
+        openCreateGroup(state){
+            state.isCreatedGroup = true
+            state.isShowManagerToolModal = true
+            console.log('Group: ', state.isCreatedGroup)
         },
         // ОКНО АКЦИЙ
         openPromotion(state){
