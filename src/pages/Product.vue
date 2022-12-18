@@ -61,9 +61,12 @@ hr{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 5px;
+    margin: 100px 15px 100px 15px;
+    padding: 30px 0 0 0 ;
     border: $border;
     border-radius: $radius;
+    background-color: white;
+    box-shadow: $shadow;
 }
 
 .product-container{

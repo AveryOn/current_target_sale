@@ -13,7 +13,7 @@
                 <button-comp title="Settings" class="btn-navigate">Settings</button-comp>
             </div>
             <div class="btns-options">
-                <button-comp title="Busket" class="btn-i">Busket</button-comp>
+                <button-comp @click="$router.push({name: 'cart'})" title="Busket" class="btn-i">Cart</button-comp>
                 <button-comp @click="$router.push({name: 'auth'})" title="Login and Registred" class="btn-i">Login -></button-comp>
             </div>
         </div>

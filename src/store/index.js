@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 import { ManagerModule } from './ManagerModule'
 import { OwnerModule } from './OwnerModule'
 import { CatalogModule } from './CatalogModule'
+import { CartModule } from './CartModule'
 
 export default createStore({
   state: {
@@ -32,5 +33,6 @@ export default createStore({
     ManagerModule: ManagerModule,
     OwnerModule: OwnerModule,
     CatalogModule: CatalogModule,
+    CartModule: CartModule,
   },
 })

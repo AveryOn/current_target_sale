@@ -23,5 +23,6 @@ export default {
     padding: 0 20px;
     border: $border;
     border-radius: $radius;
+    box-shadow: $shadow;
 } 
 </style>

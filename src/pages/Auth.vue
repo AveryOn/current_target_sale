@@ -1,24 +1,29 @@
 <!-- СТРАНИЦА АЦТЕНТИФИКАЦИИ -->
 <template>
     <div class="Auth-Page">
-        <!-- ОПИСАНИЕ МАГАЗИНА -->
-        <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione officia temporibus reprehenderit architecto autem recusandae ad adipisci, neque eum blanditiis perferendis velit eaque praesentium commodi maiores fugiat eos in itaque!</p>
-        <!-- ФОРМА АУТЕНТИФИКАЦИИ -->
-        <div class="auth-form">
-                <h3 class="summary-auth-form">Input your credentials</h3>
-                <p class="p">Enter your email or username</p>
-                <input-comp 
-                v-model="username" 
-                class="input" 
-                type="text"
-                placeholder="Email or username..."/>
-                <p class="p">Enter your password</p>
-                <input-comp 
-                v-model="password" 
-                class="input" 
-                type="password"
-                placeholder="Password..."/>
-                <button-comp class="btn-confirm">Confirm</button-comp>
+        <div class="auth-title-header">
+            <h1 class="title-text">Auth</h1>
+        </div>
+        <div class="auth-body-layout">
+            <!-- ОПИСАНИЕ МАГАЗИНА -->
+            <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione officia temporibus reprehenderit architecto autem recusandae ad adipisci, neque eum blanditiis perferendis velit eaque praesentium commodi maiores fugiat eos in itaque!</p>
+            <!-- ФОРМА АУТЕНТИФИКАЦИИ -->
+            <div class="auth-form">
+                    <h3 class="summary-auth-form">Input your credentials</h3>
+                    <p class="p">Enter your email or username</p>
+                    <input-comp 
+                    v-model="username" 
+                    class="input" 
+                    type="text"
+                    placeholder="Email or username..."/>
+                    <p class="p">Enter your password</p>
+                    <input-comp 
+                    v-model="password" 
+                    class="input" 
+                    type="password"
+                    placeholder="Password..."/>
+                    <button-comp class="btn-confirm">Confirm</button-comp>
+            </div>
         </div>
     </div>
 </template>
@@ -33,13 +38,31 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@include h1-gradient;
 .Auth-Page{
     display: flex;
-    justify-content: space-evenly;
+    flex-direction: column;
     align-items: center;
-    min-height: 100vh;
     border: $border;
     border-radius: $radius;
+    box-shadow: $shadow;
+    .auth-title-header{
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+        .title-text{
+            font-size: 3em;
+        }
+    }
+    .auth-body-layout{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        min-height: 100vh;
+        padding-bottom: 50px;
+    }
     .description{
         width: 30%;
         height: max-content;
@@ -65,7 +88,12 @@ export default {
         padding: 30px;
         box-shadow: $shadow;
         background-color: white;
-        // background: linear-gradient(to right, #fc3b22, $color-orange-white);
+        .input{
+            box-shadow: none;
+            &:focus{
+                box-shadow: $shadow;
+            }
+        }
     }
     .summary-auth-form{
         display: flex;

@@ -7,6 +7,7 @@ import Owner from '@/pages/Owner'
 import ChatModerator from '@/components/ManagerPage/ChatModerator'
 import Product from '@/pages/Product'
 import CatalogProducts from '@/pages/CatalogProducts'
+import Cart from '@/pages/Cart'
 import NotFound from '@/pages/NotFound'
 const prefix = 'owner'
 const routes = [
@@ -21,6 +22,7 @@ const routes = [
   {path: '/owner', name: 'owner', component: Owner},  
   {path: '/product', name: 'product', component: Product},
   {path: '/catalog', name: 'catalog', component: CatalogProducts},
+  {path: '/cart', name: 'cart', component: Cart},
   {
     path: '/404',
     name: 'notFound',

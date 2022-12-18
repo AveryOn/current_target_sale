@@ -15,8 +15,9 @@ export default {
     width: 300px;
     height: 400px;
     background-color: black;
-    box-shadow: 2px 3px 10px black;
     color: white;
     text-align: center;
+    border-radius: $radius;
+    box-shadow: $shadow;
 }
 </style>

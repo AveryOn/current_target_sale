@@ -18,6 +18,7 @@ export default {
         // background-color: $color-orange-white;
         background: $background-gr;
         color: white;
+        box-shadow: $shadow;
         cursor: pointer;
     }
     &:focus{

@@ -46,6 +46,7 @@ h1, h2{
     align-items: center;
     border: $border;
     border-radius: $radius;
+    box-shadow: $shadow;
 }
 .comment{
     display: flex;
