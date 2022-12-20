@@ -49,7 +49,7 @@ export default {
     // border: $border;
     // border-radius: $radius;
     min-height: 100vh;
-    margin: 30px 10px 0 10px;
+    margin: 0 10px 0 10px;
     .header-cart-page{
         display: flex;
         min-height: 10vh;

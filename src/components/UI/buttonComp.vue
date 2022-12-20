@@ -9,11 +9,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .btn{
+    display: flex;
+    align-items: center;
     margin: 5px;
     padding: 8px 15px;
     border-radius: $radius;
     border: $border;
     color: $or-wh-txt;
+    font-size: 15px;
     &:hover{
         // background-color: $color-orange-white;
         background: $background-gr;

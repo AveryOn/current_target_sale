@@ -1,26 +1,87 @@
+<!-- НАВБАР -->
 <template>
     <div @click="showLog" ref="navbar" class="navbar">
         <div class="title">
             <div @click="scrl" class="logo">
-                <div class="logo-in"></div>
             </div>
-            <h1 @click="$router.push('/')">Current Target Sale</h1>
-        </div>
-        <div class="btns">
-                <!-- ЛЕВОСТОРОННИЕ КНОПКИ -->
-                <slot name="btnsLeft"></slot>
-                <!-- ПРАВОСТОРОННИЕ КНОПКИ -->
-                <slot name="btnsRight"></slot>
+            <h1 class="title--text" @click="$router.push('/')">Current Target Sale</h1>
         </div>
     </div>
+    <!-- Навигационные кнопки для комп. версии -->
+    <div class="btns">
+<!-- ЛЕВОСТОРОННИЕ КНОПКИ -->
+            <div class="btns__left">
+<!-- Кнопка На главную -->
+                <button-comp 
+                @click="$router.push({name: 'main'})" 
+                title="Home"
+                class="left--btn">
+                    <i-home></i-home> Home
+                </button-comp>
+<!-- Кнопка Каталог -->
+                <button-comp 
+                @click="$router.push({name: 'catalog'})" 
+                title="Catalog"
+                class="left--btn">
+                    <i-catalog></i-catalog> Catalog
+                </button-comp>
+<!-- кнопка Корзина -->
+                <button-comp 
+                @click="$router.push({name: 'cart'})" 
+                title="Cart"
+                class="left--btn">
+                <i-cart></i-cart> Cart
+                </button-comp>
+<!-- Кнопка Настройки -->
+                <button-comp 
+                @click="$store.commit('SettingsModule/openSettingsModal')" 
+                title="Settings"
+                class="left--btn"> 
+                    <i-settings></i-settings> Settings
+                </button-comp>
+            </div>
+<!-- ПРАВОСТОРОННИЕ КНОПКИ -->
+            <div class="btns__right">
+<!-- Кнопка смены цветовой темы -->
+                <button-comp
+                class="right--btn"
+                >
+                    <i-theme></i-theme> Theme: {{ ($store.state.darkTheme)? 'Dark' : 'Light' }}
+                </button-comp>
+<!-- Кнопка Войти -->
+                <button-comp 
+                @click="$router.push({name: 'auth'})" 
+                title="Login and Registred" 
+                class="right--btn"
+                >
+                Login <i-login></i-login>
+                </button-comp>
+            </div>
+    </div>
+
+<!-- Навигационные кнопки для мобильной версии 
+        запускаются в @/styles/media/navbar_m.scss -->
+    <nav-menu-mobile></nav-menu-mobile>
 </template>
 <script>
+import NavMenuMobile from '@/components/Navbar/NavMenuMobile.vue'
 export default {
+    components: {
+        NavMenuMobile,
+    },
+    data(){
+      return {
+        size: {
+            width: 25,
+            height: 25,
+        }
+      }  
+    },
     methods: {
         scrl(){
             window.scroll(0, 100)
         }
-    }
+    },
 }
 </script>
 <style lang="scss" scoped>
@@ -64,22 +125,22 @@ h1{
         border-radius: 50%;
         margin: 10px 0 0 30px;
     }
-    .logo-in{
-        width: 40px;
-        height: 40px;
-        background-color: orangered;
-        border-radius: 50%;
-        margin: auto;
-    }
 }
 .btns{
+    position: absolute;
+    top: 15vh;
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    margin: 10px 30px 10px 30px;
-}
-.btn-i .btns-navigate{
-    &:hover{
-        border: 1px solid white;
+    padding: 0 20px;
+    margin-top: 20px;
     }
-}
+        // НавБар Лев.кнопки и Прав.кнопки
+    .btns__left{
+        display: flex;
+    }
+    .btns__right{
+        display: flex;
+    }
+@import '@/styles/media/navbar__m.scss'
 </style>

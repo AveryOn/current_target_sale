@@ -35,10 +35,10 @@ export default {
     display: flex; 
     flex-direction: column;
     align-items: center; 
-    margin: 5px;
+    margin: 60px 5px 5px 5px;
     min-height: 100vh;
-    // border: 1px solid $color-orange-white;
-    // border-radius: $radius;
+    border: 1px solid $color-orange-white;
+    border-radius: $radius;
     .header-text{
         margin: 20px 0 0 35px;
         font: {
@@ -51,8 +51,6 @@ export default {
         align-self: flex-start;
     }
     .search-input{
-        position: sticky;
-        top: 10px;
         width: 50%;
         margin: 20px 10px;
         padding: 15px 20px;

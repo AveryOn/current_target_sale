@@ -4,6 +4,7 @@
     <div class="filter-panel">
         <h2 class="filter-panel-header">Filter panel</h2>
         <div class="panel-options" v-for="(option, index) in 10">{{index+1}}</div>
+        
     </div>
 </template>
 <script>

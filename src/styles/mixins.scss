@@ -31,3 +31,25 @@
         -webkit-text-fill-color: transparent;
     }
 }
+// Иконки
+@mixin icon-size{
+    .icon{
+        display: inline-block;
+        position: relative;
+        width: 20px;
+        height: 20px;
+        top: -3px;
+        left: -4px;
+        fill: orange;
+        .btn-mobile-nav{
+            width: 40px;
+            height: 40px;
+        }
+    }
+    .btn:hover .icon{
+        fill: white;
+    }
+}
+
+// Иконки для мобильной версии
+

@@ -1,7 +1,7 @@
 <!-- СТРАНЦИА ВЫБРАННОГО ТОВАРА -->
 <template>
     <div class="Product-page">
-        <h1>Page Block ID</h1>
+        <h1 class="title-page-text">Page Block ID</h1>
         <!-- КОНТЕЙНЕР ДЛЯ ВНУТРЕННЕГО КОНТЕНТА -->
         #product-container
         <div class="product-container">
@@ -61,14 +61,19 @@ hr{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 100px 15px 100px 15px;
+    margin: 0 15px;
     padding: 30px 0 0 0 ;
     border: $border;
     border-radius: $radius;
     background-color: white;
     box-shadow: $shadow;
 }
-
+.title-page-text{
+    display: flex;
+    align-self: flex-end;
+    margin-right: 30px;
+    font-size: 2.5em;
+}
 .product-container{
     width: 100%;
     margin: 20px 0;

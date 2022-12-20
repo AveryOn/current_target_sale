@@ -10,6 +10,9 @@ import ProductItem from '@/components/UI/ProductItem'
 import TagComp from '@/components/UI/TagComp'
 import ButtonUp from '@/components/UI/buttonUp'
 import ButtonCloseMini from '@/components/UI/buttonCloseMini'
+import CheckboxComp from '@/components/UI/checkboxComp'
+import RangeComp from '@/components/UI/rangeComp'
+import icons from './icons'
  
 export default [
     ButtonComp,
@@ -23,4 +26,7 @@ export default [
     TagComp,
     ButtonUp,
     ButtonCloseMini,
+    CheckboxComp,
+    RangeComp,
+    ...icons,
 ]

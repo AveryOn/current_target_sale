@@ -1,0 +1,137 @@
+// НАВБАР
+
+// При ширине экрана менее 1000px
+@media(max-width: 1000px){
+    .navbar{
+        height: 10vh;
+    }
+    .title{
+        justify-content: space-between;
+        .title--text{
+            align-self: flex-start;
+        }
+    }
+    .btns{
+        width: 70%;
+        top: 9vh;
+        right: 30px;
+        background: $background-gr;
+        border-radius: $radius;
+    }
+    .btns__left{
+        .left--btn{
+            padding: 5px 9px;
+            font-size: 14px;
+        }
+    }
+    .btns__right{
+        .right--btn{
+            padding: 5px 9px;
+            font-size: 14px;
+        }
+    }
+}
+// При ширине экрана менее 910px
+@media(max-width: 910px){
+    .btns{
+        top: 8vh;
+        left: 16%;
+    }
+}
+
+// При ширине экрана менее 850px
+
+// .btns - стандартный блок кнопок навбара отключаются
+// включаются блок с кнопками для мобильной версии - .navbar-mobile
+@media(max-width: 850px){
+    .btns{
+        display: none;
+    }
+    .navbar-mobile{
+        display: flex;
+        width: 70%;
+        top: 9vh;
+        right: 30px;
+        background: $background-gr;
+        border-radius: $radius;
+        .btn-mobile-nav{
+            display: flex;
+            justify-content: flex-end;
+            padding: 5px 5px 5px 6px;
+            .icon{
+                left: -1px;
+                top: -1px;
+            }
+        }
+    }
+}
+// При ширине экрана менее 530px
+
+@media (max-width:530px) {
+    h1{
+        background: none;
+    }
+    .title--text{
+        color: white;
+        font-size: 25px;
+        position: absolute;
+        transform: translate(50%, 30%);
+        padding: 10px 0;
+    }
+    .navbar-mobile{
+        width: max-content;
+        padding: 0;
+        top: 8vh;
+        right: 10px;
+    }
+}
+// При ширине экрана менее 430px
+
+@media(max-width:430px){
+    .title{
+        .logo{
+            position: relative;
+            top: -8px;
+            height: 70px;
+            width: 70px;
+        }
+        .title--text{
+            font-size: 27px;
+            transform: translate(35%, 30%);
+        }
+    }
+    .navbar-mobile{
+        left: 5%;
+        width: 90%;
+        .icon.btn-mobile-nav{
+            margin: 0 10px;
+        }
+    }
+}
+// При ширине экрана менее 400px
+
+@media(max-width:400px){
+    .navbar-mobile{
+        justify-content: flex-start;
+        width: max-content;
+        left: 5%;
+        margin-left: auto;
+        margin-right: auto;
+        top: 9vh;
+    }
+    .title{
+        .logo{
+            width: 65px;
+            height: 65px;
+            top: -8px;
+            left: -20px;
+        }
+    }
+    .title--text{
+        position: relative;
+        margin: 0;
+        font-size: 23px;
+        top: -10px;
+        left: -32%;
+    }
+}

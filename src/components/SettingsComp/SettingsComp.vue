@@ -39,7 +39,7 @@ export default {
     background-color: white;
     border: $border;
     border-radius: $radius;
-    overflow-y: scroll;
+    overflow:auto;
     overflow-x: hidden;
 }
 .settings-content{
@@ -72,6 +72,7 @@ export default {
         height: 800px;
         width: 500px;
         margin: 10px;
+
     }
     .group-setting{
         width: 100%;

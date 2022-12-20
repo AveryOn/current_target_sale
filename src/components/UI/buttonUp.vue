@@ -1,9 +1,7 @@
 <!-- КНОПКА ОТПРАВЛЯЕТ КЛИЕНТ В НАЧАЛО ЭКРАНА -->
 <template>
-    <div :class="{'btn-up-show': listclass}" class="btn-up">
-        <a href="#top-app">
+    <div @click="upper" :class="{'btn-up-show': listclass}" class="btn-up">
             <slot></slot>
-        </a>
     </div>
 </template>
 <script>
@@ -15,6 +13,15 @@ export default {
             default: false,
         }
     },
+    methods: {
+        upper(){
+            window.scroll({
+                left: 0,
+                top: 0,
+                behavior: 'smooth',
+            })
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>

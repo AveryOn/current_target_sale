@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import components from './components/UI';
 import directivies from './directivies'
+import './styles/normalize.scss'
 
 const app = createApp(App)
 
@@ -14,7 +15,6 @@ components.forEach(component => {
 directivies.forEach(directive => {
     app.directive(directive.name, directive)
 })
-
 app
     .use(store)
     .use(router)

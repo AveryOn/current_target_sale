@@ -3,7 +3,7 @@
         <button-close-mini @click="$store.commit('closeMiniChat')"></button-close-mini>
         <div class="message-content"></div>
         <div class="input-block">
-            <div>file</div>
+            <div class="pin-file">file</div>
             <input-comp class="send-input"></input-comp>
         </div>
     </div>
@@ -27,11 +27,12 @@ export default {
     box-shadow: $shadow;
     background-color: white;
     border-radius: $radius;
+    border: $border;
 }
 .message-content{
     height: 90vh;
-    border: $border;
-    border-radius: $radius;
+    // border: $border;
+    // border-radius: $radius;
 }
 .input-block{
     display: flex;
@@ -39,6 +40,6 @@ export default {
     align-items: center;
 }
 .send-input{
-    width: 90%;
+    width: 100%;
 }
 </style>

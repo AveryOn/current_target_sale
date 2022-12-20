@@ -77,6 +77,7 @@ export default {
     border: $border;
     border-radius: $radius;
     box-shadow: $shadow;
+    margin: 0 20px;
     .auth-title-header{
         display: flex;
         width: 100%;
@@ -89,7 +90,7 @@ export default {
     }
     .auth-body-layout{
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-around;
         align-items: center;
         min-height: 100vh;
         padding-bottom: 50px;
