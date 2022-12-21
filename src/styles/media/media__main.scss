@@ -5,6 +5,13 @@
 @import '../variables.scss';
 
 // Компоненты
+
+// Глобальные правки приложения
 @import './app__m.scss';
+
+// Адаптация навбара
 @import './navbar__m.scss';
+
+// Адаптация главной страницы Main.vue
+@import './main__m.scss';
 

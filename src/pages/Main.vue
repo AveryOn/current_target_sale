@@ -12,7 +12,7 @@
         </div>
         <!-- ТИТУЛЬНЫЙ БЛОК ТОВАРОВ ПО АКЦИИ -->
         <div class="block-products-promotion">
-
+            
         </div>
     </div>
 </template>
@@ -37,8 +37,8 @@ export default {
     align-items: center; 
     margin: 60px 5px 5px 5px;
     min-height: 100vh;
-    border: 1px solid $color-orange-white;
-    border-radius: $radius;
+    // border: 1px solid $color-orange-white;
+    // border-radius: $radius;
     .header-text{
         margin: 20px 0 0 35px;
         font: {
@@ -79,4 +79,6 @@ export default {
         background-color: white;
     }
 }
+
+@import '@/styles/media/main__m.scss'
 </style>

@@ -38,6 +38,16 @@
         left: 16%;
     }
 }
+// При ширине экрана менее 905px
+
+@media(max-width: 905px){
+    .btns__right {
+        .right--btn{
+            padding: 1px 9px;
+        }
+    }
+
+}
 
 // При ширине экрана менее 850px
 
@@ -117,7 +127,7 @@
         left: 5%;
         margin-left: auto;
         margin-right: auto;
-        top: 9vh;
+        top: 8vh;
     }
     .title{
         .logo{

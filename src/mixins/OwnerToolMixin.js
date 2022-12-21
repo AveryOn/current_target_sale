@@ -2,23 +2,27 @@
 import { mapMutations,  mapState} from 'vuex'
 
 export default {
+    // Мутации состояний для работы с панелью модератора, используется pages/Manager.vue
     methods: {
         ...mapMutations({
+            // создание товара
             openCreator: 'OwnerModule/openCreator',
             closeCreator: 'OwnerModule/closeCreator',
+            // редактирование товара
             openEditor: 'OwnerModule/openEditor',
             closeEditor: 'OwnerModule/closeEditor',
+            // обьявление акций
             openPromotion: 'OwnerModule/openPromotion',
             closePromotion: 'OwnerModule/closePromotion',
+            // обьявление событий и праздников (Евентов)
             openEvent: 'OwnerModule/openEvent',
-            closeEvent: 'OwnerModule/closeEvent', 
-            openManagerTools: 'OwnerModule/openManagerTools',
-            closeManagerTools: 'OwnerModule/closeManagerTools',
+            closeEvent: 'OwnerModule/closeEvent',
+            // создание новой группы товаров
             openCreateGroup: 'OwnerModule/openCreateGroup',
             closeCreateGroup: 'OwnerModule/closeCreateGroup',
-            closeModal: 'OwnerModule/closeModal',
         }),
     },
+    // Состояние моделей для работы с панелью модератора, используется pages/Manager.vue
     computed: {
         ...mapState({
             isCreatedProduct: state => state.OwnerModule.isCreatedProduct,

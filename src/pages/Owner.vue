@@ -12,37 +12,38 @@
             <div class="basic-info">
                 <!-- МОДАЛЬНОЕ ОКНО ДЛЯ ОПЕРАЦИЙ ПАНЕЛИ МОДЕРАТОРА -->
                 <modal-comp @click="closeModal" :show="isShowManagerToolModal">
-                    <!-- Блок создания нового товара -->
-                    <manager-tools-block @closeTools="closeModal" :title="'Workbench'" :show="isCreatedProduct">
-                        <creator-product>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui illo excepturi ex hic atque quis iusto voluptatum laboriosam aliquam. Animi repellat ullam repudiandae voluptates facere accusamus itaque exercitationem vel odit?</p>
+
+                    <!-- Обязательно байндить show -->
+                    <manager-tools-block >
+
+                        <!-- Блок создания нового товара -->
+                        <creator-product :show="isCreatedProduct">
+                            <p> Create - Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, in!</p>
                         </creator-product>
-                    </manager-tools-block> 
-                    <!-- Блок редактирования товара -->
-                    <manager-tools-block @closeTools="closeModal" :title="'Editor'" :show="isEditorProduct">
-                        <editor-product>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui illo excepturi ex hic atque quis iusto voluptatum laboriosam aliquam. Animi repellat ullam repudiandae voluptates facere accusamus itaque exercitationem vel odit?</p>
+
+                        <!-- Блок редактирования товара -->
+                        <editor-product :show="isEditorProduct">
+                            <p> Edit - Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, in!</p>
                         </editor-product>
-                    </manager-tools-block>
-                    <!-- Блок Создания новой группы товара -->
-                    <manager-tools-block @closeTools="closeModal" :title="'Create new Group'" :show="isCreatedGroup">
-                        <creator-group>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui illo excepturi ex hic atque quis iusto voluptatum laboriosam aliquam. Animi repellat ullam repudiandae voluptates facere accusamus itaque exercitationem vel odit?</p>
+                        
+                        <!-- Блок Создания новой группы товара -->
+                        <creator-group :show="isCreatedGroup">
+                            <p> Group - Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, in!</p>
                         </creator-group>
-                    </manager-tools-block>
-                    <!-- Блок Обьявления Скидок -->
-                    <manager-tools-block @closeTools="closeModal" :title="'Announce a promotion'" :show="isPromotion">
-                        <promotion-product>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui illo excepturi ex hic atque quis iusto voluptatum laboriosam aliquam. Animi repellat ullam repudiandae voluptates facere accusamus itaque exercitationem vel odit?</p>
+                        
+                        <!-- Блок Обьявления Скидок -->
+                        <promotion-product :show="isPromotion">
+                            <p> Promotion - Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, in!</p>
                         </promotion-product>
-                    </manager-tools-block>
-                    <!-- Блок Обьявления Эвентов -->
-                    <manager-tools-block @closeTools="closeModal" :title="'Announce a event'" :show="isEvent">
-                        <event-product>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui illo excepturi ex hic atque quis iusto voluptatum laboriosam aliquam. Animi repellat ullam repudiandae voluptates facere accusamus itaque exercitationem vel odit?</p>
+
+                        <!-- Блок Обьявления Эвентов -->
+                        <event-product :show="isEvent">
+                            <p> Event - Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, in!</p>
+
                         </event-product>
-                    </manager-tools-block>
+                    </manager-tools-block> 
                 </modal-comp>
+
                 #basic-info
                 <!-- СТАТИСТИКА САЙТА -->
                 <statistics-store></statistics-store>

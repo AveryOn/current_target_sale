@@ -32,6 +32,8 @@
     }
 }
 // Иконки
+// Если какие-то свойства игнорируются на каких-то иконках, то обратись
+// в папку components/UI/icons. вероятно какая-то иконка имеет уникалные св-ва
 @mixin icon-size{
     .icon{
         display: inline-block;
@@ -40,7 +42,7 @@
         height: 20px;
         top: -3px;
         left: -4px;
-        fill: orange;
+        fill: $color-orange-white;
         .btn-mobile-nav{
             width: 40px;
             height: 40px;

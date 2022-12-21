@@ -1,5 +1,5 @@
 <!-- Навигационные кнопки для мобильной версии 
-    запускаются в @/styles/media/navbar_m.scss -->
+    запускаются в @/styles/media/navbar_m.scss когда ширина дисплея менее 850px-->
 <template>
 <!-- БЛОК КНОПОК -->
 <div class="navbar-mobile">

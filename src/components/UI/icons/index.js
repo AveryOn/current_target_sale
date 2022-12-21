@@ -1,3 +1,4 @@
+// Векторные иконки
 import home from './home'
 import catalog from './catalog'
 import cart from './cart' 
