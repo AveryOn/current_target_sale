@@ -11,7 +11,7 @@ import TagComp from '@/components/UI/TagComp'
 import ButtonUp from '@/components/UI/buttonUp'
 import ButtonCloseMini from '@/components/UI/buttonCloseMini'
 import CheckboxComp from '@/components/UI/checkboxComp'
-import RangeComp from '@/components/UI/rangeComp'
+import RangeInput from '@/components/UI/rangeInput'
 import icons from './icons'
  
 export default [
@@ -27,6 +27,6 @@ export default [
     ButtonUp,
     ButtonCloseMini,
     CheckboxComp,
-    RangeComp,
+    RangeInput,
     ...icons,
 ]

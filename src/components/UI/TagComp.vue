@@ -1,18 +1,12 @@
 <!-- ТЕГ ОТНОСЯЩИЙСЯ К КОНКРЕТНОЙ КАТЕГОРИИ ТОВАРА -->
 <template>
     <div class="tag">
-        #{{ tag.name }}
+        #<slot></slot>
     </div>
 </template>
 <script>
 export default {
     name: 'tag-comp',
-    props: {
-        tag: {
-            type: Object,
-            required: true,
-        }
-    }
 }
 </script>
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
 <!-- ЛИСТ-БАР С ОТРИСОВКОЙ ТЕГОВ ПО ВЫБРАННОЙ КАТЕГОРИИ -->
 <template>
     <div class="tags-bar">
-        <tag-comp v-for="tag in tags" :tag="tag" :key="tag.id"></tag-comp>
+        <tag-comp v-for="tag in tags" :tag="tag" :key="tag">{{ tag }}</tag-comp>
     </div>
 </template>
 <script>

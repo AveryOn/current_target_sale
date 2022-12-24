@@ -3,10 +3,10 @@
     <div class="product-items-list">
         <!-- КАРТОЧКИ ТОВАРОВ -->
         <product-item  
-        v-for="item in products" 
-        :key="item.id"
+        v-for="product in products" 
+        :key="product.id"
         >
-        Product Item: <strong>{{ item.name }}</strong>
+        Product Item: <strong>{{ product.name }}</strong>
         </product-item>
     </div>
 </template>
@@ -17,6 +17,9 @@ export default {
             type: [Array],
             default: () => []
         }
+    },
+    computed: {
+
     }
 }
 </script>
