@@ -9,7 +9,13 @@
                     <!-- ГРУППА БЛОКОВ КАТЕГОРИЙ ТОВАРА
                         СОДЕРЖИТ В СЕБЕ ХАРАКТЕРНЫЕ ДЛЯ СВОЕЙ НАПРАВЛЕННОСТИ КАТЕГОРИИ ТОВАРА -->
                     <group-category-item :title="'Prepare for Winter!'">
-                        <category-item v-for="(item, index) in 6" class="category-item" :key="index">{{index+1}}</category-item>
+                        <category-item 
+                            @click="$router.push({name: 'sorted', params: {categoryName: `category?num=${index+1}`}, query: {cat: 'example'}})" 
+                            v-for="(item, index) in 6" class="category-item" 
+                            :key="index"
+                            >
+                            {{index+1}}
+                        </category-item>
                     </group-category-item>
                     <group-category-item :title="'Prepare for Summer!'">
                         <category-item v-for="(item, index) in 6" class="category-item" :key="index">{{index+1}}</category-item>
@@ -28,6 +34,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
 @include h1-gradient;
 hr{
     width: 95%;

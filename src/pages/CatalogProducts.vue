@@ -10,9 +10,9 @@
         </div>
         <!-- СЮДА ВСТАВЛЯЮТСЯ ШАБЛОН КАТЕГОРИЙ ТОВАРА И ШАБЛОН С ВЫБРАННОЙ ГРУППОЙ ТОВАРОВ -->
         <!-- ВМЕСТО КОМПОНЕНТОВ СЮДА БУДУТ МОНТИРОВАТЬСЯ ИМЕНОВАННЫЕ router-view -->
-
+        <router-view></router-view>
         <!-- <category-products></category-products> -->
-        <sorted-catalog></sorted-catalog>
+        <!-- <sorted-catalog></sorted-catalog> -->
     </div>
 </template>
 <script>

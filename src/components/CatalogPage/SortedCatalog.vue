@@ -177,14 +177,7 @@ export default {
         searchProducts(){
             return [...this.filterByMaterial].filter(product => product.name.toLowerCase().includes(this.filterData.searchProduct.toLowerCase()))
         },
-        // activeTags(){
-        //     if(this.tags.length >= 1){
-        //         return this.tags
-        //     }else if(this.tags <= 0){
-        //         return this.tags.push('Все товары')
-        //     }
-        // }
-    }
+    },
 }
 </script>
 <style lang="scss" scoped>

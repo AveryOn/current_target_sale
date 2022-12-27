@@ -7,12 +7,14 @@ import Owner from '@/pages/Owner'
 import ChatModerator from '@/components/ManagerPage/ChatModerator'
 import Product from '@/pages/Product'
 import CatalogProducts from '@/pages/CatalogProducts'
+import SortedCatalog from '@/components/CatalogPage/SortedCatalog'
+import CategoryProducts from '@/components/CatalogPage/CategoryProducts'
 import Cart from '@/pages/Cart'
 import NotFound from '@/pages/NotFound'
 const prefix = 'owner'
 const routes = [
   {
-    path: '/',
+    path: '/:username?/',
     name: 'main',
     component: Main,
   },
@@ -21,7 +23,25 @@ const routes = [
   {path: '/manager/chat', name: 'chat', component: ChatModerator},
   {path: '/owner', name: 'owner', component: Owner},  
   {path: '/product', name: 'product', component: Product},
-  {path: '/catalog', name: 'catalog', component: CatalogProducts},
+
+  {
+  path: '/catalog', 
+  name: 'catalog', 
+  component: CatalogProducts,
+  children: [
+    {
+      path: 'category',
+      name: 'category',
+      component: CategoryProducts,
+    },    
+    {
+      path: 'sorted',
+      name: 'sorted',
+      component: SortedCatalog,
+    },
+  ]
+},
+
   {path: '/cart', name: 'cart', component: Cart},
   {
     path: '/404',
