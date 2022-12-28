@@ -9,6 +9,7 @@
         @close="$store.commit('SettingsModule/closeSettingsModal')" 
         :show="$store.state.SettingsModule.isShowSettings">
         </settings-comp>
+
     </modal-comp>
     <!-- СЮДА ВСТРАИВАЮТСЯ ВСЕ КОМПОНЕНТЫ И СТРАНИЦЫ  -->
     <router-view class="Basic-view"></router-view>
@@ -33,6 +34,11 @@ export default {
         MiniChat,
         MiniChatButton,
         SettingsComp,
+    },
+    created(){
+        if(this.$store.state.isAuth){
+            this.$router.push({name: 'main', params: {username: this.$store.state.isAuth.prefix}})
+        }
     },
     mounted(){
         window.addEventListener('scroll', () => {

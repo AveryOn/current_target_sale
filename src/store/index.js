@@ -9,7 +9,7 @@ import { AuthModule } from './AuthModule'
 
 export default createStore({
   state: {
-    isAuth: {prefix: 'manager'},
+    isAuth: {prefix: 'manger'},
     isMiniChat: false,
     isButtonUp: false,
 
@@ -31,7 +31,7 @@ export default createStore({
         specifications: {color: 'серый', material: ["шерсть"],}, 
         category: {name: 'головные уборы'}, 
         group: {name: 'зима'}, 
-        tags: ['шапки']
+        tags: ['шапки', 'головные уборы']
       },
       {
         id: 3,

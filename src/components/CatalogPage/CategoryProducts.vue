@@ -6,20 +6,20 @@
     <h1>Category</h1>
     <div class="main-block-category">
         <div class="body-block-category">
-                    <!-- ГРУППА БЛОКОВ КАТЕГОРИЙ ТОВАРА
-                        СОДЕРЖИТ В СЕБЕ ХАРАКТЕРНЫЕ ДЛЯ СВОЕЙ НАПРАВЛЕННОСТИ КАТЕГОРИИ ТОВАРА -->
-                    <group-category-item :title="'Prepare for Winter!'">
-                        <category-item 
-                            @click="$router.push({name: 'sorted', params: {categoryName: `category?num=${index+1}`}, query: {cat: 'example'}})" 
-                            v-for="(item, index) in 6" class="category-item" 
-                            :key="index"
-                            >
-                            {{index+1}}
-                        </category-item>
-                    </group-category-item>
-                    <group-category-item :title="'Prepare for Summer!'">
-                        <category-item v-for="(item, index) in 6" class="category-item" :key="index">{{index+1}}</category-item>
-                    </group-category-item>
+            <!-- ГРУППА БЛОКОВ КАТЕГОРИЙ ТОВАРА
+                СОДЕРЖИТ В СЕБЕ ХАРАКТЕРНЫЕ ДЛЯ СВОЕЙ НАПРАВЛЕННОСТИ КАТЕГОРИИ ТОВАРА -->
+            <group-category-item :title="'Prepare for Winter!'">
+                <category-item 
+                    @click="$router.push({name: 'sorted', params: {categoryName: `category-${index+1}`}, query: {cat: 'example'}})" 
+                    v-for="(item, index) in 6" class="category-item" 
+                    :key="index"
+                    >
+                    {{ index+1 }}
+                </category-item>
+            </group-category-item>
+            <group-category-item :title="'Prepare for Summer!'">
+                <category-item v-for="(item, index) in 6" class="category-item" :key="index">{{index+1}}</category-item>
+            </group-category-item>
         </div>
     </div>
 </template>

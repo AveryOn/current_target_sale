@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import App from '@/App'
 import Main from '@/pages/Main'
 import Auth from '@/pages/Auth'
 import Manager from '@/pages/Manager'
@@ -18,29 +19,29 @@ const routes = [
     name: 'main',
     component: Main,
   },
-  {path: '/auth', name: 'auth', component: Auth},
-  {path: '/manager', name: 'manager', component:Manager},
-  {path: '/manager/chat', name: 'chat', component: ChatModerator},
-  {path: '/owner', name: 'owner', component: Owner},  
-  {path: '/product', name: 'product', component: Product},
-
   {
   path: '/catalog', 
   name: 'catalog', 
   component: CatalogProducts,
   children: [
     {
-      path: 'category',
+      path: '',
       name: 'category',
       component: CategoryProducts,
     },    
     {
-      path: 'sorted',
+      path: 'sorted/:categoryName',
       name: 'sorted',
       component: SortedCatalog,
     },
   ]
 },
+  {path: '/auth', name: 'auth', component: Auth},
+  {path: '/manager', name: 'manager', component:Manager},
+  {path: '/manager/chat', name: 'chat', component: ChatModerator},
+  {path: '/owner', name: 'owner', component: Owner},  
+  {path: '/product', name: 'product', component: Product},
+
 
   {path: '/cart', name: 'cart', component: Cart},
   {

@@ -5,7 +5,7 @@
         <input-comp placeholder="Search..." class="search-input"></input-comp>
         <!-- ЭТО ГРАДИЕНТНЫЙ ЗАГОЛОВОК -->
         <h1 class="header-text">Welcome to our store!</h1>
-        #это главная страница
+        <!-- #это главная страница -->
         <!-- АКЦИОННЫЙ БЛОК -->
         <div class="current-info-block">
             <h1 class="header-info">the site is currently under development</h1>

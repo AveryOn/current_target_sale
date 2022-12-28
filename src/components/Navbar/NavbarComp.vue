@@ -13,14 +13,14 @@
             <div class="btns__left">
 <!-- Кнопка На главную -->
                 <button-comp 
-                @click="$router.push({name: 'main'})" 
+                @click="$router.push({name: 'main', params: {username: $store.state.isAuth.prefix}})" 
                 title="Home"
                 class="left--btn">
                     <i-home></i-home> Home
                 </button-comp>
 <!-- Кнопка Каталог -->
                 <button-comp 
-                @click="$router.push({name: 'catalog'})" 
+                @click="$router.push({name: 'category'})" 
                 title="Catalog"
                 class="left--btn">
                     <i-catalog></i-catalog> Catalog
