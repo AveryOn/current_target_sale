@@ -12,7 +12,8 @@
 
     </modal-comp>
     <!-- СЮДА ВСТРАИВАЮТСЯ ВСЕ КОМПОНЕНТЫ И СТРАНИЦЫ  -->
-    <router-view class="Basic-view"></router-view>
+    <main-app-rendering class="Basic-view"></main-app-rendering>
+
     <mini-chat v-show="$store.state.isMiniChat"></mini-chat>
     <mini-chat-button @click="$store.commit('openMiniChat')"></mini-chat-button>
     <!-- КНОПКА СКРОЛЛА ВВЕРХ -->
@@ -22,6 +23,7 @@
     <!-- <footer-comp></footer-comp> -->
 </template>
 <script>
+import MainAppRendering from '@/pages/MainAppRendering.vue'
 import NavbarComp from '@/components/Navbar/NavbarComp.vue'
 import FooterComp from '@/components/Footer/FooterComp.vue'
 import MiniChat from '@/components/MiniChat/MiniChat.vue'
@@ -29,6 +31,7 @@ import MiniChatButton from '@/components/MiniChat/MiniChatButton.vue'
 import SettingsComp from '@/components/SettingsComp/SettingsComp.vue'
 export default {
     components: {
+        MainAppRendering,
         NavbarComp,
         FooterComp,
         MiniChat,
@@ -36,9 +39,6 @@ export default {
         SettingsComp,
     },
     created(){
-        if(this.$store.state.isAuth){
-            this.$router.push({name: 'main', params: {username: this.$store.state.isAuth.prefix}})
-        }
     },
     mounted(){
         window.addEventListener('scroll', () => {

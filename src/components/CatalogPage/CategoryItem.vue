@@ -2,7 +2,9 @@
     НАПРИМЕР КУРТКИ
 -->
 <template>
-    <div class="category-item">
+    <div 
+        class="category-item"
+        >
         <slot></slot>
     </div>
 </template>

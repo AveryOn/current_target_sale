@@ -1,81 +1,85 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '@/store'
 
-import App from '@/App'
+import MainAppRendering from '@/pages/MainAppRendering.vue'
 import Main from '@/pages/Main'
 import Auth from '@/pages/Auth'
 import Manager from '@/pages/Manager'
 import Owner from '@/pages/Owner'
-import ChatModerator from '@/components/ManagerPage/ChatModerator'
+import Chat from '@/pages/Chat'
 import Product from '@/pages/Product'
 import CatalogProducts from '@/pages/CatalogProducts'
 import SortedCatalog from '@/components/CatalogPage/SortedCatalog'
 import CategoryProducts from '@/components/CatalogPage/CategoryProducts'
 import Cart from '@/pages/Cart'
 import NotFound from '@/pages/NotFound'
-const prefix = 'owner'
 const routes = [
   {
-    path: '/:username?/',
-    name: 'main',
-    component: Main,
-  },
-  {
-  path: '/catalog', 
-  name: 'catalog', 
-  component: CatalogProducts,
-  children: [
-    {
-      path: '',
-      name: 'category',
-      component: CategoryProducts,
-    },    
-    {
-      path: 'sorted/:categoryName',
-      name: 'sorted',
-      component: SortedCatalog,
+    path: (store.state.isAuth.isAuth)? '/'+store.state.isAuth.prefix+'/'+store.state.isAuth.id : '/',
+    name: 'MainAppRendering',
+    component: MainAppRendering,
+    children: [
+      {
+        path: '',
+        name: 'main',
+        component: Main
+      },
+      {path: 'auth', name: 'auth', component: Auth},
+      {path: 'manager-tools', name: 'manager', component:Manager},
+      {path: 'manager-tool/chat', name: 'manager-chat', component: Chat},
+      {path: 'owner-tools', name: 'owner', component: Owner},  
+      {path: 'owner-tools/chat', name: 'owner-chat', component: Chat},
+      {path: 'product', name: 'product', component: Product},
+      {path: 'cart', name: 'cart', component: Cart},
+      {
+      path: 'catalog', 
+      name: 'catalog', 
+      component: CatalogProducts,
+      children: [
+        {
+          path: '',
+          name: 'category',
+          component: CategoryProducts,
+        },    
+        {
+          path: 'sorted',
+          name: 'sorted',
+          component: SortedCatalog,
+        },
+      ]
     },
-  ]
-},
-  {path: '/auth', name: 'auth', component: Auth},
-  {path: '/manager', name: 'manager', component:Manager},
-  {path: '/manager/chat', name: 'chat', component: ChatModerator},
-  {path: '/owner', name: 'owner', component: Owner},  
-  {path: '/product', name: 'product', component: Product},
-
-
-  {path: '/cart', name: 'cart', component: Cart},
+    ]
+  },
   {
     path: '/404',
     name: 'notFound',
     component: NotFound,
   }
-  // {
-    //   path: '/owner',
-    //   name: 'ownerMain',
-    //   component: Owner,
-    // },
-    //   {
-    //     path: '/owner/chat', 
-    //     name: 'owner',
-    //     component: ChatModerator,
-    //     beforeEnter: (to, from, next) => {
-    //       if (prefix == 'owner'){
-    //         next()
-    //       }else{
-    //         next({name: 'notFound'})
-    //       }
-    //     }
-    // },
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
-router.beforeEach(async (to, from) => {
-  if (prefix != 'manager' && to.name == 'chat') {
-    return { name: 'notFound' }
-  }
-})
+
+// Роутер защита от перенаправления на страницу Модератора и Владельца 
+
+// router.beforeEach(async (to) => {
+//   if (store.state.isAuth.isAuth === false && to.name == 'owner') {
+//     return { name: 'notFound' }
+//   }
+//   if (store.state.isAuth.prefix != 'owner' && to.name == 'owner'){
+//     return { name: 'notFound' }
+//   }
+// })
+
+// router.beforeEach(async (to) => {
+//   if (store.state.isAuth.isAuth === false && to.name == 'manager') {
+//     return { name: 'notFound' }
+//   }
+//   if (store.state.isAuth.prefix != 'manager' && to.name == 'manager'){
+//     return { name: 'notFound' }
+//   }
+// })
 
 export default router

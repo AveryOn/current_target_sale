@@ -4,7 +4,9 @@
         <!-- ПОИСКОВАЯ СТРОКА -->
         <input-comp placeholder="Search..." class="search"></input-comp>
         <!-- ПАНЕЛЬ С ТЕГАМИ -->
-        <tags-bar :tags="this.tags"></tags-bar>
+        <tags-bar :tags="this.tags">
+            <tag-comp v-for="tag in filteredTagsBar" :tag="tag" :key="tag">{{ tag }}</tag-comp>
+        </tags-bar>
         <div class="body-sorted-catalog">
             <!-- ПАНЕЛЬ-ФИЛЬТР ТОВАРОВ -->
             
@@ -20,7 +22,8 @@
             <!-- ОСНОВНОЙ БЛОК С ОТРИСОВКОЙ КАРТОЧЕК ТОВАРОВ -->
             <div class="items-block-sorted">
                 <div class="items-header-sorted">
-                    <h2>Products in the selected category</h2>
+                    <h2 v-if="searchProducts.length > 0">Products in the selected category</h2>
+                    <h2 v-else>По вашему запросу ничего не найдено</h2>
                 </div>
                 <hr>
                 <!-- КАРТОЧКИ ТОВАРОВ -->
@@ -50,55 +53,85 @@ export default {
         ...mapState({
             // фильтр-данные для фильтр-панели, заполняются в фильтр-панели
             // и отправляются в обьект filterData в сторе, по этому обьекту и происходит сортировка товара
+            products: 'products',
             filterData: 'filterData',
             tags: 'tags'
         }),
         // Для фильтр панели, возвращает массив всех доступных тегов для фильтр панели.
-        // Теги фильтруются по массиву всех доступных товаров 
+        // Теги фильтруются по массиву всех товаров 
         tagsAccess(){
             const allTags = []
-            // Берутся саммые последние фильтр-данные
-            this.searchProducts.forEach(product => {
-                allTags.push(product.tags)
-            })
-            // возвращается массив с тегами
-            return allTags.flat().filter((tag, i) => allTags.flat().indexOf(tag) === i)
+            // Берется исходный массив с товаром
+            for(const product of this.products){
+                for(const tagItem of product.tags){
+                    if(!allTags.includes(tagItem)){
+                        allTags.push(tagItem)
+                    }
+                }
+            }
+            return allTags
+            // this.products.forEach(product => {
+            //     allTags.push(product.tags)
+            // })
+            // // возвращается массив с тегами
+            // return allTags.flat().filter((tag, i) => allTags.flat().indexOf(tag) === i)
         },
         // Для фильтр панели, возвращает массив всех доступных цветов для фильтр панели.
-        // Теги фильтруются по массиву всех доступных товаров 
+        // Теги фильтруются по массиву всех товаров 
         colorsAccess(){
             const allColors = []
-            // Берутся саммые последние фильтр-данные
-            this.searchProducts.forEach(product => {
-                allColors.push(product.specifications.color)
-            })
-            // возвращается массив с тегами
-            return allColors.filter((tag, i) => allColors.indexOf(tag) === i)
+            // Берется исходный массив с товаром
+            for(const product of this.products){
+                for(const colorItem of product.specifications.colors){
+                    if(!allColors.includes(colorItem) && product.group.name === this.$route.query.groupName){
+                        allColors.push(colorItem)
+                    }
+                }
+            }
+            return allColors
+            // // Берется исходный массив с товаром
+            // this.products.forEach(product => {
+            //     allColors.push(product.specifications.color)
+            // })
+            // // возвращается массив с тегами
+            // return allColors.filter((tag, i) => allColors.indexOf(tag) === i)
         },
         // Для фильтр панели, возвращает массив всех доступных материалов для фильтр панели.
-        // Теги фильтруются по массиву всех доступных товаров 
+        // Теги фильтруются по массиву всех товаров 
         materialsAccess(){
             const allMaterials = []
-            // Берутся саммые последние фильтр-данные
-            this.searchProducts.forEach(product => {
-                allMaterials.push(product.specifications.material)
-            })
-            // возвращается массив с тегами
-            return allMaterials.flat().filter((tag, i) => allMaterials.flat().indexOf(tag) === i)
+            // Берется исходный массив с товаром
+            for(const product of this.products){
+                for(const materialItem of product.specifications.material){
+                    if(!allMaterials.includes(materialItem) && product.group.name === this.$route.query.groupName){
+                        allMaterials.push(materialItem)
+                    }
+                }
+            }
+            return allMaterials
+            //     // Берется исходный массив с товаром
+            //     this.products.forEach(product => {
+            //         allMaterials.push(product.specifications.material)
+            //     })
+            //     // возвращается массив с тегами
+            //     return allMaterials.flat().filter((tag, i) => allMaterials.flat().indexOf(tag) === i)
         },
+
         // Фильтрация товара относительно активных тегов(this.$store.state.tags) которые добавляются 
         // либо с фильтр-панели либо по выбору определенных категорий товара в меню каталога
         sortedProduct(){
-            if(this.tags.length >= 1){
+            if(this.filteredTagsBar.length >= 1){
                 return [...this.$store.state.products].filter(product => {
-                    for(const tag of this.tags){
-                        if(!product.tags.includes(tag)){
-                            return true
-                        }else{
-                            return false
+                    for(const tagProduct of product.tags){
+                        if(this.filteredTagsBar.includes(tagProduct)){
+                            if(this.filteredTagsBar[0] === product.group.name){
+                                return true
+                            }
                         }
                     }
                 })
+            }if(this.filteredTagsBar.includes('Весь товар')){
+                return this.$store.state.products
             }else{
                 return this.$store.state.products
             }
@@ -151,7 +184,9 @@ export default {
         filterByColor(){
             if(this.filterData.colors.length >= 1){
                 return [...this.filterByPrice].filter(product => {
-                    return this.filterData.colors.includes(product.specifications.color)
+                    for(const colorsProduct of product.specifications.colors){
+                        return this.filterData.colors.includes(colorsProduct)
+                    }
                 })
             }else{
                 return this.filterByPrice
@@ -174,9 +209,30 @@ export default {
                 return this.filterByColor
             }
         },
+        // Фильтрация по названию товара
         searchProducts(){
             return [...this.filterByMaterial].filter(product => product.name.toLowerCase().includes(this.filterData.searchProduct.toLowerCase()))
         },
+        // Фильтрация тегов в TagsBar и добавление в него имени группы товара и категории
+        filteredTagsBar(){
+            if(this.$route.query.categoryName && this.$route.query.groupName){
+                const tagsBar = [this.$route.query.groupName, this.$route.query.categoryName, ...this.tags]
+                tagsBar.filter(tag => {
+                    // Тут берется this.tagsAccess св-во которое отрисовывает все теги у всех товаров
+                    // Идет фильтрация tagsBar, если есть одинаковые теги они игнорируются чтобы не было дубликатов 
+                    !this.tagsAccess.includes(tag)
+                })
+                return tagsBar
+            }
+            if( this.tags.length <= 0 ){
+                return ['Весь товар']
+            }else{
+                return this.tags
+            }
+        }
+    },
+    mounted(){
+        // console.log(this.$route.query.categoryName);
     },
 }
 </script>

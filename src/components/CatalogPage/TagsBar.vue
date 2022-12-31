@@ -1,7 +1,7 @@
 <!-- ЛИСТ-БАР С ОТРИСОВКОЙ ТЕГОВ ПО ВЫБРАННОЙ КАТЕГОРИИ -->
 <template>
     <div class="tags-bar">
-        <tag-comp v-for="tag in tags" :tag="tag" :key="tag">{{ tag }}</tag-comp>
+        <slot></slot>
     </div>
 </template>
 <script>
@@ -11,7 +11,10 @@ export default {
             type: Array,
             default: () => []
         }
-    }
+    },
+    computed: {
+
+    },
 }
 </script>
 <style lang="scss" scoped>

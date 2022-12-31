@@ -10,11 +10,12 @@
                 СОДЕРЖИТ В СЕБЕ ХАРАКТЕРНЫЕ ДЛЯ СВОЕЙ НАПРАВЛЕННОСТИ КАТЕГОРИИ ТОВАРА -->
             <group-category-item :title="'Prepare for Winter!'">
                 <category-item 
-                    @click="$router.push({name: 'sorted', params: {categoryName: `category-${index+1}`}, query: {cat: 'example'}})" 
-                    v-for="(item, index) in 6" class="category-item" 
+                    @click="openCategoryItem(category)"
+                    v-for="(category, index) in $store.state.categories" 
+                    class="category-item"
                     :key="index"
                     >
-                    {{ index+1 }}
+                    {{ category.name }}
                 </category-item>
             </group-category-item>
             <group-category-item :title="'Prepare for Summer!'">
@@ -31,6 +32,11 @@ export default {
         CategoryItem,
         GroupCategoryItem,
     },
+    methods: {
+        openCategoryItem(category){
+            this.$router.push({name: 'sorted', query: {groupName: category.parentGroup, categoryName: category.name}})
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>

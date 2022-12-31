@@ -57,7 +57,7 @@
                 <button-comp @click="openCreateGroup" class="option">Create Group</button-comp>
                 <button-comp @click="openPromotion" class="option">Announce a promotion</button-comp>
                 <button-comp @click="openEvent" class="option">Announce a event</button-comp>
-                <button-comp @click="$router.push('/manager/chat')" class="option">Chat</button-comp>
+                <button-comp @click="$router.push({name: 'owner-chat'})" class="option">Chat</button-comp>
             </menu-manager>
         </div>
     </div>

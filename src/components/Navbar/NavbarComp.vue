@@ -2,9 +2,9 @@
 <template>
     <div @click="showLog" ref="navbar" class="navbar">
         <div class="title">
-            <div @click="scrl" class="logo">
+            <div class="logo">
             </div>
-            <h1 class="title--text" @click="$router.push('/')">Current Target Sale</h1>
+            <h1 class="title--text" @click="$router.push({name: 'main'})">Current Target Sale</h1>
         </div>
     </div>
     <!-- Навигационные кнопки для комп. версии -->
@@ -13,7 +13,7 @@
             <div class="btns__left">
 <!-- Кнопка На главную -->
                 <button-comp 
-                @click="$router.push({name: 'main', params: {username: $store.state.isAuth.prefix}})" 
+                @click="$router.push({name: 'main'})" 
                 title="Home"
                 class="left--btn">
                     <i-home></i-home> Home
@@ -78,9 +78,6 @@ export default {
       }  
     },
     methods: {
-        scrl(){
-            window.scroll(0, 100)
-        }
     },
 }
 </script>

@@ -20,6 +20,8 @@ export default {
             // создание новой группы товаров
             openCreateGroup: 'OwnerModule/openCreateGroup',
             closeCreateGroup: 'OwnerModule/closeCreateGroup',
+            // закрытие модального окна с панелью инструментов
+            closeModal: 'OwnerModule/closeModal',
         }),
     },
     // Состояние моделей для работы с панелью модератора, используется pages/Manager.vue

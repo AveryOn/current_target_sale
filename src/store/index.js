@@ -8,8 +8,8 @@ import { SettingsModule } from './SettingsModule'
 import { AuthModule } from './AuthModule'
 
 export default createStore({
-  state: {
-    isAuth: {prefix: 'manger'},
+  state: () => ({
+    isAuth: {isAuth: false, prefix: null, id: null},
     isMiniChat: false,
     isButtonUp: false,
 
@@ -19,7 +19,7 @@ export default createStore({
         id: 1,
         price: 3600, 
         name: 'куртка',
-        specifications: {color: 'черный', material: ["синтетика", "шерсть"],},
+        specifications: {colors: ['черный'], material: ["синтетика", "шерсть"],},
         category: {name: 'куртки'}, 
         group: {name: 'зима'},
         tags: ['куртки', 'верхняя одежда']
@@ -28,7 +28,7 @@ export default createStore({
         id: 2,
         price: 550, 
         name: 'шапка',
-        specifications: {color: 'серый', material: ["шерсть"],}, 
+        specifications: {colors: ['серый'], material: ["шерсть"],}, 
         category: {name: 'головные уборы'}, 
         group: {name: 'зима'}, 
         tags: ['шапки', 'головные уборы']
@@ -37,16 +37,16 @@ export default createStore({
         id: 3,
         price: 900, 
         name: 'футболка',
-        specifications: {color: 'белый', material: ["полиэстер"],}, 
+        specifications: {colors: ['белый'], material: ["полиэстер"],}, 
         category: {name: 'повседневное'}, 
-        group: {name: 'лето'}, 
+        group: {name: 'зима'}, 
         tags: ['футболки', 'верхняя одежда', 'повседневное']
       },
       {
         id: 4,
         price: 350, 
         name: 'кепка',
-        specifications: {color: 'красный', material: ["полиэстер", "ткань"]}, 
+        specifications: {colors: ['красный'], material: ["полиэстер", "ткань"]}, 
         category: {name: 'головные уборы'}, 
         group: {name: 'лето'}, 
         tags: ['кепки', 'верхняя одежда', 'головные уборы']
@@ -55,7 +55,7 @@ export default createStore({
         id: 5,
         price: 2300, 
         name: 'сапоги зимние',
-        specifications: {color: 'черный', material: ["каучук", "кожа"],}, 
+        specifications: {colors: ['черный'], material: ["каучук", "кожа"],}, 
         category: {name: 'обувь'}, 
         group: {name: 'зима'}, 
         tags: ['обувь', 'путешествия']
@@ -68,15 +68,14 @@ export default createStore({
     ] ,
     // Категории товара
     categories: [
-        {name: 'обувь'},
-        {name: 'головные уборы'},
-        {name: 'повседневное'},
-        {name: 'куртки'}, 
+        {name: 'обувь', parentGroup: 'зима'},
+        {name: 'головные уборы', parentGroup: 'зима'},
+        {name: 'повседневное', parentGroup: 'зима'},
+        {name: 'куртки', parentGroup: 'зима'}, 
     ],
     // Сюда записываются теги товаров которые отфильтрованы на данный момент
     // Если не была применена никакая фильтрация то записывается тег "Все товары" 
     tags: [],
-    
     // Обьект который передается вычисляемому свойству 
     // Используется для фильтрации товара в комп. components.CatalogPage.SortedCatalog
     filterData: {
@@ -86,7 +85,7 @@ export default createStore({
         colors: [],
         materials: [],
     },
-  },
+  }),
 
   mutations: {
     openMiniChat(state){
@@ -101,6 +100,9 @@ export default createStore({
     hideButtonUp(state){
       state.isButtonUp = false
     },
+    tagsEdit(state, tagsEdit){
+      state.tags = tagsEdit
+    }
   },
 
   getters: {
