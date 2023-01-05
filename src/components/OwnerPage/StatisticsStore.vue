@@ -17,5 +17,6 @@ export default {
     min-width: 70%;
     min-height: 50vh;
     background-color: white;
+    box-shadow: $shadow;
 }  
 </style>

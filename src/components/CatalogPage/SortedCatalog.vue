@@ -55,29 +55,44 @@ export default {
             // и отправляются в обьект filterData в сторе, по этому обьекту и происходит сортировка товара
             products: 'products',
             filterData: 'filterData',
-            tags: 'tags'
+            tags: 'tags',
+            isTagAll: 'isTagAll',
         }),
         // Для фильтр панели, возвращает массив всех доступных тегов для фильтр панели.
         // Теги фильтруются по массиву всех товаров 
         tagsAccess(){
             const allTags = []
-            // Берется исходный массив с товаром
-            for(const product of this.products){
-                for(const tagItem of product.tags){
-                    if(!allTags.includes(tagItem)){
-                        allTags.push(tagItem)
+            if(this.$route.query.groupName){
+                for(const product of this.products){
+                    for(const tagItem of product.tags){
+                        if(product.group.name === this.$route.query.groupName){
+                            if(!allTags.includes(tagItem)){
+                                allTags.push(tagItem)
+                            }
+                        }
                     }
                 }
+                return allTags
+            }else if(this.filteredTagsBar[0] === this.isTagAll){
+                for(const product of this.products){
+                    for(const tagItem of product.tags){
+                        if(!allTags.includes(tagItem)){
+                            allTags.push(tagItem)
+                        }
+                    }
+                }
+                return allTags
             }
-            return allTags
+
             // this.products.forEach(product => {
             //     allTags.push(product.tags)
             // })
             // // возвращается массив с тегами
             // return allTags.flat().filter((tag, i) => allTags.flat().indexOf(tag) === i)
         },
+
         // Для фильтр панели, возвращает массив всех доступных цветов для фильтр панели.
-        // Теги фильтруются по массиву всех товаров 
+        // Теги фильтруются по массиву всех товаров
         colorsAccess(){
             const allColors = []
             // Берется исходный массив с товаром
@@ -124,14 +139,20 @@ export default {
                 return [...this.$store.state.products].filter(product => {
                     for(const tagProduct of product.tags){
                         if(this.filteredTagsBar.includes(tagProduct)){
-                            if(this.filteredTagsBar[0] === product.group.name){
-                                return true
-                            }
+                            return true
+                        }
+                        if(product.group.name === this.filteredTagsBar[0] && !this.filteredTagsBar[1]){
+                            return true
+                        }
+                        if(product.category.name === this.filteredTagsBar[1]){
+                            return true
+                        }
+                        // Берется значение this.isTagAll из this.store.state
+                        if(this.filteredTagsBar[0] === this.isTagAll){
+                            return this.$store.state.products
                         }
                     }
                 })
-            }if(this.filteredTagsBar.includes('Весь товар')){
-                return this.$store.state.products
             }else{
                 return this.$store.state.products
             }
@@ -163,6 +184,8 @@ export default {
                 })
                 // Фильтрует выходной массив товаров исключая повторяющиеся 
                 return [...productsFiltered].filter((product, i) => productsFiltered.indexOf(product) === i)
+
+            // Возвращает массив товаров с прошлого вычесления если открыт тег 'Весь товар' в TagsBar
             }else{
                 // Возвращает массив товаров с прошлого вычесления если фильтрация по тегам не выполнится 
                 return this.sortedProduct
@@ -215,8 +238,11 @@ export default {
         },
         // Фильтрация тегов в TagsBar и добавление в него имени группы товара и категории
         filteredTagsBar(){
-            if(this.$route.query.categoryName && this.$route.query.groupName){
-                const tagsBar = [this.$route.query.groupName, this.$route.query.categoryName, ...this.tags]
+            if(this.$route.query.groupName){
+                const tagsBar = [this.$route.query.groupName, ...this.tags]
+                if(this.$route.query.categoryName){
+                    tagsBar.splice(1, 0, this.$route.query.categoryName)
+                }
                 tagsBar.filter(tag => {
                     // Тут берется this.tagsAccess св-во которое отрисовывает все теги у всех товаров
                     // Идет фильтрация tagsBar, если есть одинаковые теги они игнорируются чтобы не было дубликатов 
@@ -224,15 +250,15 @@ export default {
                 })
                 return tagsBar
             }
-            if( this.tags.length <= 0 ){
-                return ['Весь товар']
+            if( !this.$route.query.categoryName && !this.$route.query.groupName ){
+                return [this.isTagAll]
             }else{
                 return this.tags
             }
         }
     },
     mounted(){
-        // console.log(this.$route.query.categoryName);
+        console.log(this.$route.query.groupName);
     },
 }
 </script>

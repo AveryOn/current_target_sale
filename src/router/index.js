@@ -64,22 +64,22 @@ const router = createRouter({
 
 // Роутер защита от перенаправления на страницу Модератора и Владельца 
 
-// router.beforeEach(async (to) => {
-//   if (store.state.isAuth.isAuth === false && to.name == 'owner') {
-//     return { name: 'notFound' }
-//   }
-//   if (store.state.isAuth.prefix != 'owner' && to.name == 'owner'){
-//     return { name: 'notFound' }
-//   }
-// })
+router.beforeEach(async (to) => {
+  if (store.state.isAuth.isAuth === false && to.name == 'owner') {
+    return { name: 'notFound' }
+  }
+  if (store.state.isAuth.prefix != 'owner' && to.name == 'owner'){
+    return { name: 'notFound' }
+  }
+})
 
-// router.beforeEach(async (to) => {
-//   if (store.state.isAuth.isAuth === false && to.name == 'manager') {
-//     return { name: 'notFound' }
-//   }
-//   if (store.state.isAuth.prefix != 'manager' && to.name == 'manager'){
-//     return { name: 'notFound' }
-//   }
-// })
+router.beforeEach(async (to) => {
+  if (store.state.isAuth.isAuth === false && to.name == 'manager') {
+    return { name: 'notFound' }
+  }
+  if (store.state.isAuth.prefix != 'manager' && to.name == 'manager'){
+    return { name: 'notFound' }
+  }
+})
 
 export default router

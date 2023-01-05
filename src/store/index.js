@@ -12,6 +12,7 @@ export default createStore({
     isAuth: {isAuth: false, prefix: null, id: null},
     isMiniChat: false,
     isButtonUp: false,
+    isTagAll: 'Весь товар',
 
     // Массив с товарами
     products: [
@@ -21,7 +22,7 @@ export default createStore({
         name: 'куртка',
         specifications: {colors: ['черный'], material: ["синтетика", "шерсть"],},
         category: {name: 'куртки'}, 
-        group: {name: 'зима'},
+        group: {name: 'лето'},
         tags: ['куртки', 'верхняя одежда']
       },
       {
@@ -49,7 +50,7 @@ export default createStore({
         specifications: {colors: ['красный'], material: ["полиэстер", "ткань"]}, 
         category: {name: 'головные уборы'}, 
         group: {name: 'лето'}, 
-        tags: ['кепки', 'верхняя одежда', 'головные уборы']
+        tags: ['кепки', 'верхняя одежда', 'головные уборы'],
       },
       {
         id: 5,
