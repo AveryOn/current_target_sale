@@ -40,7 +40,7 @@ export default createStore({
         name: 'футболка',
         specifications: {colors: ['белый'], material: ["полиэстер"],}, 
         category: {name: 'повседневное'}, 
-        group: {name: 'зима'}, 
+        group: {name: 'лето'}, 
         tags: ['футболки', 'верхняя одежда', 'повседневное']
       },
       {

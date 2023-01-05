@@ -5,7 +5,7 @@
         <input-comp placeholder="Search..." class="search"></input-comp>
         <!-- ПАНЕЛЬ С ТЕГАМИ -->
         <tags-bar :tags="this.tags">
-            <tag-comp v-for="tag in filteredTagsBar" :tag="tag" :key="tag">{{ tag }}</tag-comp>
+            <tag-comp @closeTag="closeTag" :tags="filteredTagsBar"></tag-comp>
         </tags-bar>
         <div class="body-sorted-catalog">
             <!-- ПАНЕЛЬ-ФИЛЬТР ТОВАРОВ -->
@@ -46,6 +46,12 @@ export default {
     data(){
         return{
 
+        }
+    },
+    methods: {
+        closeTag(tagBar){
+            this.filteredTagsBar.filter(tag => tag == tagBar)
+            console.log(tagBar);
         }
     },
     // В ЭТОМ COMPUTED БЛОКЕ ПОСТРОЕНА ФИЛЬТР-ЛОГИКА 
