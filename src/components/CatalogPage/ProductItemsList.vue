@@ -6,7 +6,7 @@
         v-for="product in products" 
         :key="product.id"
         >
-        Product Item: <strong>{{ product.name }}</strong>
+        Product Item: <strong>{{ product.name }}</strong><br><br> price: <strong>{{ product.price }}</strong> 
         </product-item>
     </div>
 </template>

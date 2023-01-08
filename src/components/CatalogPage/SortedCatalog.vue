@@ -5,7 +5,7 @@
         <input-comp placeholder="Search..." class="search"></input-comp>
         <!-- ПАНЕЛЬ С ТЕГАМИ -->
         <tags-bar :tags="this.tags">
-            <tag-comp @closeTag="closeTag" :tags="filteredTagsBar"></tag-comp>
+            <tag-comp v-for="tag in filteredTagsBar">#{{ tag }}</tag-comp>
         </tags-bar>
         <div class="body-sorted-catalog">
             <!-- ПАНЕЛЬ-ФИЛЬТР ТОВАРОВ -->
@@ -17,6 +17,7 @@
                 :tagsAccess="tagsAccess"
                 :colorsAccess="colorsAccess"
                 :materialsAccess="materialsAccess"
+                :filteredTagsBar="filteredTagsBar"
             >
             </filter-panel>
             <!-- ОСНОВНОЙ БЛОК С ОТРИСОВКОЙ КАРТОЧЕК ТОВАРОВ -->
@@ -45,14 +46,10 @@ export default {
     },
     data(){
         return{
-
+            // testTagsBar: ['зима', 'головные уборы', 'шапки']
         }
     },
     methods: {
-        closeTag(tagBar){
-            this.filteredTagsBar.filter(tag => tag == tagBar)
-            console.log(tagBar);
-        }
     },
     // В ЭТОМ COMPUTED БЛОКЕ ПОСТРОЕНА ФИЛЬТР-ЛОГИКА 
     computed: {
@@ -101,15 +98,28 @@ export default {
         // Теги фильтруются по массиву всех товаров
         colorsAccess(){
             const allColors = []
-            // Берется исходный массив с товаром
-            for(const product of this.products){
-                for(const colorItem of product.specifications.colors){
-                    if(!allColors.includes(colorItem) && product.group.name === this.$route.query.groupName){
-                        allColors.push(colorItem)
+            if(this.$route.query.groupName){
+                // Берется исходный массив с товаром
+                for(const product of this.products){
+                    for(const colorItem of product.specifications.colors){
+                        if(product.group.name === this.$route.query.groupName){
+                            if(!allColors.includes(colorItem)){
+                                allColors.push(colorItem)
+                            }
+                        }
                     }
                 }
+                return allColors
+            }else if(this.filteredTagsBar[0] === this.isTagAll){
+                for(const product of this.products){
+                    for(const colorItem of product.specifications.colors){
+                        if(!allColors.includes(colorItem)){
+                            allColors.push(colorItem)
+                        }
+                    }
+                }
+                return allColors
             }
-            return allColors
             // // Берется исходный массив с товаром
             // this.products.forEach(product => {
             //     allColors.push(product.specifications.color)
@@ -121,15 +131,28 @@ export default {
         // Теги фильтруются по массиву всех товаров 
         materialsAccess(){
             const allMaterials = []
-            // Берется исходный массив с товаром
-            for(const product of this.products){
-                for(const materialItem of product.specifications.material){
-                    if(!allMaterials.includes(materialItem) && product.group.name === this.$route.query.groupName){
-                        allMaterials.push(materialItem)
+            if(this.$route.query.groupName){
+                // Берется исходный массив с товаром
+                for(const product of this.products){
+                    for(const materialItem of product.specifications.material){
+                        if(product.group.name === this.$route.query.groupName){
+                            if(!allMaterials.includes(materialItem)){
+                                allMaterials.push(materialItem)
+                            }
+                        }
                     }
                 }
+                return allMaterials
+            }else if(this.filteredTagsBar[0] === this.isTagAll){
+                for(const product of this.products){
+                    for(const materialItem of product.specifications.material){
+                        if(!allMaterials.includes(materialItem)){
+                            allMaterials.push(materialItem)
+                        }
+                    }
+                }
+                return allMaterials
             }
-            return allMaterials
             //     // Берется исходный массив с товаром
             //     this.products.forEach(product => {
             //         allMaterials.push(product.specifications.material)
@@ -137,7 +160,6 @@ export default {
             //     // возвращается массив с тегами
             //     return allMaterials.flat().filter((tag, i) => allMaterials.flat().indexOf(tag) === i)
         },
-
         // Фильтрация товара относительно активных тегов(this.$store.state.tags) которые добавляются 
         // либо с фильтр-панели либо по выбору определенных категорий товара в меню каталога
         sortedProduct(){
@@ -200,11 +222,15 @@ export default {
         // 2) Фильтрация по цене
         filterByPrice(){
             if(this.filterData.price.to != 0 && this.filterData.price.from != 0){
-                return [...this.filterByTags].filter(product => {
-                    if(product.price <= this.filterData.price.to && product.price >= this.filterData.price.from){
-                        return true
-                    }
-                })
+                if(this.filterData.price.from > 0 && this.filterData.price.to <= 0){
+                    return []
+                }else{
+                    return [...this.filterByTags].filter(product => {
+                        if( product.price <= this.filterData.price.to && product.price >= this.filterData.price.from ){
+                            return true
+                        }
+                    })
+                }
             }else{
                 return this.filterByTags
             }
@@ -244,10 +270,18 @@ export default {
         },
         // Фильтрация тегов в TagsBar и добавление в него имени группы товара и категории
         filteredTagsBar(){
+            const tagsBar = [...this.tags]
             if(this.$route.query.groupName){
-                const tagsBar = [this.$route.query.groupName, ...this.tags]
+                if(!tagsBar.includes(this.$route.query.groupName)){
+                    console.log('unshift(groupName)')
+                    tagsBar.unshift(this.$route.query.groupName)
+                }
+                // const tagsBar = [this.$route.query.groupName, ...this.tags]
                 if(this.$route.query.categoryName){
-                    tagsBar.splice(1, 0, this.$route.query.categoryName)
+                    if(!tagsBar.includes(this.$route.query.categoryName)){
+                        console.log('splice(categoryName)')
+                        tagsBar.splice(1, 0, this.$route.query.categoryName)
+                    }
                 }
                 tagsBar.filter(tag => {
                     // Тут берется this.tagsAccess св-во которое отрисовывает все теги у всех товаров
@@ -256,15 +290,23 @@ export default {
                 })
                 return tagsBar
             }
-            if( !this.$route.query.categoryName && !this.$route.query.groupName ){
-                return [this.isTagAll]
+            else if( !this.$route.query.categoryName && !this.$route.query.groupName ){
+                if(this.$route.query.tag){
+                    return [...this.$route.query.tag]
+                }
+                else{
+                    console.log('нет query параметоров')
+                    return [this.isTagAll]
+                }
             }else{
+                console.log('никакая проверка не сработала, return this.tags')
                 return this.tags
             }
-        }
+        },
     },
     mounted(){
         console.log(this.$route.query.groupName);
+        console.log(this.$route.query.tag)
     },
 }
 </script>

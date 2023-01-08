@@ -10,9 +10,9 @@
                 @click="appendTags(tagFilter)"
                 class="filer-tag"
                 :class="{'tagFilter': tags.includes(tagFilter)}"
-                v-for="tagFilter in tagsAccess"
+                v-for="(tagFilter, i) in tagsAccess"
             >
-                {{ tagFilter }}
+               {{ i+1 }} : {{ tagFilter }}
             </div>
         </div>
 
@@ -77,6 +77,10 @@ export default {
             type: [Array],
             default: () => []
         },
+        filteredTagsBar: {
+            type: [Array],
+            defaultL: () => []
+        }
     },
     data(){
         return{
@@ -148,6 +152,7 @@ export default {
         // Метод динамически обновляет значение поля this.fromPrice
         fromPriceUpdate(event){
             this.fromPrice = event.target.value
+            this.price.from = 
             console.log(this.fromPrice);
         },
         // Метод динамически обновляет значение поля this.toPrice
@@ -157,6 +162,46 @@ export default {
         },
         // Метод добавляет все данные с фильтр-панели в обьект filterData ($store.state.filterData)
         addFilterData(){
+            console.log('Отфильтровать')
+            console.log(this.$route.query.groupName)
+            console.log('filteredTagsBar', this.filteredTagsBar)
+            for(const group of this.$store.state.groups){
+                if(group.name === this.filteredTagsBar[0]){
+                    this.$router.push({name: 'sorted', query: {
+                        groupName: this.$route.query.groupName,
+                        categoryName: (this.$route.query.categoryName) ? this.$route.query.categoryName : undefined,
+                        tag: (this.tags.length > 0) ? this.tags : undefined,
+                        priceFrom: (this.fromPrice > 0) ? this.fromPrice : undefined,
+                    }
+                })
+                }
+                else if(!this.$route.query.tag){
+                    this.$router.push({name: 'sorted', query: {
+                        tag: (this.tags.length > 0) ? this.tags : undefined,
+                    }})
+                    if(!this.$route.query.priceFrom){
+                        this.$router.push({name: 'sorted', query: {
+                            priceFrom: (this.fromPrice > 0) ? this.fromPrice : undefined,
+                            priceTo: (this.toPrice > 0) ? this.toPrice : undefined,
+                        }})
+                    }
+                }
+                else if(!this.$route.query.priceFrom){
+                    this.$router.push({name: 'sorted', query: {
+                        priceFrom: (this.fromPrice > 0) ? this.fromPrice : undefined,
+                    }})
+                }
+            }
+            // if(this.$store.state.groups.includes(this.filteredTagsBar[0])){
+
+            // }
+            // else{
+            //     this.$router.push({name: 'sorted', query: {
+            //         tag: (this.tags.length > 0) ? this.tags : undefined,
+            //         priceFrom: (this.fromPrice > 0) ? this.fromPrice : undefined,
+            //     }})
+            // }
+            console.log(this.$store.state.tags)
             this.filterData.tags = this.tags
             this.filterData.price.from = this.fromPrice
             this.filterData.price.to = this.toPrice
@@ -165,13 +210,16 @@ export default {
             this.tags = []
             this.colors = []
             this.materials = []
-            this.fromPrice = 0
-            this.toPrice = 0
-            fromInput.value = 0
-            toInput.value = 0
+            // this.fromPrice = 0
+            // this.toPrice = 0
+            // fromInput.value = 0
+            // toInput.value = 0
         },
         // Отчищает фильтр-данные. Приводит все поля this.filterData в исходное положение 
         clearFilterData(){
+            this.$router.push({name: 'sorted', query: {
+                tag: undefined,
+            }}) 
             this.filterData.searchProduct = ''
             this.filterData.tags = []
             this.filterData.price = {from: 0, to: 0}

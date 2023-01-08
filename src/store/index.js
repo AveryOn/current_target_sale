@@ -7,6 +7,7 @@ import { CartModule } from './CartModule'
 import { SettingsModule } from './SettingsModule'
 import { AuthModule } from './AuthModule'
 
+
 export default createStore({
   state: () => ({
     isAuth: {isAuth: false, prefix: null, id: null},
