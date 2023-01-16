@@ -16,6 +16,7 @@ import NotFound from '@/pages/NotFound'
 const routes = [
   {
     path: (store.state.isAuth.isAuth)? '/'+store.state.isAuth.prefix+'/'+store.state.isAuth.id : '/',
+    // Контейнер для отображения основных компонентов
     name: 'MainAppRendering',
     component: MainAppRendering,
     children: [
@@ -29,7 +30,11 @@ const routes = [
       {path: 'manager-tool/chat', name: 'manager-chat', component: Chat},
       {path: 'owner-tools', name: 'owner', component: Owner},  
       {path: 'owner-tools/chat', name: 'owner-chat', component: Chat},
-      {path: 'product', name: 'product', component: Product},
+      {
+        path: 'product/:productId?', 
+        name: 'product',
+        component: Product
+      },
       {path: 'cart', name: 'cart', component: Cart},
       {
       path: 'catalog', 

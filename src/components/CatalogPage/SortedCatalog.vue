@@ -4,12 +4,18 @@
         <!-- ПОИСКОВАЯ СТРОКА -->
         <input-comp placeholder="Search..." class="search"></input-comp>
         <!-- ПАНЕЛЬ С ТЕГАМИ -->
-        <tags-bar :tags="this.tags">
-            <tag-comp v-for="tag in filteredTagsBar">#{{ tag }}</tag-comp>
+        <tags-bar>
+            <!-- Основные служебные теги (categoryName, groupName) -->
+            <div class="basic-tags">
+                <tag-comp v-for="tag in filteredTagsBar">#{{ tag }}</tag-comp>
+            </div>
+            <!-- Второстепенные теги, добавляются через фильтр панель -->
+            <div class="last-tags" v-show="additFilteredTagsBar?.length > 0">
+                <tag-comp v-for="tag in additFilteredTagsBar">#{{ tag }}</tag-comp>
+            </div>
         </tags-bar>
         <div class="body-sorted-catalog">
             <!-- ПАНЕЛЬ-ФИЛЬТР ТОВАРОВ -->
-            
             <!-- :tagsAccess="$store.getters.tagsAccess"
             :colorsAccess="$store.getters.colorsAccess"
             :materialsAccess="$store.getters.materialsAccess" -->
@@ -23,12 +29,12 @@
             <!-- ОСНОВНОЙ БЛОК С ОТРИСОВКОЙ КАРТОЧЕК ТОВАРОВ -->
             <div class="items-block-sorted">
                 <div class="items-header-sorted">
-                    <h2 v-if="searchProducts.length > 0">Products in the selected category</h2>
+                    <h2 v-if="searchProducts?.length > 0">Products in the selected category</h2>
                     <h2 v-else>По вашему запросу ничего не найдено</h2>
                 </div>
                 <hr>
                 <!-- КАРТОЧКИ ТОВАРОВ -->
-                <product-items-list :products="searchProducts"></product-items-list>
+                <product-items-list :products="this.searchProducts"></product-items-list>
             </div>
         </div>
     </div>
@@ -46,20 +52,23 @@ export default {
     },
     data(){
         return{
-            // testTagsBar: ['зима', 'головные уборы', 'шапки']
+            test: ['one', 'two'],
+            test1: ['one', 'two', 'three','one', 'two', 'three','one', 'two', 'three'],
         }
     },
     methods: {
+
     },
     // В ЭТОМ COMPUTED БЛОКЕ ПОСТРОЕНА ФИЛЬТР-ЛОГИКА 
     computed: {
         ...mapState({
             // фильтр-данные для фильтр-панели, заполняются в фильтр-панели
             // и отправляются в обьект filterData в сторе, по этому обьекту и происходит сортировка товара
-            products: 'products',
-            filterData: 'filterData',
-            tags: 'tags',
-            isTagAll: 'isTagAll',
+            products: state => state.products,
+            filterData: state => state.filterData,
+            tags: state => state.tags,
+            isTagAll: state => state.isTagAll,
+            tagsAddit: state => state.tagsAddit,
         }),
         // Для фильтр панели, возвращает массив всех доступных тегов для фильтр панели.
         // Теги фильтруются по массиву всех товаров 
@@ -172,8 +181,13 @@ export default {
                         if(product.group.name === this.filteredTagsBar[0] && !this.filteredTagsBar[1]){
                             return true
                         }
+                        // 
                         if(product.category.name === this.filteredTagsBar[1]){
-                            return true
+                            if(product.group.name === this.filteredTagsBar[0]){
+                                return true
+                            }else{
+                                return false
+                            }
                         }
                         // Берется значение this.isTagAll из this.store.state
                         if(this.filteredTagsBar[0] === this.isTagAll){
@@ -235,7 +249,7 @@ export default {
                 return this.filterByTags
             }
         },
-        // 3) Фильтрация товара по цвету 
+        // 3) Фильтрация товара по цвету
         filterByColor(){
             if(this.filterData.colors.length >= 1){
                 return [...this.filterByPrice].filter(product => {
@@ -268,46 +282,71 @@ export default {
         searchProducts(){
             return [...this.filterByMaterial].filter(product => product.name.toLowerCase().includes(this.filterData.searchProduct.toLowerCase()))
         },
+
         // Фильтрация тегов в TagsBar и добавление в него имени группы товара и категории
         filteredTagsBar(){
-            const tagsBar = [...this.tags]
             if(this.$route.query.groupName){
-                if(!tagsBar.includes(this.$route.query.groupName)){
-                    console.log('unshift(groupName)')
-                    tagsBar.unshift(this.$route.query.groupName)
-                }
-                // const tagsBar = [this.$route.query.groupName, ...this.tags]
                 if(this.$route.query.categoryName){
-                    if(!tagsBar.includes(this.$route.query.categoryName)){
-                        console.log('splice(categoryName)')
-                        tagsBar.splice(1, 0, this.$route.query.categoryName)
-                    }
-                }
-                tagsBar.filter(tag => {
-                    // Тут берется this.tagsAccess св-во которое отрисовывает все теги у всех товаров
-                    // Идет фильтрация tagsBar, если есть одинаковые теги они игнорируются чтобы не было дубликатов 
-                    !this.tagsAccess.includes(tag)
-                })
-                return tagsBar
-            }
-            else if( !this.$route.query.categoryName && !this.$route.query.groupName ){
-                if(this.$route.query.tag){
-                    return [...this.$route.query.tag]
-                }
-                else{
-                    console.log('нет query параметоров')
-                    return [this.isTagAll]
+                    return [this.$route.query.groupName, this.$route.query.categoryName]
+                }else{
+                    return [this.$route.query.groupName]
                 }
             }else{
-                console.log('никакая проверка не сработала, return this.tags')
-                return this.tags
+                return [this.isTagAll]
             }
         },
+
+        additFilteredTagsBar(){
+            if(this.$route.query.tag){
+                return this.$route.query.tag
+            }
+        }
+
+        // filteredTagsBar(){
+        //     const tagsBar = [...this.tags]
+        //     if(this.$route.query.groupName){
+        //         if(!tagsBar.includes(this.$route.query.groupName)){
+        //             tagsBar.unshift(this.$route.query.groupName)
+        //         }
+        //         // const tagsBar = [this.$route.query.groupName, ...this.tags]
+        //         if(this.$route.query.categoryName){
+        //             if(!tagsBar.includes(this.$route.query.categoryName)){
+        //                 tagsBar.splice(1, 0, this.$route.query.categoryName)
+        //             }
+        //         }
+        //         tagsBar.filter(tag => {
+        //             // Тут берется this.tagsAccess св-во которое отрисовывает все теги у всех товаров
+        //             // Идет фильтрация tagsBar, если есть одинаковые теги они игнорируются чтобы не было дубликатов 
+        //             !this.tagsAccess.includes(tag)
+        //         })
+        //         return tagsBar
+        //     }
+        //     else if( !this.$route.query.categoryName && !this.$route.query.groupName ){
+        //         if(this.$route.query.tag){
+        //             return [...this.$route.query.tag]
+        //         }
+        //         else{
+        //             return [this.isTagAll]
+        //         }
+        //     }else{
+        //         return this.tags
+        //     }
+        // },
     },
     mounted(){
-        console.log(this.$route.query.groupName);
-        console.log(this.$route.query.tag)
     },
+    created(){
+        this.$watch(
+            () => this.$route.query.tag,
+            () => {
+                if(this.$route.query.tag){
+                    console.log(this.additFilteredTagsBar);
+                    // this.tagsAddit = [...this.$route.query.tag]
+                }
+            },
+            { immediate: true }
+        )
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -324,6 +363,17 @@ export default {
         &:focus{
             width: 50%;
         }
+    }
+    .basic-tags{
+        display: flex;
+        border: $border;
+        border-radius: $radius;
+    }
+    .last-tags{
+        display: flex;
+        border: $border;
+        border-radius: $radius;
+        margin-left: 10px;
     }
     .body-sorted-catalog{
         display: flex;

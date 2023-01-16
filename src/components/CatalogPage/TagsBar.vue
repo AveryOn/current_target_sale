@@ -6,12 +6,7 @@
 </template>
 <script>
 export default {
-    props: {
-        tags: {
-            type: Array,
-            default: () => []
-        }
-    },
+
     computed: {
 
     },

@@ -82,6 +82,7 @@ export default {
             defaultL: () => []
         }
     },
+
     data(){
         return{
             // промежуточные массивы. Отправляются в обьект filterData ($store.state.filterData)
@@ -101,11 +102,14 @@ export default {
             toPrice: 0,
         }
     },
+
     computed: {
         ...mapState({
-            filterData: state => state.filterData
+            filterData: state => state.filterData,
+            tagsAddit: state => state.tagsAddit,
         }),
     },
+
     methods: {
         // Метод добавляет теги с фильтр панели в промежуточные массивы
         // которые после по нажатию кнопки будут добавлены в filterData
@@ -152,7 +156,6 @@ export default {
         // Метод динамически обновляет значение поля this.fromPrice
         fromPriceUpdate(event){
             this.fromPrice = event.target.value
-            this.price.from = 
             console.log(this.fromPrice);
         },
         // Метод динамически обновляет значение поля this.toPrice
@@ -162,48 +165,134 @@ export default {
         },
         // Метод добавляет все данные с фильтр-панели в обьект filterData ($store.state.filterData)
         addFilterData(){
-            console.log('Отфильтровать')
-            console.log(this.$route.query.groupName)
-            console.log('filteredTagsBar', this.filteredTagsBar)
-            for(const group of this.$store.state.groups){
-                if(group.name === this.filteredTagsBar[0]){
+            // console.log('Отфильтровать')
+            // console.log(this.$route.query.groupName)
+            // console.log('filteredTagsBar', this.filteredTagsBar)
+            // console.log(this.$store.state.tags)    
+
+            // Добавление Параметра тега в фильтр-дату
+            this.filterData.tags = this.tags
+            console.log(this.tagsAddit);
+
+            // Добавление query-параметра tags в url
+            if(this.tags.length > 0){
+                // Если есть this.$route.query.groupName
+                if(this.$route.query.groupName){
+                    this.$router.push({query: {
+                        groupName: this.$route.query.groupName,
+                        tag: this.tags,
+                    }})
+                }
+                // Если есть this.$route.query.groupName и this.$route.query.categoryName
+                if(this.$route.query.groupName && this.$route.query.categoryName){
                     this.$router.push({name: 'sorted', query: {
                         groupName: this.$route.query.groupName,
-                        categoryName: (this.$route.query.categoryName) ? this.$route.query.categoryName : undefined,
-                        tag: (this.tags.length > 0) ? this.tags : undefined,
-                        priceFrom: (this.fromPrice > 0) ? this.fromPrice : undefined,
-                    }
-                })
-                }
-                else if(!this.$route.query.tag){
-                    this.$router.push({name: 'sorted', query: {
-                        tag: (this.tags.length > 0) ? this.tags : undefined,
+                        categoryName: this.$route.query.categoryName,
+                        tag: this.tags,
                     }})
-                    if(!this.$route.query.priceFrom){
-                        this.$router.push({name: 'sorted', query: {
-                            priceFrom: (this.fromPrice > 0) ? this.fromPrice : undefined,
-                            priceTo: (this.toPrice > 0) ? this.toPrice : undefined,
-                        }})
-                    }
                 }
-                else if(!this.$route.query.priceFrom){
+                // Если открыт весь товар, нет активных тегов
+                if(!this.$route.query.groupName && !this.$route.query.categoryName){
                     this.$router.push({name: 'sorted', query: {
-                        priceFrom: (this.fromPrice > 0) ? this.fromPrice : undefined,
+                        tag: this.tags,
+                    }})
+                }
+                
+                // Еслм есть query-параметр fromPrice
+                if(this.$route.query.fromPrice){
+                    this.$router.push({query: {
+                        tag: this.$route.query.tag,
+                        fromPrice: this.filterData.price.from,
                     }})
                 }
             }
-            // if(this.$store.state.groups.includes(this.filteredTagsBar[0])){
 
-            // }
-            // else{
-            //     this.$router.push({name: 'sorted', query: {
-            //         tag: (this.tags.length > 0) ? this.tags : undefined,
-            //         priceFrom: (this.fromPrice > 0) ? this.fromPrice : undefined,
-            //     }})
-            // }
-            console.log(this.$store.state.tags)
-            this.filterData.tags = this.tags
+            // Добавление Параметра цены ОТ в фильтр-дату
             this.filterData.price.from = this.fromPrice
+
+            // Добавление query-параметра fromPrice в url
+            if(this.filterData.price.from){
+
+                // Если есть this.$route.query.groupName
+                if(this.$route.query.groupName){
+                    this.$router.push({name: 'sorted', query: {
+                        groupName: this.$route.query.groupName,
+                        fromPrice: this.filterData.price.from,
+                    }})
+                }
+
+                // Если есть this.$route.query.groupName и this.$route.query.categoryName
+                if(this.$route.query.groupName && this.$route.query.categoryName){
+                    this.$router.push({name: 'sorted', query: {
+                        groupName: this.$route.query.groupName,
+                        categoryName: this.$route.query.categoryName,
+                        fromPrice: this.filterData.price.from,
+                    }})
+                }
+
+                // Если открыт весь товар, нет активных тегов
+                if(!this.$route.query.groupName && !this.$route.query.categoryName){
+                    this.$router.push({name: 'sorted', query: {
+                        fromPrice: this.filterData.price.from,
+                    }})
+                }
+
+                // Если есть query-параметр tag 
+                if(this.$route.query.tag){
+                    this.$router.push({query: {
+                        tag: this.$route.query.tag,
+                        fromPrice: this.filterData.price.from,
+                    }})
+                }
+            }
+
+            // Добавление Параметра цены ДО в фильтр-дату
+            this.filterData.price.to = this.toPrice
+
+            // Добавление query-параметра toPrice в url
+            if(this.filterData.price.to){
+
+                // Если есть this.$route.query.groupName
+                if(this.$route.query.groupName){
+                    this.$router.push({name: 'sorted', query: {
+                        groupName: this.$route.query.groupName,
+                        toPrice: this.filterData.price.to,
+                    }})
+                }
+
+                // Если есть this.$route.query.groupName и this.$route.query.categoryName
+                if(this.$route.query.groupName && this.$route.query.categoryName){
+                    this.$router.push({name: 'sorted', query: {
+                        groupName: this.$route.query.groupName,
+                        categoryName: this.$route.query.categoryName,
+                        toPrice: this.filterData.price.to,
+                    }})
+                }
+
+                // Если открыт весь товар, нет активных тегов
+                if(!this.$route.query.groupName && !this.$route.query.categoryName){
+                    this.$router.push({name: 'sorted', query: {
+                        toPrice: this.filterData.price.to,
+                    }})
+                }
+
+                // Если есть query-параметр tag 
+                if(this.$route.query.tag){
+                    this.$router.push({query: {
+                        tag: this.$route.query.tag,
+                        toPrice: this.filterData.price.to,
+                    }})
+                }
+
+                // Если есть query-параметр fromPrice 
+                if(this.$route.query.fromPrice){
+                    this.$router.push({query: {
+                        fromPrice: this.$route.query.fromPrice,
+                        toPrice: this.filterData.price.to,
+                    }})
+                }
+            }
+    
             this.filterData.price.to = this.toPrice
             this.filterData.colors = this.colors
             this.filterData.materials = this.materials

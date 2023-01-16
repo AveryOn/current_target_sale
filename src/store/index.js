@@ -24,7 +24,8 @@ export default createStore({
         specifications: {colors: ['черный'], material: ["синтетика", "шерсть"],},
         category: {name: 'куртки'}, 
         group: {name: 'лето'},
-        tags: ['куртки', 'верхняя одежда']
+        tags: ['куртки', 'верхняя одежда'],
+        description: 'Это нахуй куртка',
       },
       {
         id: 2,
@@ -33,7 +34,8 @@ export default createStore({
         specifications: {colors: ['серый'], material: ["шерсть"],}, 
         category: {name: 'головные уборы'}, 
         group: {name: 'зима'}, 
-        tags: ['шапки', 'головные уборы']
+        tags: ['шапки', 'головные уборы'],
+        description: 'Это нахуй шапка',
       },
       {
         id: 3,
@@ -42,7 +44,8 @@ export default createStore({
         specifications: {colors: ['белый'], material: ["полиэстер"],}, 
         category: {name: 'повседневное'}, 
         group: {name: 'лето'}, 
-        tags: ['футболки', 'верхняя одежда', 'повседневное']
+        tags: ['футболки', 'верхняя одежда', 'повседневное'],
+        description: 'Это нахуй футболка',
       },
       {
         id: 4,
@@ -52,6 +55,7 @@ export default createStore({
         category: {name: 'головные уборы'}, 
         group: {name: 'лето'}, 
         tags: ['кепки', 'верхняя одежда', 'головные уборы'],
+        description: 'Это нахуй кепка',
       },
       {
         id: 5,
@@ -60,7 +64,8 @@ export default createStore({
         specifications: {colors: ['черный'], material: ["каучук", "кожа"],}, 
         category: {name: 'обувь'}, 
         group: {name: 'зима'}, 
-        tags: ['обувь', 'путешествия']
+        tags: ['обувь', 'путешествия'],
+        description: 'Это нахуй сапоги зимние',
       },
     ],
     // Группы товара
@@ -78,6 +83,7 @@ export default createStore({
     // Сюда записываются теги товаров которые отфильтрованы на данный момент
     // Если не была применена никакая фильтрация то записывается тег "Все товары" 
     tags: [],
+    tagsAddit: [],
     // Обьект который передается вычисляемому свойству 
     // Используется для фильтрации товара в комп. components.CatalogPage.SortedCatalog
     filterData: {

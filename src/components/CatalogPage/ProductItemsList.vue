@@ -5,6 +5,7 @@
         <product-item  
         v-for="product in products" 
         :key="product.id"
+        @click="openProduct(product)"
         >
         Product Item: <strong>{{ product.name }}</strong><br><br> price: <strong>{{ product.price }}</strong> 
         </product-item>
@@ -20,6 +21,11 @@ export default {
     },
     computed: {
 
+    },
+    methods:{
+        openProduct(product){
+            this.$router.push({name: 'product', params: {productId: product.id}})
+        }
     }
 }
 </script>

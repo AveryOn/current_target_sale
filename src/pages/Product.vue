@@ -5,7 +5,7 @@
         <!-- КОНТЕЙНЕР ДЛЯ ВНУТРЕННЕГО КОНТЕНТА -->
         #product-container
         <div class="product-container">
-            #product-content
+            #product-content {{ $route.params.productId }}
             <div class="product-content">
                 <h2>Header Block</h2>
                 <hr>
