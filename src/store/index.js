@@ -26,6 +26,7 @@ export default createStore({
         group: {name: 'лето'},
         tags: ['куртки', 'верхняя одежда'],
         description: 'Это нахуй куртка',
+        article: Number,
       },
       {
         id: 2,
@@ -36,6 +37,7 @@ export default createStore({
         group: {name: 'зима'}, 
         tags: ['шапки', 'головные уборы'],
         description: 'Это нахуй шапка',
+        article: Number,
       },
       {
         id: 3,
@@ -46,6 +48,7 @@ export default createStore({
         group: {name: 'лето'}, 
         tags: ['футболки', 'верхняя одежда', 'повседневное'],
         description: 'Это нахуй футболка',
+        article: Number,
       },
       {
         id: 4,
@@ -56,6 +59,7 @@ export default createStore({
         group: {name: 'лето'}, 
         tags: ['кепки', 'верхняя одежда', 'головные уборы'],
         description: 'Это нахуй кепка',
+        article: Number,
       },
       {
         id: 5,
@@ -66,6 +70,7 @@ export default createStore({
         group: {name: 'зима'}, 
         tags: ['обувь', 'путешествия'],
         description: 'Это нахуй сапоги зимние',
+        article: Number,
       },
     ],
     // Группы товара
