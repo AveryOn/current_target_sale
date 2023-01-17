@@ -1,15 +1,23 @@
 <!-- БЛОК С ХАРАКТЕРИСТИКАМИ ТОВАРА -->
 <template>
     <div @click="log" class="metadata-block">
-        <h2>Meta Data Block:</h2>
-        <h2 class="h3">Название: {{ this.metaTitleData }}</h2>
-        <h3 class="h3">ID: {{ this.$route.params.productId }}</h3>
-        <h3 class="h3">Группа: {{ this.metaGroupData }}</h3>
-        <h3 class="h3">Категория: {{ this.metaCategoryData }}</h3>
-        <h3 class="h3">Цена: {{ this.metaPriceData }}</h3>
-        <h3 class="h3">Цвет: {{ this.metaColorsData }}</h3>
-        <h3 class="h3">Материал: {{ this.metaMaterialData }}</h3>
-        <h3 class="h3">Теги: {{ this.metaTagsData }}</h3>
+        <div class="metadata-block_title">
+            <!-- НАЗВАНИЕ ТОВАРА -->
+            <h2 class="product--title">{{ this.metaTitleData }}</h2>
+            <h3 class="product--price">Цена: {{ this.metaPriceData }}</h3>
+        </div>
+        <div class="metadata-block_body">
+            <h3 class="metadata-block_body__item">ID: {{ this.$route.params.productId }}</h3>
+            <h3 class="metadata-block_body__item">Группа: {{ this.metaGroupData }}</h3>
+            <h3 class="metadata-block_body__item">Категория: {{ this.metaCategoryData }}</h3>
+            <h3 class="metadata-block_body__item">Цвет: {{ this.metaColorsData }}</h3>
+            <h3 class="metadata-block_body__item">Материал: {{ this.metaMaterialData }}</h3>
+            <h3 class="metadata-block_body__item">Теги: {{ this.metaTagsData }}</h3>
+        </div>
+        <div class="metadata-block_btns">
+            <button-comp>Add to Cart</button-comp>
+            <button-comp>More...</button-comp>
+        </div>
     </div>
 </template>
 <script>
@@ -18,7 +26,6 @@ export default {
     methods: {
         log(){
             console.log(this.metaPriceData);
-            // console.log(this.$route.params.productId);
         }
     },
     computed:{
@@ -34,6 +41,7 @@ export default {
                 }
             }
         },
+        // Извлечения название тоара
         metaTitleData(){
             for(const product of this.products){
                 if(product.id == this.$route.params.productId){
@@ -43,6 +51,7 @@ export default {
                 }
             }
         },
+        // Извлечения цвета тоара
         metaColorsData(){
             for(const product of this.products){
                 if(product.id == this.$route.params.productId){
@@ -52,6 +61,7 @@ export default {
                 }
             }
         },
+        // Извлечения материала тоара
         metaMaterialData(){
             for(const product of this.products){
                 if(product.id == this.$route.params.productId){
@@ -61,6 +71,7 @@ export default {
                 }
             }
         },
+        // Извлечения категории тоара
         metaCategoryData(){
             for(const product of this.products){
                 if(product.id == this.$route.params.productId){
@@ -70,6 +81,7 @@ export default {
                 }
             }
         },
+        // Извлечения группы тоара
         metaGroupData(){
             for(const product of this.products){
                 if(product.id == this.$route.params.productId){
@@ -79,6 +91,7 @@ export default {
                 }
             }
         },
+        // Извлечения тегов тоара
         metaTagsData(){
             for(const product of this.products){
                 if(product.id == this.$route.params.productId){
@@ -95,16 +108,51 @@ export default {
 .metadata-block{
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
+    align-items: stretch;
     height: 400px;
+    min-width: 30%;
+    max-width: 50%;
     width: max-content;
     padding: 0 20px;
     border: $border;
     border-radius: $radius;
     box-shadow: $shadow;
-}
-.h3{
-    margin-top: 5px;
+    &_title{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        // border: $border;
+        // border-radius: $radius;
+        .product--title{
+            width: 100%;
+            margin-top: 5px;
+            // border: $border;
+            // border-radius: $radius;
+            word-wrap: break-word;
+        }
+        .product--price{
+            margin: 5px 0 0 0;
+        }
+    }
+    &_body{
+        margin: auto;
+        // :nth-last-child(1){
+
+        // }
+        &__item{
+            border-bottom: $border;
+            padding: 5px;
+            margin-top: 1px;
+        }
+    }
+    &_btns{
+        display: flex;
+        justify-content: space-between;
+        margin-top: auto;
+        margin-bottom: 5px;
+        // border: $border;
+        // border-radius: $radius;
+    }
 }
 </style>

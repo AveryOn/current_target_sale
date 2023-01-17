@@ -12,7 +12,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .image-block{
-    width: 300px;
+    min-width: 30%;
+    max-width: 50%;
     height: 400px;
     background-color: black;
     color: white;

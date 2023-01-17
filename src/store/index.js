@@ -61,7 +61,7 @@ export default createStore({
         id: 5,
         price: 2300, 
         name: 'сапоги зимние',
-        specifications: {colors: ['черный'], material: ["каучук", "кожа"],}, 
+        specifications: {colors: ['черный'], material: ["резина", "кожа"],}, 
         category: {name: 'обувь'}, 
         group: {name: 'зима'}, 
         tags: ['обувь', 'путешествия'],

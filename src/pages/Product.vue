@@ -15,7 +15,8 @@
                     <!-- МЕТАДАННЫЕ ТОВАРА  -->
                     <metadata-block></metadata-block>
                 </div>
-                <h2>Body Block</h2>
+                <hr>
+                <h2>Описание товара</h2>
                 <div class="body-block">
                     <!-- БЛОК ОПИСАНИЯ ТОВАРА -->
                     <descr-block></descr-block>
@@ -87,7 +88,7 @@ hr{
     display: flex;
     width: 100%;
     justify-content: space-around;
-    margin: 20px 0;
+    margin: 20px 0 40px 0;
 }
 .body-block{
     display: flex;

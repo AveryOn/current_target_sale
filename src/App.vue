@@ -41,7 +41,7 @@ export default {
     created(){
     },
     mounted(){
-        
+
         window.addEventListener('scroll', () => {
             if (window.scrollY >= 300){
                 this.$store.commit('showButtonUp')
