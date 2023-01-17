@@ -65,7 +65,6 @@ export default {
         const openTextMore = document.querySelector('.open-text-more');
         const parentDescriptionBlock = document.querySelector('.description-block');
         openTextMore.style.width = parentDescriptionBlock.clientWidth - 2 + 'px'
-        parentDescriptionBlock.style.height = 'max-content'
     },
     created(){
         // this.$watch(
@@ -124,11 +123,11 @@ export default {
         height: 70px;
         border-bottom-left-radius: $radius;
         border-bottom-right-radius: $radius;
-        border-bottom: $border;
+        // border-bottom: $border;
         background: linear-gradient(
         360deg, 
         white, 
-        rgba(255, 255, 255, 0.65),
+        rgba(255, 255, 255, 0.6),
         );
     }
 }
