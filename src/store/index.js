@@ -27,6 +27,12 @@ export default createStore({
         tags: ['куртки', 'верхняя одежда'],
         description: 'Это нахуй куртка',
         article: Number,
+        comments: [
+          {ownerId: 123123, username: '@username_432', comment: 'this is commeasdnt all right!!!'},
+          {ownerId: 123352, username: '@username_642', comment: 'this is casomment all rightasda!!!'},
+          {ownerId: 121231, username: '@username_152', comment: 'this is commasdent all right!!!'},
+          {ownerId: 123145, username: '@username_734', comment: 'this is commeasdnt all rigasdaht!!!'},
+        ]
       },
       {
         id: 2,
@@ -38,6 +44,12 @@ export default createStore({
         tags: ['шапки', 'головные уборы'],
         description: 'Это нахуй шапка',
         article: Number,
+        comments: [
+          {ownerId: 123123, username: '@username_432', comment: 'this is commeasdnt all right!!!'},
+          {ownerId: 123352, username: '@username_642', comment: 'крутая шапка ебать понравилась! this is casomment all rightasda!!!'},
+          {ownerId: 121231, username: '@username_152', comment: 'this is commasdent all right!!!'},
+          {ownerId: 123145, username: '@username_734', comment: 'this is commeasdnt all rigasdaht!!!'},
+        ]
       },
       {
         id: 3,
@@ -49,6 +61,12 @@ export default createStore({
         tags: ['футболки', 'верхняя одежда', 'повседневное'],
         description: 'Это нахуй футболка',
         article: Number,
+        comments: [
+          {ownerId: 123123, username: '@username_432', comment: 'this is commeasdnt all right!!!'},
+          {ownerId: 123352, username: '@username_642', comment: 'this is casomment all rightasda!!!'},
+          {ownerId: 121231, username: '@username_152', comment: 'this is commasdent all right!!!'},
+          {ownerId: 123145, username: '@username_734', comment: 'this is commeasdnt all rigasdaht!!!'},
+        ]
       },
       {
         id: 4,
@@ -60,6 +78,12 @@ export default createStore({
         tags: ['кепки', 'верхняя одежда', 'головные уборы'],
         description: 'Это нахуй кепка',
         article: Number,
+        comments: [
+          {ownerId: 123123, username: '@username_432', comment: 'this is commeasdnt all right!!!'},
+          {ownerId: 123352, username: '@username_642', comment: 'this is casomment all rightasda!!!'},
+          {ownerId: 121231, username: '@username_152', comment: 'this is commasdent all right!!!'},
+          {ownerId: 123145, username: '@username_734', comment: 'this is commeasdnt all rigasdaht!!!'},
+        ]
       },
       {
         id: 5,
@@ -71,6 +95,12 @@ export default createStore({
         tags: ['обувь', 'путешествия'],
         description: 'Это нахуй сапоги зимние',
         article: Number,
+        comments: [
+          {ownerId: 123123, username: '@username_432', comment: 'this is commeasdnt all right!!!'},
+          {ownerId: 123352, username: '@username_642', comment: 'this is casomment all rightasda!!!'},
+          {ownerId: 121231, username: '@username_152', comment: 'this is commasdent all right!!!'},
+          {ownerId: 123145, username: '@username_734', comment: 'this is commeasdnt all rigasdaht!!!'},
+        ]
       },
     ],
     // Группы товара

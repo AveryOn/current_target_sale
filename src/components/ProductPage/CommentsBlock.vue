@@ -1,36 +1,39 @@
 <!-- БЛОК С КОММЕНТАРИЯМИ -->
 <template>
-<h1>Comments Block</h1> 
-<div class="comments-block">
-    <!-- COMMENT 1 -->
-    <div class="comment">
-        <div class="UserMetadata">
-            <div class="CommentPhoto"></div>
-            <div class="Username">Username_1</div>
-        </div>
-        <p class="CommentMessage">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae reprehenderit deleniti qui, nisi earum maiores labore voluptatum doloribus quis facere quidem doloremque consectetur et impedit accusamus recusandae. Nihil, eos nisi!</p>
+    <h1 class="title-text">Отзывы о товаре</h1>
+    <div class="comments-block">
+        <!-- COMMENT 1 -->
+        <comment-comp 
+            v-for="comment in textComment"
+            :comment="comment"
+            >
+        </comment-comp>
     </div>
-    <!-- COMMENT 2 -->
-    <div class="comment">
-        <div class="UserMetadata">
-            <div class="CommentPhoto"></div>
-            <div class="Username">Username_2</div>
-        </div>
-        <p class="CommentMessage">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae reprehenderit deleniti qui, nisi earum maiores labore voluptatum doloribus quis facere quidem doloremque consectetur et impedit accusamus recusandae. Nihil, eos nisi!</p>
-    </div>
-    <!-- COMMENT 2 -->
-    <div class="comment">
-        <div class="UserMetadata">
-            <div class="CommentPhoto"></div>
-            <div class="Username">Username_3</div>
-        </div>
-        <p class="CommentMessage">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae reprehenderit deleniti qui, nisi earum maiores labore voluptatum doloribus quis facere quidem doloremque consectetur et impedit accusamus recusandae. Nihil, eos nisi!</p>
-    </div>
-</div>
 </template>
 <script>
+import CommentComp from '@/components/ProductPage/CommentComp.vue'
+import { mapState } from 'vuex'
 export default {
-    
+    components: {
+        CommentComp,
+    },
+    computed:{
+        ...mapState({
+            products: state => state.products,
+        }),
+        textComment(){
+            for(const product of this.products){
+                if(product.id == this.$route.params.productId){
+                    return product.comments
+                }else{
+                    continue
+                }
+            }
+        },
+    },
+    mounted() {
+        console.log(this.textComment);
+    },
 }
 </script>
 <style lang="scss" scoped>
@@ -41,36 +44,24 @@ h1, h2{
 }
    .comments-block{
     width: 90%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: $border;
-    border-radius: $radius;
-    box-shadow: $shadow;
+    height: 400px;
+    border-bottom: $border;
+    border-top: $border;
+    overflow: auto;
+    margin: 20px;
+    padding: 10px 0 10px 0;
+    &::-webkit-scrollbar{
+        width: 9px;
+        height: 9px;
+    }
+    &::-webkit-scrollbar-track{
+        background: rgba(128, 128, 128, 0.2);
+        &:hover{
+            background: rgba(128, 128, 128, 0.3);
+        }
+    }
+    &::-webkit-scrollbar-thumb{
+        background: linear-gradient(360deg, #fc3b22, $color-orange-white);
+    }
 }
-.comment{
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    min-height: 80px;
-    margin: 10px;
-    padding: 10px;
-    align-self: flex-start;
-}
-.UserMetadata{
-    display: flex;
-    align-items: center;
-}
-.CommentPhoto{
-    width: 40px;
-    height: 40px;
-    background-color: black;
-    border-radius: 50%;
-}
-.Username{
-    margin-left: 10px;
-}
-.CommentMessage{
-    margin-top: 10px;
-} 
 </style>

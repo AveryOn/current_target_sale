@@ -1,11 +1,15 @@
 <!-- БЛОК С ХАРАКТЕРИСТИКАМИ ТОВАРА -->
 <template>
-    <div @click="log" class="metadata-block">
+    <!-- ГЛАВНЫЙ БЛОК С МЕТАДАННЫМИ ТОВАРА -->
+    <div class="metadata-block">
+        <!-- КОНТЕЙНЕР ДЛЯ НАЗВАНИЯ И ЦЕНЫ -->
         <div class="metadata-block_title">
             <!-- НАЗВАНИЕ ТОВАРА -->
             <h2 class="product--title">{{ this.metaTitleData }}</h2>
+            <!-- ЦЕНА ТОВАРА -->
             <h3 class="product--price">Цена: {{ this.metaPriceData }}</h3>
         </div>
+        <!-- КОНТЕЙНЕР ДЛЯ ОСНОВНЫХ МЕТАДАННЫХ -->
         <div class="metadata-block_body">
             <h3 class="metadata-block_body__item">ID: {{ this.$route.params.productId }}</h3>
             <h3 class="metadata-block_body__item">Группа: {{ this.metaGroupData }}</h3>
@@ -14,8 +18,11 @@
             <h3 class="metadata-block_body__item">Материал: {{ this.metaMaterialData }}</h3>
             <h3 class="metadata-block_body__item">Теги: {{ this.metaTagsData }}</h3>
         </div>
+        <!-- КОНТЕЙНЕР ДЛЯ КНОПОК -->
         <div class="metadata-block_btns">
+            <!-- добавляет товар в корзину -->
             <button-comp>Add to Cart</button-comp>
+            <!-- открывает все данные о товаре -->
             <button-comp>More...</button-comp>
         </div>
     </div>
@@ -24,11 +31,10 @@
 import { mapState } from 'vuex';
 export default {
     methods: {
-        log(){
-            console.log(this.metaPriceData);
-        }
+
     },
     computed:{
+        // извлечение данных товара со стора
         ...mapState({
             products: state => state.products, 
         }),
