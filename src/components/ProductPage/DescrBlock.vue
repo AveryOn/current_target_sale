@@ -73,7 +73,14 @@ export default {
         // ОСНОВНОГО ГЛАВНОГО БЛОКА ОПИСАНИЯ ТОВАРА
         const openTextMore = document.querySelector('.open-text-more');
         const parentDescriptionBlock = document.querySelector('.description-block');
-        openTextMore.style.width = parentDescriptionBlock.clientWidth - 2 + 'px'
+        this.$watch(
+            () => parentDescriptionBlock.clientWidth,
+            () => {
+                openTextMore.style.width = parentDescriptionBlock.clientWidth + 4 + 'px'
+                console.log('change');
+            },
+            { immediate: true }
+        )
     },
     created(){
     }
@@ -115,6 +122,7 @@ export default {
     // border: $border;
     bottom: -420px;
     height: 50px;
+    // width: 1350px;
     color: orangered;
     transition: all 0.5s ease;
     &:hover{
@@ -130,8 +138,5 @@ export default {
         rgba(255, 255, 255, 0.6),
         );
     }
-}
-.description-text{
-    // border: $border;
 }
 </style>

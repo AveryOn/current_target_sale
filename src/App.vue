@@ -60,19 +60,18 @@ export default {
     box-sizing: border-box;
 }
 ::-webkit-scrollbar{
-    width: 15px;
+        width: 12px;
+        height: 12px;
 }
 ::-webkit-scrollbar-track{
-    background: rgb(119, 114, 114);
+    background: rgba(128, 128, 128, 0.2);
     &:hover{
-        background: rgb(90, 87, 87);
+        background: rgba(128, 128, 128, 0.3);
     }
 }
 ::-webkit-scrollbar-thumb{
-    background: black;
-    border-radius: 10px;
-    border: 1px solid gray;
-    height: 30%;
+    border-radius: $radius;
+    background: linear-gradient(360deg, #fc3b22, $color-orange-white)
 }
 #app{
     font-family: Avenir, Helvetica, Arial, sans-serif;;

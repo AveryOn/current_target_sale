@@ -2,8 +2,8 @@
 <template>
     <h1 class="title-text">Отзывы о товаре</h1>
     <div class="comments-block">
-        <!-- COMMENT 1 -->
-        <comment-comp 
+        <!-- ОТРИСОВКА КОММЕНТАРИЕВ -->
+        <comment-comp
             v-for="comment in textComment"
             :comment="comment"
             >
@@ -32,7 +32,7 @@ export default {
         },
     },
     mounted() {
-        console.log(this.textComment);
+
     },
 }
 </script>
@@ -47,9 +47,12 @@ h1, h2{
     height: 400px;
     border-bottom: $border;
     border-top: $border;
-    overflow: auto;
+    overflow: hidden;
     margin: 20px;
     padding: 10px 0 10px 0;
+    &:hover{
+        overflow: auto;
+    }
     &::-webkit-scrollbar{
         width: 9px;
         height: 9px;
@@ -61,7 +64,7 @@ h1, h2{
         }
     }
     &::-webkit-scrollbar-thumb{
-        background: linear-gradient(360deg, #fc3b22, $color-orange-white);
+        background: linear-gradient(360deg, #fc3b22, $color-orange-white)
     }
 }
 </style>
