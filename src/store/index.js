@@ -43,7 +43,7 @@ export default createStore({
         group: {name: 'зима'}, 
         tags: ['шапки', 'головные уборы'],
         description: 'Это нахуй шапка',
-        article: Number,
+        article: 9989891,
         comments: [
           {ownerId: 123123, username: '@username_432', comment: 'this is commeasdnt all right!!!'},
           {ownerId: 123352, username: '@username_642', comment: 'крутая шапка ебать понравилась! this is casomment all rightasda!!!'},
@@ -94,7 +94,7 @@ export default createStore({
         group: {name: 'зима'}, 
         tags: ['обувь', 'путешествия'],
         description: 'Это нахуй сапоги зимние',
-        article: Number,
+        article: 1231231,
         comments: [
           {ownerId: 123123, username: '@username_432', comment: 'this is commeasdnt all right!!!'},
           {ownerId: 123352, username: '@username_642', comment: 'this is casomment all rightasda!!!'},

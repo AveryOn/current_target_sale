@@ -21,9 +21,9 @@
         <!-- КОНТЕЙНЕР ДЛЯ КНОПОК -->
         <div class="metadata-block_btns">
             <!-- добавляет товар в корзину -->
-            <button-comp>Add to Cart</button-comp>
+            <button-comp @click="addProductToCart">Add to Cart</button-comp>
             <!-- открывает все данные о товаре -->
-            <button-comp>More...</button-comp>
+            <button-comp @click="addProductToCart2">More...</button-comp>
         </div>
     </div>
 </template>
@@ -31,13 +31,77 @@
 import { mapState } from 'vuex';
 export default {
     methods: {
-
+        addProductToCart(){
+            const num = JSON.parse(JSON.stringify(this.currentProduct))
+            const listCartProducts = JSON.parse(localStorage.getItem('addedProducts'))
+            if(listCartProducts){
+                listCartProducts.forEach(product => {
+                    console.log(listCartProducts);
+                    if(product.id !== num.id){
+                        localStorage.setItem('addedProducts', JSON.stringify([...listCartProducts, num]))
+                    }
+                })
+            }else{
+                localStorage.setItem('addedProducts', JSON.stringify([num]))
+                console.log('ELSE', listCartProducts);
+            }
+            // const listCartProducts = JSON.parse(localStorage.getItem('addedProducts'))
+            // if(!!listCartProducts){
+                // localStorage.setItem('addedProducts', listCartProducts.push(JSON.parse(JSON.stringify(this.currentProduct))))
+            //     console.log('IF ', JSON.parse(localStorage.getItem('addedProducts')));
+            // }else{
+            //     localStorage.setItem('addedProducts', JSON.stringify(new Array(this.currentProduct)))
+            //     console.log('ELSE ', JSON.parse(localStorage.getItem('addedProducts')))
+            // }
+        },
+        addProductToCart2(){
+            const num = JSON.parse(JSON.stringify(this.currentProduct))
+            const listCartProducts = JSON.parse(localStorage.getItem('addedProducts'))
+            if(listCartProducts){
+                for(const product of listCartProducts){
+                    if(product.id !== num.id){
+                        if(num.article !== product.article){
+                            localStorage.setItem('addedProducts', JSON.stringify(new Array(...listCartProducts, num)))
+                        }else{
+                            continue
+                        }
+                    }else{
+                        continue
+                    }
+                }
+                // localStorage.setItem('addedProducts', JSON.stringify([...listCartProducts, num]))
+            }else{
+                localStorage.setItem('addedProducts', JSON.stringify([num]))
+                console.log('ELSE', listCartProducts);
+            }
+            // for(const product of listCartProducts){
+            // }
+            // if(!listCartProducts.includes(this.currentProduct)){
+            //     localStorage.setItem('addedProducts', JSON.stringify([...listCartProducts, this.currentProduct]))
+            //     console.log('localStorage ',  listCartProducts);
+            // }
+        }
+    },
+    mounted(){
+        // const parseData = JSON.parse(localStorage.getItem('addedProducts'))
+        // console.log(parseData[0].id);
+        // const x = JSON.parse(localStorage.getItem('addedProducts'))
+        // console.log(x[0].tags);
     },
     computed:{
         // извлечение данных товара со стора
         ...mapState({
             products: state => state.products, 
         }),
+        currentProduct(){
+            for(const product of this.products){
+                if(product.id == this.$route.params.productId){
+                    return {id: product.id, name: product.name, article: product.article}
+                }else{
+                    continue
+                }
+            }
+        },
         metaPriceData(){
             for(const product of this.products){
                 if(product.id == this.$route.params.productId){

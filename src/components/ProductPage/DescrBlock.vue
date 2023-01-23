@@ -77,7 +77,6 @@ export default {
             () => parentDescriptionBlock.clientWidth,
             () => {
                 openTextMore.style.width = parentDescriptionBlock.clientWidth + 4 + 'px'
-                console.log('change');
             },
             { immediate: true }
         )
