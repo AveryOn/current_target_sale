@@ -32,52 +32,26 @@ import { mapState } from 'vuex';
 export default {
     data(){ 
         return{
-            test_data: false,
         }
     },
     methods: {
         addProductToCart(){
-            const num = JSON.parse(JSON.stringify(this.currentProduct))
             const listCartProducts = JSON.parse(localStorage.getItem('addedProducts'))
-            if(listCartProducts){
-                listCartProducts.forEach(product => {
-                    console.log(listCartProducts);
-                    if(product.id !== num.id){
-                        localStorage.setItem('addedProducts', JSON.stringify([...listCartProducts, num]))
-                    }
-                })
-            }else{
-                localStorage.setItem('addedProducts', JSON.stringify([num]))
-                console.log('ELSE', listCartProducts);
-            }
-            // const listCartProducts = JSON.parse(localStorage.getItem('addedProducts'))
-            // if(!!listCartProducts){
-                // localStorage.setItem('addedProducts', listCartProducts.push(JSON.parse(JSON.stringify(this.currentProduct))))
-            //     console.log('IF ', JSON.parse(localStorage.getItem('addedProducts')))
-            // }else{
-            //     localStorage.setItem('addedProducts', JSON.stringify(new Array(this.currentProduct)))
-            //     console.log('ELSE ', JSON.parse(localStorage.getItem('addedProducts')))
-            // }
-        },
-        addProductToCart2(){
-            const listCartProducts = JSON.parse(localStorage.getItem('test'))
-            // const prodName = JSON.stringify(this.currentProduct.name)
-            // const prodID = JSON.stringify(this.currentProduct.id)
-            // const prodArticle = JSON.stringify(this.currentProduct.article)
             if(listCartProducts){
                 for(const product of listCartProducts){
                     if(!JSON.stringify(listCartProducts).includes(JSON.stringify(this.currentProduct))){
                         listCartProducts.push(this.currentProduct)
-                        localStorage.setItem('test', JSON.stringify(listCartProducts))
+                        localStorage.setItem('addedProducts', JSON.stringify(listCartProducts))
                     }else{
-                        console.log(false);
                         continue
                     }
                 }
             }else{
-                console.log(false);
-                localStorage.setItem('test', JSON.stringify([this.currentProduct]))
+                localStorage.setItem('addedProducts', JSON.stringify([this.currentProduct]))
             }
+        },
+        addProductToCart2(){
+            console.log('this is addProductToCart2');
         }
     },
     mounted(){
@@ -96,6 +70,7 @@ export default {
                 }
             }
         },
+        // Извлечения цены тоара
         metaPriceData(){
             for(const product of this.products){
                 if(product.id == this.$route.params.productId){

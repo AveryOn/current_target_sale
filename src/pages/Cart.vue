@@ -21,9 +21,12 @@
                         </div>
                     </div>
                     <div class="cart-products-items">
-                        <cart-product-item></cart-product-item>
-                        <cart-product-item></cart-product-item>
-                        <cart-product-item></cart-product-item>
+                        <cart-product-item
+                        @click="log(cartProduct)"
+                        v-for="cartProduct in cartProducts"
+                        :cartProduct="cartProduct"
+                        >
+                        </cart-product-item>
                     </div>
                 </div>
             </div>
@@ -33,11 +36,50 @@
 <script>
 import FilterPanel from '@/components/CatalogPage/FilterPanel.vue'
 import cartProductItem from '@/components/CartPage/cartProductItem.vue'
+import { mapState } from 'vuex';
 export default {
     components: {
         FilterPanel,
         cartProductItem,
     },
+    data(){ 
+        return{
+            addedProducts: JSON.parse(localStorage.getItem('addedProducts')),
+        }
+    },
+    methods: {
+        log(cartProduct){
+            console.log(cartProduct);
+        }
+    },
+    computed: {
+        // извлечение данных товара со стора
+        ...mapState({
+            products: state => state.products,
+        }),
+
+        // Свойство достает все добавленные товары в корзину
+        cartProducts(){
+            let cartProductsData = new Array()
+            // Итерируемся по массиву товаров со стора (state.products),
+            for(const product of this.products){
+                // Итерируемся по массиву товаров в localStorage (addedProducts)
+                for(const cartItem of this.addedProducts){
+                    if(JSON.stringify(product.id) === JSON.stringify(cartItem.id)){
+                        if(!cartProductsData.includes(product)){
+                            cartProductsData.push(product)
+                        }
+                    }
+                }
+            }
+            // Возвращаем массив товара который в корзине
+            return cartProductsData
+        },
+    },
+    mounted() {
+        console.log(this.cartProducts);
+    },
+
 }
 </script>
 <style lang="scss" scoped>
