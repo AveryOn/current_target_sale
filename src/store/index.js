@@ -26,7 +26,7 @@ export default createStore({
         group: {name: 'лето'},
         tags: ['куртки', 'верхняя одежда'],
         description: 'Это нахуй куртка',
-        article: Number,
+        article: 928219,
         comments: [
           {ownerId: 123123, username: '@username_432', comment: 'this is commeasdnt all right!!!'},
           {ownerId: 123352, username: '@username_642', comment: 'this is casomment all rightasda!!!'},
@@ -60,7 +60,7 @@ export default createStore({
         group: {name: 'лето'}, 
         tags: ['футболки', 'верхняя одежда', 'повседневное'],
         description: 'Это нахуй футболка',
-        article: Number,
+        article: 727281,
         comments: [
           {ownerId: 123123, username: '@username_432', comment: 'this is commeasdnt all right!!!'},
           {ownerId: 123352, username: '@username_642', comment: 'this is casomment all rightasda!!!'},
@@ -77,7 +77,7 @@ export default createStore({
         group: {name: 'лето'}, 
         tags: ['кепки', 'верхняя одежда', 'головные уборы'],
         description: 'Это нахуй кепка',
-        article: Number,
+        article: 200291,
         comments: [
           {ownerId: 123123, username: '@username_432', comment: 'this is commeasdnt all right!!!'},
           {ownerId: 123352, username: '@username_642', comment: 'this is casomment all rightasda!!!'},

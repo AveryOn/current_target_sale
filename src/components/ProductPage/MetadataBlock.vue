@@ -30,6 +30,11 @@
 <script>
 import { mapState } from 'vuex';
 export default {
+    data(){ 
+        return{
+            test_data: false,
+        }
+    },
     methods: {
         addProductToCart(){
             const num = JSON.parse(JSON.stringify(this.currentProduct))
@@ -48,45 +53,34 @@ export default {
             // const listCartProducts = JSON.parse(localStorage.getItem('addedProducts'))
             // if(!!listCartProducts){
                 // localStorage.setItem('addedProducts', listCartProducts.push(JSON.parse(JSON.stringify(this.currentProduct))))
-            //     console.log('IF ', JSON.parse(localStorage.getItem('addedProducts')));
+            //     console.log('IF ', JSON.parse(localStorage.getItem('addedProducts')))
             // }else{
             //     localStorage.setItem('addedProducts', JSON.stringify(new Array(this.currentProduct)))
             //     console.log('ELSE ', JSON.parse(localStorage.getItem('addedProducts')))
             // }
         },
         addProductToCart2(){
-            const num = JSON.parse(JSON.stringify(this.currentProduct))
-            const listCartProducts = JSON.parse(localStorage.getItem('addedProducts'))
+            const listCartProducts = JSON.parse(localStorage.getItem('test'))
+            // const prodName = JSON.stringify(this.currentProduct.name)
+            // const prodID = JSON.stringify(this.currentProduct.id)
+            // const prodArticle = JSON.stringify(this.currentProduct.article)
             if(listCartProducts){
                 for(const product of listCartProducts){
-                    if(product.id !== num.id){
-                        if(num.article !== product.article){
-                            localStorage.setItem('addedProducts', JSON.stringify(new Array(...listCartProducts, num)))
-                        }else{
-                            continue
-                        }
+                    if(!JSON.stringify(listCartProducts).includes(JSON.stringify(this.currentProduct))){
+                        listCartProducts.push(this.currentProduct)
+                        localStorage.setItem('test', JSON.stringify(listCartProducts))
                     }else{
+                        console.log(false);
                         continue
                     }
                 }
-                // localStorage.setItem('addedProducts', JSON.stringify([...listCartProducts, num]))
             }else{
-                localStorage.setItem('addedProducts', JSON.stringify([num]))
-                console.log('ELSE', listCartProducts);
+                console.log(false);
+                localStorage.setItem('test', JSON.stringify([this.currentProduct]))
             }
-            // for(const product of listCartProducts){
-            // }
-            // if(!listCartProducts.includes(this.currentProduct)){
-            //     localStorage.setItem('addedProducts', JSON.stringify([...listCartProducts, this.currentProduct]))
-            //     console.log('localStorage ',  listCartProducts);
-            // }
         }
     },
     mounted(){
-        // const parseData = JSON.parse(localStorage.getItem('addedProducts'))
-        // console.log(parseData[0].id);
-        // const x = JSON.parse(localStorage.getItem('addedProducts'))
-        // console.log(x[0].tags);
     },
     computed:{
         // извлечение данных товара со стора
