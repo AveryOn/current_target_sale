@@ -17,6 +17,7 @@ export default {
     border-radius: $radius;
     margin: 10px;
     transition: all 0.1s ease-in-out;
+    overflow: hidden;
     &:hover{
         box-shadow: $shadow;
         cursor: pointer;

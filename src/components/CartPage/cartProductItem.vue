@@ -17,40 +17,10 @@
 export default {
     props: {
         cartProduct: {
-            type: [Object],
-            requierd: true,
+            type: [Object, Number],
+            // requierd: true,
         },
-        // addedProducts: {
-        //     type: [Array],
-        //     default: () => [],
-        //     requierd: true, 
-        // }
-
     },
-    // computed: {
-    //     // извлечение данных товара со стора
-    //     ...mapState({
-    //         products: state => state.products,
-    //     }),
-    //     cartProducts(){
-    //         let cartProductsData = new Array()
-    //         // Итерируемся по массиву товаров со стора (state.products),
-    //         for(const product of this.products){
-    //             // Итерируемся по массиву товаров в localStorage (addedProducts)
-    //             for(const cartItem of this.addedProducts){
-    //                 if(JSON.stringify(product.id) === JSON.stringify(cartItem.id)){
-    //                     if(!cartProductsData.includes(product)){
-    //                         cartProductsData.push(product)
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //         // console.log(cartProductsData);
-    //         // Возвращаем массив товара который в корзине
-    //         return cartProductsData
-    //     },
-    // },
-
 }
 </script>
 <style lang="scss" scoped>
@@ -100,6 +70,8 @@ export default {
         // border: $border;
         // border-radius: $radius;
         .btn-item{
+            display: flex;
+            justify-content: center;
             font-size: 15px;
         }
     }

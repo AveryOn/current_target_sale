@@ -20,10 +20,26 @@
                             <button-comp class="btn-optional">Restore</button-comp>
                         </div>
                     </div>
-                    <div class="cart-products-items">
+
+                    <!-- Заголовок показывается когда корзина пуста -->
+                    <h2 v-show="cartProducts.length <= 0" class="empty-cart-products">В вашей ебучей корзине нема товара, добавьте что-нибудь...</h2>
+                    
+                    <!-- Блок "Добавьте превые товары в корзину" -->
+                    <!-- Открывает каталог товаров -->
+                    <div v-show="cartProducts.length <= 0" class="block-open-catalog">
+                        <h3 class="block-open-catalog--title">Добавьте свой первый товар!</h3>
+                        <div class="block-open-catalog--btns">
+                            <button-comp class="open-catalog__btn">Открыть каталог</button-comp>
+                            <button-comp class="open-catalog__btn">Вернуться на главную</button-comp>
+                        </div>
+                    </div>
+
+                    <!-- Отрисовка товара в корзине -->
+                    <div v-show="cartProducts.length > 0" class="cart-products-items">
                         <cart-product-item
                         @click="log(cartProduct)"
                         v-for="cartProduct in cartProducts"
+                        :key="cartProduct.id"
                         :cartProduct="cartProduct"
                         >
                         </cart-product-item>
@@ -62,28 +78,30 @@ export default {
         cartProducts(){
             let cartProductsData = new Array()
             // Итерируемся по массиву товаров со стора (state.products),
-            for(const product of this.products){
-                // Итерируемся по массиву товаров в localStorage (addedProducts)
-                for(const cartItem of this.addedProducts){
-                    if(JSON.stringify(product.id) === JSON.stringify(cartItem.id)){
-                        if(!cartProductsData.includes(product)){
-                            cartProductsData.push(product)
-                        }
-                    }
-                }
-            }
+            // for(const product of this.products){
+            //     // Итерируемся по массиву товаров в localStorage (addedProducts)
+            //     for(const cartItem of this.addedProducts){
+            //         if(JSON.stringify(product.id) === JSON.stringify(cartItem.id)){
+            //             if(!cartProductsData.includes(product)){
+            //                 cartProductsData.push(product)
+            //             }
+            //         }else{
+            //             continue
+            //         }
+            //     }
+            // }
             // Возвращаем массив товара который в корзине
             return cartProductsData
         },
     },
     mounted() {
-        console.log(this.cartProducts);
     },
 
 }
 </script>
 <style lang="scss" scoped>
 @include h1-gradient;
+// @include h3-gradient;
 .cart-page{
     z-index: 1;
     display: flex;
@@ -178,6 +196,38 @@ export default {
                     box-shadow: $shadow;
                 }
             }
+        }
+        .empty-cart-products{
+            display: flex;
+            align-self: center;
+            margin-top: 30px;
+            color: gray;
+        }
+        .block-open-catalog{
+            position: relative;
+            display: flex;
+            background: linear-gradient(to right, #fc3b22, $color-orange-white);
+            flex-direction: column;
+            align-items: center;
+            top: -50px;
+            border: $border;
+            border-radius: $radius;
+            margin: auto;
+            padding: 50px 30px;
+        }
+        .block-open-catalog--title{
+            color: white;
+            font-size: 1.3em;
+        }
+        .block-open-catalog--btns{
+            display: flex;
+            justify-content: space-evenly;
+            // border: $border;
+            margin-top: 30px;
+        }
+        .open-catalog__btn{
+            font-size: 1.1em;
+            padding: 15px 20px;
         }
         .cart-products-items{
             display: flex;

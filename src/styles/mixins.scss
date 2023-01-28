@@ -16,6 +16,13 @@
         -webkit-text-fill-color: transparent;
     }
 }
+@mixin h3-gradient{
+    h3{
+        background-image: linear-gradient(90deg, #fc3b22, $color-orange-white);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
 
 // СИНИЙ ГРАДИЕНТ ДЛЯ ОСОБЫХ СЛУЧАЕВ :)
 @mixin h1-gradient-blue{
