@@ -11,11 +11,14 @@
                 <input-comp placeholder="Search..." class="search-cart-products"></input-comp>
             </div>
             <div class="body-content">
+                <!-- ФИЛЬТЕР ПАНЕЛЬ -->
                 <filter-panel class="filter-panel"></filter-panel>
                 <div class="cart-products-layout">
                     <div class="products-optional-header">
                         <div>#тут будет TagsBar</div>
                         <div class="optional-btns">
+                            <button-comp class="btn-optional">Очистить корзину</button-comp>
+                            <button-comp class="btn-optional">Удалить несколько</button-comp>
                             <button-comp class="btn-optional">View...</button-comp>
                             <button-comp class="btn-optional">Restore</button-comp>
                         </div>
@@ -54,6 +57,24 @@
                         >
                         </cart-product-item>
                     </div>
+                    <div class="hidden-content-block">
+                        <p 
+                        @click="openListCartProduct"
+                        v-show="!openListCart"
+                        >
+                            <strong>
+                                Посмотреть все товары
+                            </strong>
+                        </p>
+                        <p 
+                        @click="hiddenListCartProduct"
+                        v-show="openListCart"
+                        >
+                            <strong>
+                                Скрыть товары
+                            </strong>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -71,6 +92,7 @@ export default {
     data(){ 
         return{
             addedProducts: JSON.parse(localStorage.getItem('addedProducts')),
+            openListCart: JSON.parse(localStorage.getItem('openListCartProduct')),
         }
     },
     methods: {
@@ -85,6 +107,20 @@ export default {
         goHome(){
             this.$router.push({name: 'main'})
         },
+        openListCartProduct(){
+            const listCartProducts = document.querySelector('.cart-products-items')
+            localStorage.setItem('openListCartProduct', JSON.stringify(true))
+            this.openListCart = true
+            listCartProducts.style.overflow = 'visible'
+            listCartProducts.style.maxHeight = 'max-content'
+        },
+        hiddenListCartProduct(){
+            localStorage.setItem('openListCartProduct', JSON.stringify(false))
+            this.openListCart = false
+            const listCartProducts = document.querySelector('.cart-products-items')
+            listCartProducts.style.overflow = 'hidden'
+            listCartProducts.style.maxHeight = '80vh'
+        }
     },
     computed: {
         // извлечение данных товара со стора
@@ -116,7 +152,23 @@ export default {
         },
     },
     mounted() {
-        // console.log(JSON.parse(localStorage.getItem('addedProducts')));
+        // Если нет переменной openListCartProduct в localeStorage, то this.openListCart = false
+        if(!localStorage.getItem('openListCartProduct')){
+            this.openListCart = false
+            console.log(this.openListCart);
+        }
+
+        // Корзина товара остается развернутой если в localeStorage переменная openListCartProduct = true
+        if(this.openListCart){
+            const listCartProducts = document.querySelector('.cart-products-items')
+            listCartProducts.style.overflow = 'visible'
+            listCartProducts.style.maxHeight = 'max-content'
+        }else{
+            this.openListCart = false
+            const listCartProducts = document.querySelector('.cart-products-items')
+            listCartProducts.style.overflow = 'hidden'
+            listCartProducts.style.maxHeight = '80vh'
+        }
     },
 
 }
@@ -181,6 +233,7 @@ export default {
             margin: 5px;
         }
         .cart-products-layout{
+            position: relative;
             display: flex;
             flex-direction: column;
             align-content: stretch;
@@ -219,6 +272,19 @@ export default {
                 }
             }
         }
+        // .cart-btns{
+        //     position: relative;
+        //     top: 20px;
+        //     left: 20px;
+        //     display: flex;
+        //     align-items: center;
+        //     align-self: flex-start;
+        //     border-bottom: $border;
+        //     padding-bottom: 5px;
+        //     .cart__btn{
+                
+        //     }
+        // }
         .empty-cart-products{
             display: flex;
             align-self: center;
@@ -254,10 +320,39 @@ export default {
         .cart-products-items{
             display: flex;
             flex-direction: column;
-            height: max-content;
+            max-height: 80vh;
             margin: 50px auto 20px auto;
             padding: 5px;
             width: 85%;
+            overflow: hidden;
+        }
+        .hidden-content-block{
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(
+                360deg, 
+                white, 
+                rgba(255, 255, 255, 0.85),
+                rgba(255, 255, 255, 0.0),
+            );
+            bottom: 0;
+            border-bottom-left-radius: $radius;
+            border-bottom-right-radius: $radius;
+            width: 100%;
+            height: 100px;
+            & p{
+                position: relative;
+                bottom: 10px;
+                display: block;
+                color: $color-orange-white;
+                border-bottom: $border; 
+                margin: auto auto 0 auto;
+                &:hover{
+                    cursor: pointer;
+                    border-bottom: 3px solid $color-orange-white;
+                }
+            }
         }
     }
 }

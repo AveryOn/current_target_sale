@@ -22,7 +22,6 @@ export default {
     methods: {
         close(){
             this.$emit('notificationClose')
-            console.log('Уведомление скрыто!');
         }
     },
 
