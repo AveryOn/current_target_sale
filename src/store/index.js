@@ -128,6 +128,7 @@ export default createStore({
         colors: [],
         materials: [],
     },
+    addedProducts: JSON.parse(localStorage.getItem('addedProducts')),
   }),
 
   mutations: {
@@ -149,7 +150,6 @@ export default createStore({
   },
 
   getters: {
-
   },
   actions: {
   },

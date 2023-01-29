@@ -29,18 +29,28 @@
                     <div v-show="cartProducts.length <= 0" class="block-open-catalog">
                         <h3 class="block-open-catalog--title">Добавьте свой первый товар!</h3>
                         <div class="block-open-catalog--btns">
-                            <button-comp class="open-catalog__btn">Открыть каталог</button-comp>
-                            <button-comp class="open-catalog__btn">Вернуться на главную</button-comp>
+                            <button-comp 
+                            class="open-catalog__btn"
+                            @click="openCatalog"
+                            >
+                                Открыть каталог
+                            </button-comp>
+                            <button-comp 
+                            class="open-catalog__btn"
+                            @click="goHome"
+                            >
+                                Вернуться на главную
+                            </button-comp>
                         </div>
                     </div>
 
                     <!-- Отрисовка товара в корзине -->
                     <div v-show="cartProducts.length > 0" class="cart-products-items">
                         <cart-product-item
-                        @click="log(cartProduct)"
                         v-for="cartProduct in cartProducts"
                         :key="cartProduct.id"
                         :cartProduct="cartProduct"
+                        @deleteProductCart="deleteProductCart(cartProduct)"
                         >
                         </cart-product-item>
                     </div>
@@ -64,37 +74,49 @@ export default {
         }
     },
     methods: {
-        log(cartProduct){
-            console.log(cartProduct);
-        }
+        deleteProductCart(cartProduct){
+            const cartStorage = this.addedProducts.filter(product => product.id !== cartProduct.id)
+            localStorage.setItem('addedProducts', JSON.stringify(cartStorage))
+            console.log(this.addedProducts);
+        },
+        openCatalog(){
+            this.$router.push({name: 'sorted'})
+        },
+        goHome(){
+            this.$router.push({name: 'main'})
+        },
     },
     computed: {
         // извлечение данных товара со стора
         ...mapState({
             products: state => state.products,
         }),
-
-        // Свойство достает все добавленные товары в корзину
+            // Свойство достает все добавленные товары в корзину
         cartProducts(){
             let cartProductsData = new Array()
             // Итерируемся по массиву товаров со стора (state.products),
-            // for(const product of this.products){
-            //     // Итерируемся по массиву товаров в localStorage (addedProducts)
-            //     for(const cartItem of this.addedProducts){
-            //         if(JSON.stringify(product.id) === JSON.stringify(cartItem.id)){
-            //             if(!cartProductsData.includes(product)){
-            //                 cartProductsData.push(product)
-            //             }
-            //         }else{
-            //             continue
-            //         }
-            //     }
-            // }
+            if(this.addedProducts){
+                for(const product of this.products){
+                    // Итерируемся по массиву товаров в localStorage (addedProducts)
+                    for(const cartItem of this.addedProducts){
+                        if(JSON.stringify(product.id) === JSON.stringify(cartItem.id)){
+                            if(!cartProductsData.includes(product)){
+                                cartProductsData.push(product)
+                            }
+                        }else{
+                            continue
+                        }
+                    }
+                }
+            }else{
+                return []
+            }
             // Возвращаем массив товара который в корзине
             return cartProductsData
         },
     },
     mounted() {
+        // console.log(JSON.parse(localStorage.getItem('addedProducts')));
     },
 
 }

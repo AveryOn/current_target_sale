@@ -12,6 +12,8 @@ import ButtonUp from '@/components/UI/buttonUp'
 import ButtonCloseMini from '@/components/UI/buttonCloseMini'
 import CheckboxComp from '@/components/UI/checkboxComp'
 import RangeInput from '@/components/UI/rangeInput'
+import NotificationErrorComp from '@/components/UI/notificationErrorComp'
+import NotificationSuccessComp from '@/components/UI/notificationSuccessComp'
 import icons from './icons'
  
 export default [
@@ -28,5 +30,7 @@ export default [
     ButtonCloseMini,
     CheckboxComp,
     RangeInput,
+    NotificationErrorComp,
+    NotificationSuccessComp,
     ...icons,
 ]

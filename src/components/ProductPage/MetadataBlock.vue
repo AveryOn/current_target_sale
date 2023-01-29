@@ -2,6 +2,24 @@
 <template>
     <!-- ГЛАВНЫЙ БЛОК С МЕТАДАННЫМИ ТОВАРА -->
     <div class="metadata-block">
+
+        <!-- Уведомление ТОВАР УЖЕ ДОБАВЛЕН В КОРИЗНУ -->
+        <notification-error 
+        @notificationClose="repeatCartProduct = false"
+        :show="repeatCartProduct"
+        >
+            {{'Данный товар уже добавлен в корзину'}}
+        </notification-error>
+
+        <!-- Уведомление ТОВАР ДОБАВЛЕН В КОРИЗНУ -->
+        <notification-success 
+        class="notification__add-cart-prod"
+        @notificationClose="addProductCart = false"
+        :show="addProductCart"
+        >
+            {{'Товар успешно добавлен в корзину!'}}
+        </notification-success>
+
         <!-- КОНТЕЙНЕР ДЛЯ НАЗВАНИЯ И ЦЕНЫ -->
         <div class="metadata-block_title">
             <!-- НАЗВАНИЕ ТОВАРА -->
@@ -21,9 +39,9 @@
         <!-- КОНТЕЙНЕР ДЛЯ КНОПОК -->
         <div class="metadata-block_btns">
             <!-- добавляет товар в корзину -->
-            <button-comp @click="addProductToCart">Add to Cart</button-comp>
+            <button-comp @click="addProductToCart">Добавить в корзину</button-comp>
             <!-- открывает все данные о товаре -->
-            <button-comp @click="addProductToCart2">More...</button-comp>
+            <button-comp @click="null">More...</button-comp>
         </div>
     </div>
 </template>
@@ -32,34 +50,58 @@ import { mapState } from 'vuex';
 export default {
     data(){ 
         return{
+            addProductCart: false,
+            repeatCartProduct: false,
         }
     },
     methods: {
         addProductToCart(){
-            const listCartProducts = JSON.parse(localStorage.getItem('addedProducts'))
+            let listCartProducts = JSON.parse(localStorage.getItem('addedProducts'))
             if(listCartProducts){
-                for(const product of listCartProducts){
-                    if(!JSON.stringify(listCartProducts).includes(JSON.stringify(this.currentProduct))){
-                        listCartProducts.push(this.currentProduct)
-                        localStorage.setItem('addedProducts', JSON.stringify(listCartProducts))
-                    }else{
-                        continue
+                if(listCartProducts.length > 0){
+                    for(const product of listCartProducts){
+                        if(!JSON.stringify(listCartProducts).includes(JSON.stringify(this.currentProduct))){
+                            listCartProducts.push(this.currentProduct)
+                            localStorage.setItem('addedProducts', JSON.stringify(listCartProducts))
+                            this.addProductCart = true
+                            window.setTimeout(() => {
+                                this.addProductCart = false
+                            }, 2500)
+                        }
+                        else{
+                            if(!this.addProductCart){
+                                this.repeatCartProduct = true
+                                window.setTimeout(() => {
+                                    this.repeatCartProduct = false
+                                }, 2500)
+                            }else{
+                                continue
+                            }
+                        }
                     }
+                }else{
+                    listCartProducts.push(this.currentProduct)
+                    localStorage.setItem('addedProducts', JSON.stringify(listCartProducts))
+                    this.addProductCart = true
+                    window.setTimeout(() => {
+                        this.addProductCart = false
+                    }, 2500)
                 }
             }else{
                 localStorage.setItem('addedProducts', JSON.stringify([this.currentProduct]))
+                this.addProductCart = true
+                window.setTimeout(() => {
+                    this.addProductCart = false
+                }, 2500)
             }
         },
-        addProductToCart2(){
-            console.log('this is addProductToCart2');
-        }
     },
     mounted(){
     },
     computed:{
         // извлечение данных товара со стора
         ...mapState({
-            products: state => state.products, 
+            products: state => state.products,
         }),
         currentProduct(){
             for(const product of this.products){
@@ -144,6 +186,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.notification__add-cart-prod{
+    
+}
 .metadata-block{
     display: flex;
     flex-direction: column;
