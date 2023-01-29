@@ -1,6 +1,24 @@
 <!-- ЕДИНИЦА ТОВАРА НАХОДЯЩАЯСЯ В КОРЗИНЕ -->
 <template>
     <div class="cart-item">
+        
+        <!-- Чекбокс появляется когда активирован deleteModeCart удаление товара с корзины -->
+        <checkbox-comp 
+        class="checkbox__delete-mode-cart" 
+        v-model="selectCartProduct" 
+        v-show="this.deleteModeCart">
+        </checkbox-comp>
+
+        <!-- Слой который закрывает карточку товара при активном моде удаления товара с корзины -->
+        <div 
+        class="cart__gray-layout" 
+        v-show="deleteModeCart"
+        @click="selectCartProduct = !selectCartProduct"
+        >
+            <div v-show="selectCartProduct" class="gray-layout-checked">Выбрано!</div>
+            Нажмите на этот товар если хотите его выбрать
+        </div>
+
         <div class="image"></div>
         <div class="description-item">
             <div class="description-title">Название: {{ cartProduct.name }}</div>
@@ -17,7 +35,7 @@
     </div>
 </template>
 <script>
-
+import { mapState } from 'vuex'
 export default {
     props: {
         cartProduct: {
@@ -25,28 +43,75 @@ export default {
             requierd: true,
         },
     },
+    data() {
+        return {
+            selectCartProduct: false
+        }
+    },
     methods:{
         deleteProductCart(){
             this.$emit('deleteProductCart', this.cartProduct)
         }
     },
+    computed: {
+        ...mapState({
+            deleteModeCart: state => state.CartModule.deleteModeCart
+        }),
+    },
+    mounted(){
+        if(this.deleteModeCart){
+            const cartItem = document.querySelector('.cart-item')
+        }
+    },
 }
 </script>
 <style lang="scss" scoped>
+.cart__gray-layout{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(128, 128, 128, 0.379);
+    border-radius: $radius;
+    color: rgba(128, 128, 128, 0.789);
+    font-size: 30px;
+    font-weight: bolder;
+    cursor: pointer;
+    .gray-layout-checked{
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(40, 238, 40, 0.5);
+        color: rgba(255, 255, 255, 0.6);
+        padding: 10px;
+        border-radius: $radius;
+    }
+}
 .cart-item{
+    position: relative;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 100%;
+    width: 95%;
     height: 180px;
     height: max-content;
     margin-bottom: 30px;
+    margin-left: 20px;
     padding: 5px 15px;
     border: $border;
     border-radius: $radius;
     background: linear-gradient(to right, #fc3b22, $color-orange-white);
     &:hover{
         box-shadow: $shadow;
+    }
+    .checkbox__delete-mode-cart{
+        position: absolute;
+        left: -6px;
+        top: 45%;
     }
     .image{
         min-width: 120px;

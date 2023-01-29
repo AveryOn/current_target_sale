@@ -17,9 +17,30 @@
                     <div class="products-optional-header">
                         <div>#тут будет TagsBar</div>
                         <div class="optional-btns">
-                            <button-comp class="btn-optional">Очистить корзину</button-comp>
-                            <button-comp class="btn-optional">Удалить несколько</button-comp>
-                            <button-comp class="btn-optional">View...</button-comp>
+
+                            <!-- Кнопка очищает корзину полностью -->
+                            <form type="submit">
+                                <button-comp 
+                                v-show="cartProducts.length > 0" 
+                                class="btn-optional"
+                                @click="cartClear"
+                                >
+                                    Очистить корзину
+                                </button-comp>
+                            </form>
+
+                            <!-- Кнопка ползволяет удалить несколько товаров на выбор -->
+                            <button-comp 
+                            v-show="cartProducts.length > 1" 
+                            class="btn-optional"
+                            id="deleteModeCart"
+                            @click="deleteSelectProduct"
+                            >
+                                {{ (deleteModeCart)? 'Отменить удаление' : 'Удалить несколько' }}
+                            </button-comp>
+
+
+                            <button-comp v-show="cartProducts.length > 0" class="btn-optional">View...</button-comp>
                             <button-comp class="btn-optional">Restore</button-comp>
                         </div>
                     </div>
@@ -49,6 +70,9 @@
 
                     <!-- Отрисовка товара в корзине -->
                     <div v-show="cartProducts.length > 0" class="cart-products-items">
+
+                        
+                        <!-- Отрисовка товаров в корзине -->
                         <cart-product-item
                         v-for="cartProduct in cartProducts"
                         :key="cartProduct.id"
@@ -57,19 +81,17 @@
                         >
                         </cart-product-item>
                     </div>
-                    <div class="hidden-content-block">
-                        <p 
-                        @click="openListCartProduct"
-                        v-show="!openListCart"
-                        >
+                    <!-- БЛОК СКРЫВАЮЩИЙ ЧАСТЬ СПИСКА КОРЗИНЫ -->
+                    <div v-show="!openListCart && cartProducts.length >= 3" class="open-content-block">
+                        <p @click="openListCartProduct">
                             <strong>
                                 Посмотреть все товары
                             </strong>
                         </p>
-                        <p 
-                        @click="hiddenListCartProduct"
-                        v-show="openListCart"
-                        >
+                    </div>
+                    <!-- БЛОК С КНОПКОЙ "Скрыть товары" -->
+                    <div v-show="openListCart" class="hidden-content-block">
+                        <p @click="hiddenListCartProduct">
                             <strong>
                                 Скрыть товары
                             </strong>
@@ -83,7 +105,7 @@
 <script>
 import FilterPanel from '@/components/CatalogPage/FilterPanel.vue'
 import cartProductItem from '@/components/CartPage/cartProductItem.vue'
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 export default {
     components: {
         FilterPanel,
@@ -91,22 +113,39 @@ export default {
     },
     data(){ 
         return{
+            // Поле получает с localStorage данные массива с товаром для корзины
             addedProducts: JSON.parse(localStorage.getItem('addedProducts')),
+
+            // Поле получает с localStorage булевую перменную показывающая развернута или свернута корзина
             openListCart: JSON.parse(localStorage.getItem('openListCartProduct')),
+
+            // Поле используется для включения режима удаления товара на выбор
+            // deleteModeCart: false,
         }
     },
     methods: {
+        ...mapMutations({
+            activateDeleteModeCart: 'CartModule/activateDeleteModeCart',
+        }),
+
+        // Метод удаляет товар с корзины товаров
         deleteProductCart(cartProduct){
             const cartStorage = this.addedProducts.filter(product => product.id !== cartProduct.id)
             localStorage.setItem('addedProducts', JSON.stringify(cartStorage))
             console.log(this.addedProducts);
         },
+
+        // Метод перенаправляет пользователя на каталог всех товаров 
         openCatalog(){
             this.$router.push({name: 'sorted'})
         },
+
+        // Метод возвращает пользователя на главную страницу
         goHome(){
             this.$router.push({name: 'main'})
         },
+
+        // Метод разворачивает корзину с товарами для просмотра всех товаров
         openListCartProduct(){
             const listCartProducts = document.querySelector('.cart-products-items')
             localStorage.setItem('openListCartProduct', JSON.stringify(true))
@@ -114,19 +153,54 @@ export default {
             listCartProducts.style.overflow = 'visible'
             listCartProducts.style.maxHeight = 'max-content'
         },
+
+        // Метод возвращает в исходное состояние отрисовку товара в корзине 
         hiddenListCartProduct(){
             localStorage.setItem('openListCartProduct', JSON.stringify(false))
             this.openListCart = false
             const listCartProducts = document.querySelector('.cart-products-items')
             listCartProducts.style.overflow = 'hidden'
             listCartProducts.style.maxHeight = '80vh'
+        },
+
+        // Метод очищает корзину
+        cartClear(){
+            localStorage.setItem('addedProducts', JSON.stringify([]))
+        },
+
+        // Метод ползволяет удалить несколько товаров на выбор
+        deleteSelectProduct(){
+            this.$store.commit('CartModule/activateDeleteModeCart')
+            localStorage.setItem('deleteModeCart', JSON.stringify(this.deleteModeCart))
+        }
+    },
+    watch: {
+        deleteModeCart(){
+            // Если deleteModeCart = true то бэкграунд цвет кнопки будет красным
+            if(this.deleteModeCart){
+                const activeDeleteModeCart = document.querySelector('#deleteModeCart')
+                activeDeleteModeCart.style.backgroundColor = '#ff3419'
+                activeDeleteModeCart.style.color = 'white'
+                activeDeleteModeCart.style.border = '2px dashed white'
+                activeDeleteModeCart.style.position = 'relative'
+                activeDeleteModeCart.style.top = '-5px'
+            }else{
+                const activeDeleteModeCart = document.querySelector('#deleteModeCart')
+                activeDeleteModeCart.style.background = ''
+                activeDeleteModeCart.style.color = ''
+                activeDeleteModeCart.style.border = ''
+                activeDeleteModeCart.style.position = ''
+                activeDeleteModeCart.style.top = ''
+            }
         }
     },
     computed: {
         // извлечение данных товара со стора
         ...mapState({
             products: state => state.products,
+            deleteModeCart: state => state.CartModule.deleteModeCart,
         }),
+
             // Свойство достает все добавленные товары в корзину
         cartProducts(){
             let cartProductsData = new Array()
@@ -155,7 +229,6 @@ export default {
         // Если нет переменной openListCartProduct в localeStorage, то this.openListCart = false
         if(!localStorage.getItem('openListCartProduct')){
             this.openListCart = false
-            console.log(this.openListCart);
         }
 
         // Корзина товара остается развернутой если в localeStorage переменная openListCartProduct = true
@@ -323,10 +396,11 @@ export default {
             max-height: 80vh;
             margin: 50px auto 20px auto;
             padding: 5px;
-            width: 85%;
-            overflow: hidden;
+            width: 90%;
+            overflow-y: hidden;
+            overflow-x: visible;
         }
-        .hidden-content-block{
+        .open-content-block{
             position: absolute;
             display: flex;
             flex-direction: column;
@@ -336,6 +410,28 @@ export default {
                 rgba(255, 255, 255, 0.85),
                 rgba(255, 255, 255, 0.0),
             );
+            bottom: 0;
+            border-bottom-left-radius: $radius;
+            border-bottom-right-radius: $radius;
+            width: 100%;
+            height: 100px;
+            & p{
+                position: relative;
+                bottom: 20px;
+                display: block;
+                color: $color-orange-white;
+                border-bottom: $border; 
+                margin: auto auto 0 auto;
+                &:hover{
+                    cursor: pointer;
+                    border-bottom: 3px solid $color-orange-white;
+                }
+            }
+        }
+        .hidden-content-block{
+            position: absolute;
+            display: flex;
+            flex-direction: column;
             bottom: 0;
             border-bottom-left-radius: $radius;
             border-bottom-right-radius: $radius;

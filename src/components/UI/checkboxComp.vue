@@ -7,6 +7,7 @@
 </template>
 <script>
 export default {
+    name: 'checkbox-comp',
     props: {
         modelValue: {
             checked:{
