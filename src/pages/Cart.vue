@@ -71,7 +71,30 @@
                         </div>
                     </div>
 
+                    <!-- ПАНЕЛЬ С КНОПКАМИ. РЕЖИМ ВЫБОРОЧНОГО УДАЛЕНИЯ ТОВАРОВ С КОРЗИНЫ -->
+                    <!-- Отрисовывается когда включен режим deleteModeCart -->
+                    <div class="delete-mode-cart--btns">
+                        <!-- Кнопка "ВЫБРАТЬ ВСЁ" -->
+                        <button-comp 
+                        class="select-all-cart-item"
+                        v-show="deleteModeCart"
+                        @click="this.$store.commit('CartModule/changeSelectCartProduct')"
+                        >
+                            Выбрать всё
+                        </button-comp>
+
+                        <!-- Кнопка "СНЯТЬ ВЫДЕЛЕНИЕ" -->
+                        <button-comp
+                        v-show="deleteModeCart"
+                        @click="this.$store.commit('CartModule/changeRemoveCartProduct')"
+                        >
+                            Снять выделение
+                        </button-comp>
+
+                    </div>
+
                     <!-- Блок для подтверждения удаления всех товаров с корзины -->
+                    <!-- Отрисовывается когда открыто нажата кнопка "Очистить корзину" -->
                     <form type="submit">
                         <notification-confirm 
                         class="confirm--cart"
@@ -130,7 +153,7 @@
                         </p>
                     </div>
                     <!-- БЛОК С КНОПКОЙ "Скрыть товары" -->
-                    <div v-show="openListCart" class="hidden-content-block">
+                    <div v-show="openListCart && cartProducts.length >= 3" class="hidden-content-block">
                         <p @click="hiddenListCartProduct">
                             <strong>
                                 Скрыть товары
@@ -222,7 +245,12 @@ export default {
             }else{
                 this.hiddenListCartProduct()
             }
-        }
+        },
+
+        // Метод позволяет выбрать все элементы при режиме deleteModeCart
+        selectAllCartItem(){
+            console.log('selectAllCartItem');
+        },
     },
     watch: {
         deleteModeCart(){
@@ -386,7 +414,11 @@ export default {
             border-radius: $radius;
             z-index: 999;
         }
-        
+        .delete-mode-cart--btns{
+            display: flex;
+            justify-content: flex-start;
+        }
+
         // Блок подтверждения удаления 
         .confirm--cart{
             position: absolute;

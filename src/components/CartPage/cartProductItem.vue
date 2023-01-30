@@ -13,10 +13,10 @@
         <div 
         class="cart__gray-layout" 
         v-show="deleteModeCart"
-        @click="selectCartProduct = !selectCartProduct"
+        @click="selectCartItem"
         >
             <!-- Табличка "Выбрано" -->
-            <div v-show="selectCartProduct" class="gray-layout-checked">Выбрано!</div>
+            <div v-show="selectCartProductOne || selectCartProduct" class="gray-layout-checked">Выбрано!</div>
             Нажмите на этот товар если хотите его выбрать
         </div>
 
@@ -46,23 +46,40 @@ export default {
     },
     data() {
         return {
-            selectCartProduct: false
+            // Поле служит для одиночного выбора товара
+            selectCartProductOne: false,
+
+
         }
     },
     methods:{
+        // Метод удаляет товар с корзины
         deleteProductCart(){
             this.$emit('deleteProductCart', this.cartProduct)
-        }
+        },
+
+        // Метод отмечает карточку товара при режиме удаления
+        selectCartItem(){
+            this.selectCartProductOne = !this.selectCartProductOne
+        },
     },
     computed: {
         ...mapState({
-            deleteModeCart: state => state.CartModule.deleteModeCart
+            deleteModeCart: state => state.CartModule.deleteModeCart,
+            selectCartProduct: state => state.CartModule.selectCartProduct,
+            removeSelectAll: state => state.CartModule.removeSelectAll,
         }),
     },
-    mounted(){
-        if(this.deleteModeCart){
-            const cartItem = document.querySelector('.cart-item')
+    watch:{
+        removeSelectAll(newValue){
+            if(newValue){
+                this.selectCartProductOne = false
+                this.$store.commit('CartModule/changeSelectCartProduct')
+            }
         }
+    },
+    mounted(){
+
     },
 }
 </script>
