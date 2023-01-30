@@ -1,4 +1,4 @@
-// Переиспользуемые общие UI-компоненты
+// Переиспользуемые UI-компоненты
 import ButtonComp from '@/components/UI/buttonComp'
 import InputComp from '@/components/UI/inputComp'
 import h1Comp from '@/components/UI/h1Comp'
@@ -14,6 +14,7 @@ import CheckboxComp from '@/components/UI/checkboxComp'
 import RangeInput from '@/components/UI/rangeInput'
 import NotificationErrorComp from '@/components/UI/notificationErrorComp'
 import NotificationSuccessComp from '@/components/UI/notificationSuccessComp'
+import NotificationConfirmComp from '@/components/UI/notificationConfirmComp'
 import icons from './icons'
  
 export default [
@@ -32,5 +33,6 @@ export default [
     RangeInput,
     NotificationErrorComp,
     NotificationSuccessComp,
+    NotificationConfirmComp,
     ...icons,
 ]

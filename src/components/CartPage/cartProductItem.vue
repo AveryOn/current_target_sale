@@ -15,6 +15,7 @@
         v-show="deleteModeCart"
         @click="selectCartProduct = !selectCartProduct"
         >
+            <!-- Табличка "Выбрано" -->
             <div v-show="selectCartProduct" class="gray-layout-checked">Выбрано!</div>
             Нажмите на этот товар если хотите его выбрать
         </div>
@@ -83,8 +84,8 @@ export default {
     cursor: pointer;
     .gray-layout-checked{
         position: absolute;
-        top: 0;
-        left: 0;
+        top: 10px;
+        left: 10px;
         background-color: rgba(40, 238, 40, 0.5);
         color: rgba(255, 255, 255, 0.6);
         padding: 10px;
@@ -105,6 +106,7 @@ export default {
     border: $border;
     border-radius: $radius;
     background: linear-gradient(to right, #fc3b22, $color-orange-white);
+    z-index: 1;
     &:hover{
         box-shadow: $shadow;
     }

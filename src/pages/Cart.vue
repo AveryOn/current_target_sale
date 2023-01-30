@@ -14,20 +14,32 @@
                 <!-- ФИЛЬТЕР ПАНЕЛЬ -->
                 <filter-panel class="filter-panel"></filter-panel>
                 <div class="cart-products-layout">
+
+                    <!-- Слой перекрывает компоненты корзины если активно окно подтверждения очищения корзины -->
+                    <div 
+                    class="cart-products-layout__disabled"
+                    v-show="isShowConfirmDelete"
+                    >
+
+                    </div>
+
                     <div class="products-optional-header">
                         <div>#тут будет TagsBar</div>
+
+                        <!-- НАВБАР ДЛЯ УПРАВЛЕНИЯ КОРЗИНОЙ -->
                         <div class="optional-btns">
 
                             <!-- Кнопка очищает корзину полностью -->
-                            <form type="submit">
-                                <button-comp 
-                                v-show="cartProducts.length > 0" 
-                                class="btn-optional"
-                                @click="cartClear"
-                                >
-                                    Очистить корзину
-                                </button-comp>
-                            </form>
+                            <button-comp 
+                            v-show="cartProducts.length > 0" 
+                            class="btn-optional"
+                            @click="isShowConfirmDelete = true"
+                            :disabled="isShowConfirmDelete"
+                            >
+                                Очистить корзину
+                            </button-comp>
+                            <!-- <form type="submit">
+                            </form> -->
 
                             <!-- Кнопка ползволяет удалить несколько товаров на выбор -->
                             <button-comp 
@@ -35,15 +47,43 @@
                             class="btn-optional"
                             id="deleteModeCart"
                             @click="deleteSelectProduct"
+                            :disabled="isShowConfirmDelete"
                             >
                                 {{ (deleteModeCart)? 'Отменить удаление' : 'Удалить несколько' }}
                             </button-comp>
 
 
-                            <button-comp v-show="cartProducts.length > 0" class="btn-optional">View...</button-comp>
-                            <button-comp class="btn-optional">Restore</button-comp>
+                            <button-comp 
+                            class="btn-optional"
+                            v-show="cartProducts.length  > 0" 
+                            :disabled="isShowConfirmDelete" 
+                            >
+                                View...
+                            </button-comp>
+                            
+                            <button-comp 
+                            class="btn-optional" 
+                            :disabled="isShowConfirmDelete"
+                            >
+                                Restore
+                            </button-comp>
+
                         </div>
                     </div>
+
+                    <!-- Блок для подтверждения удаления всех товаров с корзины -->
+                    <form type="submit">
+                        <notification-confirm 
+                        class="confirm--cart"
+                        :show="isShowConfirmDelete" 
+                        @eventNo="isShowConfirmDelete = false"
+                        @eventYes="cartClear"
+                        
+                        >
+                            Вы действительно хотите очистить корзину?
+    
+                        </notification-confirm>
+                    </form>
 
                     <!-- Заголовок показывается когда корзина пуста -->
                     <h2 v-show="cartProducts.length <= 0" class="empty-cart-products">В вашей ебучей корзине нема товара, добавьте что-нибудь...</h2>
@@ -121,6 +161,9 @@ export default {
 
             // Поле используется для включения режима удаления товара на выбор
             // deleteModeCart: false,
+
+            // Поле используется для отображения уведомления об подтверждении удаления всего товара
+            isShowConfirmDelete: false,
         }
     },
     methods: {
@@ -172,6 +215,13 @@ export default {
         deleteSelectProduct(){
             this.$store.commit('CartModule/activateDeleteModeCart')
             localStorage.setItem('deleteModeCart', JSON.stringify(this.deleteModeCart))
+
+            // Если список товаров в корзине скрытый то он раскрывается
+            if(!this.openListCart){
+                this.openListCartProduct()
+            }else{
+                this.hiddenListCartProduct()
+            }
         }
     },
     watch: {
@@ -201,7 +251,7 @@ export default {
             deleteModeCart: state => state.CartModule.deleteModeCart,
         }),
 
-            // Свойство достает все добавленные товары в корзину
+        // Свойство достает все добавленные товары в корзину
         cartProducts(){
             let cartProductsData = new Array()
             // Итерируемся по массиву товаров со стора (state.products),
@@ -236,6 +286,13 @@ export default {
             const listCartProducts = document.querySelector('.cart-products-items')
             listCartProducts.style.overflow = 'visible'
             listCartProducts.style.maxHeight = 'max-content'
+            if(this.cartProducts.length < 3){
+                localStorage.setItem('openListCartProduct', JSON.stringify(false))
+                this.openListCart = false
+            }else{
+                localStorage.setItem('openListCartProduct', JSON.stringify(true))
+                this.openListCart = true
+            }
         }else{
             this.openListCart = false
             const listCartProducts = document.querySelector('.cart-products-items')
@@ -316,6 +373,25 @@ export default {
             margin: 5px;
             box-shadow: $shadow;
             background-color: white;
+        }
+
+        // Слой перекрывающий окно корзины при подтверждении очищения корзины
+        .cart-products-layout__disabled{
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            bottom: -1px;
+            left: -1px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: $radius;
+            z-index: 999;
+        }
+        
+        // Блок подтверждения удаления 
+        .confirm--cart{
+            position: absolute;
+            top: 100px;
+            left: 28%;
         }
         .products-optional-header{
             display: flex;
@@ -403,6 +479,7 @@ export default {
         .open-content-block{
             position: absolute;
             display: flex;
+            z-index: 2;
             flex-direction: column;
             background: linear-gradient(
                 360deg, 
