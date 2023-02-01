@@ -5,7 +5,7 @@
         <!-- Чекбокс появляется когда активирован deleteModeCart удаление товара с корзины -->
         <checkbox-comp 
         class="checkbox__delete-mode-cart" 
-        v-model="selectCartProduct" 
+        v-model="selectCartProductOne" 
         v-show="this.deleteModeCart">
         </checkbox-comp>
 
@@ -16,7 +16,12 @@
         @click="selectCartItem"
         >
             <!-- Табличка "Выбрано" -->
-            <div v-show="selectCartProductOne || selectCartProduct" class="gray-layout-checked">Выбрано!</div>
+            <div 
+            v-show="selectCartProductOne" 
+            class="gray-layout-checked"
+            >
+                Выбрано!
+            </div>
             Нажмите на этот товар если хотите его выбрать
         </div>
 
@@ -48,8 +53,6 @@ export default {
         return {
             // Поле служит для одиночного выбора товара
             selectCartProductOne: false,
-
-
         }
     },
     methods:{
@@ -61,8 +64,13 @@ export default {
         // Метод отмечает карточку товара при режиме удаления
         selectCartItem(){
             this.selectCartProductOne = !this.selectCartProductOne
+            if(this.selectCartProductOne){
+                this.$emit('selectCartProductOne', {data: this.cartProduct, isSelect: true})
+            }else{
+                this.$emit('selectCartProductOne', {data: this.cartProduct, isSelect: false})
+            }
         },
-    },
+    },  
     computed: {
         ...mapState({
             deleteModeCart: state => state.CartModule.deleteModeCart,
@@ -71,10 +79,33 @@ export default {
         }),
     },
     watch:{
+
+        // Свойство отслеживает изменение клика по кнопке "Выбрать всё" 
+        selectCartProduct(newValue){
+            if(newValue){
+                this.selectCartProductOne = true
+            }else{
+                this.selectCartProductOne = false
+            }
+        },
+
+        // Свойство отслеживает изменение клика по кнопке "Снять выделение" 
         removeSelectAll(newValue){
             if(newValue){
                 this.selectCartProductOne = false
-                this.$store.commit('CartModule/changeSelectCartProduct')
+            }
+        },
+
+        // Свойство отслеживает изменение одиночного клика по товару в корзине
+        selectCartProductOne(newValue){
+            if(newValue){
+                // Если одиночный клик по товару произошел то переменная removeSelectAll = false
+                this.$store.commit('CartModule/falseRemoveCArtProduct')
+                if(this.selectCartProductOne){
+                this.$emit('selectCartProductOne', {data: this.cartProduct, isSelect: true})
+                }else{
+                    this.$emit('selectCartProductOne', {data: this.cartProduct, isSelect: false})
+                }
             }
         }
     },

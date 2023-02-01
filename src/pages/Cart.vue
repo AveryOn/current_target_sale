@@ -78,7 +78,7 @@
                         <button-comp 
                         class="select-all-cart-item"
                         v-show="deleteModeCart"
-                        @click="this.$store.commit('CartModule/changeSelectCartProduct')"
+                        @click="this.$store.commit('CartModule/activeSelectCartProduct')"
                         >
                             Выбрать всё
                         </button-comp>
@@ -89,6 +89,22 @@
                         @click="this.$store.commit('CartModule/changeRemoveCartProduct')"
                         >
                             Снять выделение
+                        </button-comp>
+
+                        <!-- Кнопка "УДАЛИТЬ ВЫБРАННОЕ" -->
+                        <button-comp
+                        v-show="deleteModeCart"
+                        @click="deleteAllSelectProducts"
+                        >
+                            Удалить выбранное
+                        </button-comp>
+
+                        <!-- TESTING -->
+                        <button-comp
+                        v-show="deleteModeCart"
+                        @click="log"
+                        >
+                            log_
                         </button-comp>
 
                     </div>
@@ -141,6 +157,7 @@
                         :key="cartProduct.id"
                         :cartProduct="cartProduct"
                         @deleteProductCart="deleteProductCart(cartProduct)"
+                        @selectCartProductOne="selectCartProductOne"
                         >
                         </cart-product-item>
                     </div>
@@ -187,9 +204,15 @@ export default {
 
             // Поле используется для отображения уведомления об подтверждении удаления всего товара
             isShowConfirmDelete: false,
+            
+            // Массив в который записываются товары выбранные для выборочного удаления
+            forDeleteProducts: [],
         }
     },
     methods: {
+        log(){
+            console.log(this.forDeleteProducts);
+        },
         ...mapMutations({
             activateDeleteModeCart: 'CartModule/activateDeleteModeCart',
         }),
@@ -199,6 +222,26 @@ export default {
             const cartStorage = this.addedProducts.filter(product => product.id !== cartProduct.id)
             localStorage.setItem('addedProducts', JSON.stringify(cartStorage))
             console.log(this.addedProducts);
+        },
+
+        // Метод добавляет выбранный товар в список для удаления
+        selectCartProductOne(cartProduct){
+            
+            // Поле cartProduct.data - содержит в себе выбранный товар в корзине
+            // Поле cartProduct.isSelect - содержит в себе флаг выбран ли товар или удален из выбранного
+            if(cartProduct.isSelect){
+                if(!this.forDeleteProducts.includes(cartProduct.data)){
+                    this.forDeleteProducts.push(cartProduct.data)
+                }else{
+                    return false
+                }
+            }else{
+                if(this.forDeleteProducts.length > 0){
+                    this.forDeleteProducts.splice(this.forDeleteProducts.indexOf(cartProduct.data), 1)
+                }else{
+                    return false
+                }
+            }
         },
 
         // Метод перенаправляет пользователя на каталог всех товаров 
@@ -246,6 +289,30 @@ export default {
                 this.hiddenListCartProduct()
             }
         },
+        deleteAllSelectProducts(event){
+            if(this.addedProducts.length > 0){
+                let newCartList = this.addedProducts.filter(cartProduct => {
+                    for(const deleteProduct of this.forDeleteProducts){
+                        if(!JSON.stringify(cartProduct.name).includes(JSON.stringify(deleteProduct.name))){
+                            // console.log("Фильтрует");
+                            return true
+                        }else{
+                            // console.log("НЕ Фильтрует");
+                            return false
+                        }
+                    }
+                })
+                if(newCartList.length > 0){
+                    // localStorage.setItem('addedProducts', JSON.stringify(newCartList))
+                    this.$store.commit('CartModule/changeRemoveCartProduct')
+                    console.log(newCartList);
+                }else{
+                    return false
+                }
+            }else{
+                return false
+            }
+        },
 
         // Метод позволяет выбрать все элементы при режиме deleteModeCart
         selectAllCartItem(){
@@ -253,6 +320,7 @@ export default {
         },
     },
     watch: {
+        // Режим выборочного удаления товара
         deleteModeCart(){
             // Если deleteModeCart = true то бэкграунд цвет кнопки будет красным
             if(this.deleteModeCart){
@@ -270,15 +338,31 @@ export default {
                 activeDeleteModeCart.style.position = ''
                 activeDeleteModeCart.style.top = ''
             }
+        },
+        
+        // Отслеживает нажатие кнопки "Выбрать весь товар" при режиме выборочного удаления
+        selectCartProduct(newValue){
+            if(newValue){
+                this.forDeleteProducts = this.cartProducts
+            }
+        },
+        // Отслеживает нажатие кнопки "Выбрать весь товар" при режиме выборочного удаления
+        removeSelectAll(newValue){
+            if(newValue){
+                this.forDeleteProducts = []
+            }
         }
+        
     },
     computed: {
         // извлечение данных товара со стора
         ...mapState({
             products: state => state.products,
             deleteModeCart: state => state.CartModule.deleteModeCart,
+            selectCartProduct: state => state.CartModule.selectCartProduct,
+            removeSelectAll: state => state.CartModule.removeSelectAll,
         }),
-
+        
         // Свойство достает все добавленные товары в корзину
         cartProducts(){
             let cartProductsData = new Array()

@@ -16,17 +16,20 @@ export const CartModule = {
         activateDeleteModeCart(state){
             state.deleteModeCart = !state.deleteModeCart
         },
-        // Режим ужаления товаров с корзины
+        // Режим удаления товаров с корзины
         // Выбирает весь товар в корзине
-        changeSelectCartProduct(state){
-            state.selectCartProduct = !state.selectCartProduct
+        activeSelectCartProduct(state){
+            state.selectCartProduct = true
         },
-        // Режим ужаления товаров с корзины
+        // Режим удаления товаров с корзины
         // Выбирает весь товар в корзине
         changeRemoveCartProduct(state){
-            state.removeSelectAll = !state.removeSelectAll
-            console.log('changeRemoveCartProduct');
+            state.selectCartProduct = false
+            state.removeSelectAll = true
         },
+        falseRemoveCArtProduct(state){
+            state.removeSelectAll = false
+        }
     },
     getters: {
 
