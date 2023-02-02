@@ -73,41 +73,43 @@
 
                     <!-- ПАНЕЛЬ С КНОПКАМИ. РЕЖИМ ВЫБОРОЧНОГО УДАЛЕНИЯ ТОВАРОВ С КОРЗИНЫ -->
                     <!-- Отрисовывается когда включен режим deleteModeCart -->
-                    <div class="delete-mode-cart--btns">
-                        <!-- Кнопка "ВЫБРАТЬ ВСЁ" -->
-                        <button-comp 
-                        class="select-all-cart-item"
-                        v-show="deleteModeCart"
-                        @click="this.$store.commit('CartModule/activeSelectCartProduct')"
-                        >
-                            Выбрать всё
-                        </button-comp>
-
-                        <!-- Кнопка "СНЯТЬ ВЫДЕЛЕНИЕ" -->
-                        <button-comp
-                        v-show="deleteModeCart"
-                        @click="this.$store.commit('CartModule/changeRemoveCartProduct')"
-                        >
-                            Снять выделение
-                        </button-comp>
-
-                        <!-- Кнопка "УДАЛИТЬ ВЫБРАННОЕ" -->
-                        <button-comp
-                        v-show="deleteModeCart"
-                        @click="deleteAllSelectProducts"
-                        >
-                            Удалить выбранное
-                        </button-comp>
-
-                        <!-- TESTING -->
-                        <button-comp
-                        v-show="deleteModeCart"
-                        @click="log"
-                        >
-                            log_
-                        </button-comp>
-
-                    </div>
+                    <form type="submit">
+                        <div class="delete-mode-cart--btns">
+                            <!-- Кнопка "ВЫБРАТЬ ВСЁ" -->
+                            <button-comp 
+                            class="select-all-cart-item"
+                            v-show="deleteModeCart"
+                            @click.prevent="this.$store.commit('CartModule/activeSelectCartProduct')"
+                            >
+                                Выбрать всё
+                            </button-comp>
+    
+                            <!-- Кнопка "СНЯТЬ ВЫДЕЛЕНИЕ" -->
+                            <button-comp
+                            v-show="deleteModeCart"
+                            @click.prevent="this.$store.commit('CartModule/changeRemoveCartProduct')"
+                            >
+                                Снять выделение
+                            </button-comp>
+    
+                            <!-- Кнопка "УДАЛИТЬ ВЫБРАННОЕ" -->
+                            <button-comp
+                            v-show="deleteModeCart"
+                            @click="deleteAllSelectProducts"
+                            >
+                                Удалить выбранное
+                            </button-comp>
+    
+                            <!-- TESTING -->
+                            <button-comp
+                            v-show="deleteModeCart"
+                            @click.prevent="log"
+                            >
+                                log_
+                            </button-comp>
+    
+                        </div>
+                    </form>
 
                     <!-- Блок для подтверждения удаления всех товаров с корзины -->
                     <!-- Отрисовывается когда открыто нажата кнопка "Очистить корзину" -->
@@ -211,7 +213,7 @@ export default {
     },
     methods: {
         log(){
-            console.log(this.forDeleteProducts);
+            console.log('forDeleteProducts: ', this.forDeleteProducts);
         },
         ...mapMutations({
             activateDeleteModeCart: 'CartModule/activateDeleteModeCart',
@@ -289,28 +291,36 @@ export default {
                 this.hiddenListCartProduct()
             }
         },
+
+        // Метод удаляет с корзины список выбранных товаров 
         deleteAllSelectProducts(event){
-            if(this.addedProducts.length > 0){
-                let newCartList = this.addedProducts.filter(cartProduct => {
-                    for(const deleteProduct of this.forDeleteProducts){
-                        if(!JSON.stringify(cartProduct.name).includes(JSON.stringify(deleteProduct.name))){
-                            // console.log("Фильтрует");
-                            return true
-                        }else{
-                            // console.log("НЕ Фильтрует");
-                            return false
+            let localeSelect = []
+            if(this.forDeleteProducts.length > 0){
+                for(const product of this.addedProducts){
+                    for(const selectProduct of this.forDeleteProducts){
+                        if(product.id === selectProduct.id){
+                            localeSelect.push({id: product.id, name: product.name, article: product.article})
                         }
                     }
-                })
-                if(newCartList.length > 0){
-                    // localStorage.setItem('addedProducts', JSON.stringify(newCartList))
-                    this.$store.commit('CartModule/changeRemoveCartProduct')
-                    console.log(newCartList);
-                }else{
-                    return false
                 }
+                let newCartList = []
+                for(const selectProduct of localeSelect){
+                    for(const cartProduct of this.addedProducts){
+                        if(cartProduct.id === selectProduct.id){
+                        }else{
+                            if(!JSON.stringify(localeSelect).includes(JSON.stringify(cartProduct))){
+                                if(!newCartList.includes(cartProduct)) newCartList.push(cartProduct)
+                            }
+                        }
+                    }
+                }
+                if(newCartList.length > 0){
+                    localStorage.setItem('addedProducts', JSON.stringify(newCartList))
+                }
+
             }else{
-                return false
+                event.preventDefault();
+                console.log('вы не выбрали товар')
             }
         },
 
