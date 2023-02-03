@@ -50,6 +50,7 @@ export default {
                 this.$store.commit('hideButtonUp')
             }
         });
+
     }
 }
 </script>

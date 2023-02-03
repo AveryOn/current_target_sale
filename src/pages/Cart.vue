@@ -45,6 +45,8 @@
         
                             </notification-confirm>
                         </form>
+
+
                     </div>
 
                     <modal-comp @click="isViewToCart = false" :show="isViewToCart">
@@ -151,19 +153,40 @@
                                 Недавно удаленный товар
                             </button-comp>
 
+                            <!-- ОКНО НЕДАВНО УДАЛЕННОГО ТОВАРА! -->
                             <modal-comp @click="isShowRestoreCart = false" :show="isShowRestoreCart">
                                 <div class="cart-restore-block">
 
+                                    <!-- Окно подтверждения восстановления всего товара из удаленных -->
+                                    <div v-show="isRemoveAllProducts" class="cart-restore-block__gray-layout">
+                                        <notification-confirm 
+                                        class="cart-restore-block__confirm-remove-all"
+                                        :show="isRemoveAllProducts" 
+                                        @eventNo="isRemoveAllProducts = false"
+                                        @eventYes="removeAllProductsCart"
+                                        >
+                                            Вы действительно хотите восстановить весь удаленный товар?
+                    
+                                        </notification-confirm>
+                                    </div>
+
                                     <!-- ШАПКА -->
                                     <div class="cart-restore-block__header">
-                                        <h2>Недавно удаленные</h2>
+                                        <h2>Недавно удаленные товары</h2>
                                         <div class="__header__btns">
+                                            <button-comp v-show="cartDeleteProducts.length > 0" @click="isRemoveAllProducts = true">Восстановить всё</button-comp>
                                             <button-comp @click="isShowRestoreCart = false">Закрыть</button-comp>
                                         </div>
                                     </div>
 
+                                    <!-- БЛОК-ОПИСАНИЕ КОМПОНЕНТА -->
+                                    <!-- Появляется если длина массива this.cartDeleteProducts равна нулю -->
+                                    <h2 v-show="cartDeleteProducts.length <= 0" class="cart-restore-block__empty">
+                                        Здесь будут отображаться удаленные с корзины товары! 
+                                    </h2>
+
                                     <!-- ОСНОВАНАЯ ЧАСТЬ -->
-                                    <div class="cart-restore-block__body">
+                                    <div class="cart-restore-block__body" v-show="cartDeleteProducts.length > 0">
                                         <div class="__body__list-products">
                                             <cart-product-item-delete
                                             v-for="cartProduct in cartDeleteProducts"
@@ -245,19 +268,35 @@
                         </div>
                     </div>
 
-                    <!-- Отрисовка товара в корзине -->
+                    <!-- ОТРИСОВКА ТОВАРОВ В КОРЗИНЕ -->
+                    <!-- Стандартный стиль отрисовки товаров тип: line  (this.isSelectModeViewCart = 'line') -->
                     <div v-show="cartProducts.length > 0" class="cart-products-items">
-
-                        <!-- Отрисовка товаров в корзине -->
                         <cart-product-item
                         v-for="cartProduct in cartProducts"
                         :key="cartProduct.id"
                         :cartProduct="cartProduct"
+                        v-show="isSelectModeViewCart === 'line'"
                         @deleteProductCart="deleteProductCart(cartProduct)"
                         @selectCartProductOne="selectCartProductOne"
                         >
                         </cart-product-item>
+
                     </div>
+
+                    <!-- ОТРИСОВКА ТОВАРОВ В КОРЗИНЕ -->
+                    <!-- БЛОЧНАЯ отрисовка. стиль отрисовки товаров тип: block  (this.isSelectModeViewCart = 'block') -->
+                    <div v-show="cartProducts.length > 0" class="cart-products-items-view-block">
+                        <cart-product-item-view-block
+                        v-for="cartProduct in cartProducts"
+                        :key="cartProduct.id"
+                        :cartProduct="cartProduct"
+                        v-show="isSelectModeViewCart === 'block'"
+                        @deleteProductCart="deleteProductCart(cartProduct)"
+                        @selectCartProductOne="selectCartProductOne"
+                        >
+                        </cart-product-item-view-block>
+                    </div>
+
                     <!-- БЛОК СКРЫВАЮЩИЙ ЧАСТЬ СПИСКА КОРЗИНЫ -->
                     <div v-show="!openListCart && cartProducts.length >= 3" class="open-content-block">
                         <p @click="openListCartProduct">
@@ -280,15 +319,26 @@
     </div>
 </template>
 <script>
+// Фильтр-панель
 import FilterPanel from '@/components/CatalogPage/FilterPanel.vue'
+
+// Компонент используется для стандартной отрисовки товара в корзине
 import cartProductItem from '@/components/CartPage/cartProductItem.vue'
+
+// Компонент используется в окне недавно удаленного твоара корзины
 import cartProductItemDelete from  '@/components/CartPage/cartProductItemDelete.vue'
+
+// Компонент товара корзины, используется при стиле оформления корзины типа "block" (this.isSelectModeViewCart = 'block')
+import cartProductItemViewBlock from '@/components/CartPage/cartProductItemViewBlock.vue'
+
+// Импорт хранилища store vuex
 import { mapState, mapMutations } from 'vuex';
 export default {
     components: {
         FilterPanel,
         cartProductItem,
         cartProductItemDelete,
+        cartProductItemViewBlock,
     },
     data(){ 
         return{
@@ -301,7 +351,7 @@ export default {
             // Поле получает с localStorage булевую перменную показывающая развернута или свернута корзина
             openListCart: JSON.parse(localStorage.getItem('openListCartProduct')),
 
-            // Поле используется для определения режима оформления отрисовки товара в корзине (line ||  block)
+            // Поле используется для определения стиля оформления отрисовки товара в корзине (line ||  block)
             isSelectModeViewCart: localStorage.getItem('isSelectModeViewCart'),
 
             // Поле используется для отображения уведомления об подтверждении удаления ВСЕГО товара
@@ -318,6 +368,9 @@ export default {
 
             // Открытие блока с недавно удаленным товаром
             isShowRestoreCart: false,
+
+            // Поле используется для отображения подтверждения восстановления ВСЕГО УДАЛЕННОГО товара
+            isRemoveAllProducts: false,
             
             // Массив в который записываются товары выбранные для выборочного удаления
             forDeleteProducts: [],
@@ -368,6 +421,8 @@ export default {
             }
         },
         
+        // Метод принимает аргумент cartProduct вида: {id: Number, name: String, article: Number}
+        // И добавляет cartProduct в localStorage в переменную addedProducts
         addProductAfterDelete(cartProduct){
             let listCartProducts = JSON.parse(localStorage.getItem('addedProducts'))
 
@@ -409,6 +464,21 @@ export default {
             }
         },
 
+        // Метод восстанвливает ВЕСЬ товар со списка недавно удаленных
+        removeAllProductsCart(){
+            let cartProducts = JSON.parse(localStorage.getItem('addedProducts'))
+            let deleteCartProducts = JSON.parse(localStorage.getItem('deleteProducts'))
+
+            for(const delProduct of deleteCartProducts){
+                if(!JSON.stringify(cartProducts).includes(JSON.stringify(delProduct))){
+                    cartProducts.push(delProduct)
+                }
+            }
+            localStorage.setItem('deleteProducts', JSON.stringify([]))
+            localStorage.setItem('addedProducts', JSON.stringify(cartProducts))
+            document.location.reload()
+        },
+
         // Метод добавляет выбранный товар в список для удаления
         selectCartProductOne(cartProduct){
             // Поле cartProduct.data - содержит в себе выбранный товар в корзине
@@ -446,10 +516,17 @@ export default {
         // Метод разворачивает корзину с товарами для просмотра всех товаров
         openListCartProduct(){
             const listCartProducts = document.querySelector('.cart-products-items')
+            const listCartProductsViewBlock = document.querySelector('.cart-products-items-view-block')
             localStorage.setItem('openListCartProduct', JSON.stringify(true))
             this.openListCart = true
+
+            // Для отрисовки товаров корзины при стиле отрисовки СПИСКОМ (this.isSelectModeViewCart === 'line')
             listCartProducts.style.overflow = 'visible'
             listCartProducts.style.maxHeight = 'max-content'
+
+            // Для отрисовки товаров корзины при стиле отрисовки Блоками (this.isSelectModeViewCart === 'block')
+            listCartProductsViewBlock.style.overflow = 'visible'
+            listCartProductsViewBlock.style.maxHeight = 'max-content'
         },
 
         // Метод возвращает в исходное состояние отрисовку товара в корзине 
@@ -457,8 +534,15 @@ export default {
             localStorage.setItem('openListCartProduct', JSON.stringify(false))
             this.openListCart = false
             const listCartProducts = document.querySelector('.cart-products-items')
+            const listCartProductsViewBlock = document.querySelector('.cart-products-items-view-block')
+            
+            // Для отрисовки товаров корзины при стиле отрисовки СПИСКОМ (this.isSelectModeViewCart === 'line')
             listCartProducts.style.overflow = 'hidden'
             listCartProducts.style.maxHeight = '80vh'
+
+            // Для отрисовки товаров корзины при стиле отрисовки БЛОКАМИ (this.isSelectModeViewCart === 'block')
+            listCartProductsViewBlock.style.overflow = 'hidden'
+            listCartProductsViewBlock.style.maxHeight = '80vh'
         },
 
         // Метод очищает корзину
@@ -641,22 +725,16 @@ export default {
     },
     mounted() {
         // Проверяет есть ли в localeStorage переменная isSelectModeViewCart
-        if(!this.isSelectModeViewCart){
+        if(localStorage.getItem('isSelectModeViewCart')){
+            if(localStorage.getItem('isSelectModeViewCart') === 'line'){
+                this.isSelectModeViewCart = 'line'
+            }
+            else if(localStorage.getItem('isSelectModeViewCart') === 'block'){
+                this.isSelectModeViewCart = 'block'
+            }
+        }else{
             // Если свойства нет то оно создается со значением 'line' - значение по умолчанию
             localStorage.setItem('isSelectModeViewCart', 'line')
-        }
-
-        // Меняет оформление относительно isSelectModeViewCart - режима отображения товара в корзине (line || block)
-
-        // Режим отрисовки СПИСКОМ
-        if(this.isSelectModeViewCart === 'line'){
-            const cartProductsItems = document.querySelector('.cart-products-items')
-            cartProductsItems.style.flexDirection = 'row'
-        }
-
-        // Режим отрисовки БЛОКАМИ
-        if(this.isSelectModeViewCart === 'block'){
-            console.log('режим: block');
         }
 
         // Если нет переменной openListCartProduct в localeStorage, то this.openListCart = false
@@ -679,6 +757,26 @@ export default {
         }else{
             this.openListCart = false
             const listCartProducts = document.querySelector('.cart-products-items')
+            listCartProducts.style.overflow = 'hidden'
+            listCartProducts.style.maxHeight = '80vh'
+        }
+
+        // При стиле отрисовки карточек товара БЛОКАМИ (this.isSelectModeViewCart === 'block')
+        // Корзина товара остается развернутой если в localeStorage переменная openListCartProduct = true
+        if(this.openListCart){
+            const listCartProducts = document.querySelector('.cart-products-items-view-block')
+            listCartProducts.style.overflow = 'visible'
+            listCartProducts.style.maxHeight = 'max-content'
+            if(this.cartProducts.length < 3){
+                localStorage.setItem('openListCartProduct', JSON.stringify(false))
+                this.openListCart = false
+            }else{
+                localStorage.setItem('openListCartProduct', JSON.stringify(true))
+                this.openListCart = true
+            }
+        }else{
+            this.openListCart = false
+            const listCartProducts = document.querySelector('.cart-products-items-view-block')
             listCartProducts.style.overflow = 'hidden'
             listCartProducts.style.maxHeight = '80vh'
         }
@@ -759,6 +857,7 @@ export default {
         }
         // Окно товара который был недавно удален 
         .cart-restore-block{
+            position: relative;
             display: flex;
             flex-direction: column;
             background-color: white;
@@ -768,6 +867,24 @@ export default {
             max-height: 70vh;
             border: $border;
             border-radius: $radius;
+            
+            // Серый слой перекрывающий окно удаленных товаров если нажата кнопка "Восстановить всё"
+            &__gray-layout{
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                background-color: rgba(128, 128, 128, 0.5);
+                z-index: 1005;
+            }
+
+            // Окно подтверждения ВОССТАНОВЛЕНИЯ ВСЕГО УДАЛЕННОГО ТОВАРА
+            &__confirm-remove-all{
+                position: relative;
+                margin: 30px auto 0 auto;
+                z-index: 1010;
+            }
             &__header{
                 display: flex;
                 align-items: center;
@@ -779,9 +896,19 @@ export default {
                 border-top-left-radius: $radius;
                 border-top-right-radius: $radius;
                 padding: 0 10px 0 10px;
-                &__btns{
-
+                .__header__btns{
+                    display: flex;
                 }
+            }
+            &__empty{
+                // display: flex;
+                // width: 50%;
+                // height: 40vh;
+                border-bottom: $border;
+                margin: auto;
+                cursor: default;
+                // border-radius: $radius;
+                // background: $background-gr;
             }
             &__body{
                 margin: 0 0 10px 0;
@@ -848,7 +975,7 @@ export default {
             top: 100px;
             margin: 0 auto 0 auto;
         }
-        // Модальное окно с настройками карточек товара в Корзине
+        // Модальное окно с выбором стиля отрисовки оформления карточек товара в Корзине
         .cart-setting-view{
             position: relative;
             background-color: white;
@@ -1041,6 +1168,18 @@ export default {
             flex-direction: column;
             max-height: 80vh;
             margin: 50px auto 20px auto;
+            padding: 5px;
+            width: 90%;
+            overflow-y: hidden;
+            overflow-x: visible;
+        }
+        .cart-products-items-view-block{
+            position: relative;
+            top: -30px;
+            display: flex;
+            flex-wrap: wrap;
+            max-height: 80vh;
+            margin: 0px auto 20px auto;
             padding: 5px;
             width: 90%;
             overflow-y: hidden;
