@@ -20,10 +20,10 @@ export default {
     justify-content: center;
     align-items: center;
     z-index: 999;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: -30px;
+    left: -30px;
+    right: -30px;
+    bottom: -30px;
     background-color: rgba(0,0,0,.5);
     padding: 0 50px;
 }

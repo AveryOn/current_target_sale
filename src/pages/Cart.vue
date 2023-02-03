@@ -89,8 +89,17 @@
                             class="btn-optional" 
                             :disabled="isShowConfirmDelete"
                             >
-                                Restore
+                                Недавно удаленный товар
                             </button-comp>
+
+                            <modal-comp :show="true">
+                                <div class="cart-restore-block">
+                                    <div class="cart-restore-block__header">
+
+                                    </div>
+                                    <div class="cart-restore-block__body"></div>
+                                </div>
+                            </modal-comp>
 
                         </div>
                     </div>
@@ -534,7 +543,24 @@ export default {
             box-shadow: $shadow;
             background-color: white;
         }
-
+        // Окно товара который был недавно удален 
+        .cart-restore-block{
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            min-width: 800px;
+            min-height: 60vh;
+            width: max-content;
+            max-height: 50vh;
+            border: $border;
+            border-radius: $radius;
+            &__header{
+                background-color: black;
+                border: $border;
+                min-height: 100px;
+                min-width: 90%;
+            }
+        }
         // Слой перекрывающий окно корзины при подтверждении очищения корзины
         .cart-products-layout__disabled{
             position: absolute;
