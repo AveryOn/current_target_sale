@@ -76,6 +76,7 @@ export default {
             deleteModeCart: state => state.CartModule.deleteModeCart,
             selectCartProduct: state => state.CartModule.selectCartProduct,
             removeSelectAll: state => state.CartModule.removeSelectAll,
+            selectCartProduct_prefix: state => state.CartModule.selectCartProduct_prefix,
         }),
     },
     watch:{
@@ -93,19 +94,21 @@ export default {
         removeSelectAll(newValue){
             if(newValue){
                 this.selectCartProductOne = false
+                this.$store.commit('CartModule/falseSelectCartProduct')
             }
         },
 
         // Свойство отслеживает изменение одиночного клика по товару в корзине
+        // Для чекбокса. Чтобы нажатие на чекбокс также выбирало товар
         selectCartProductOne(newValue){
             if(newValue){
                 // Если одиночный клик по товару произошел то переменная removeSelectAll = false
-                this.$store.commit('CartModule/falseRemoveCArtProduct')
+                this.$store.commit('CartModule/falseRemoveCartProduct')
                 if(this.selectCartProductOne){
-                this.$emit('selectCartProductOne', {data: this.cartProduct, isSelect: true})
-                }else{
-                    this.$emit('selectCartProductOne', {data: this.cartProduct, isSelect: false})
+                    this.$emit('selectCartProductOne', {data: this.cartProduct, isSelect: true})
                 }
+            }else{
+                this.$emit('selectCartProductOne', {data: this.cartProduct, isSelect: false})
             }
         }
     },

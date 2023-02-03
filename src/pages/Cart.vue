@@ -18,9 +18,33 @@
                     <!-- Слой перекрывает компоненты корзины если активно окно подтверждения очищения корзины -->
                     <div 
                     class="cart-products-layout__disabled"
-                    v-show="isShowConfirmDelete"
+                    v-show="isShowConfirmDelete || isShowSelectConfirmDelete"
                     >
+                        <!-- Окно подтверждения удаления выбранного товара -->
+                        <notification-confirm 
+                        class="confirm--cart__delete-select"
+                        :show="isShowSelectConfirmDelete" 
+                        @eventNo="isShowSelectConfirmDelete = false"
+                        @eventYes="deleteAllSelectProducts"
+                        >
+                            Вы действительно хотите удалить выбранный товар?
+    
+                        </notification-confirm>
 
+                        <!-- Блок для подтверждения удаления всех товаров с корзины -->
+                        <!-- Отрисовывается когда открыто нажата кнопка "Очистить корзину" -->
+                        <form type="submit">
+                            <notification-confirm 
+                            class="confirm--cart"
+                            :show="isShowConfirmDelete" 
+                            @eventNo="isShowConfirmDelete = false"
+                            @eventYes="cartClear"
+                            
+                            >
+                                Вы действительно хотите очистить корзину?
+        
+                            </notification-confirm>
+                        </form>
                     </div>
 
                     <div class="products-optional-header">
@@ -73,58 +97,48 @@
 
                     <!-- ПАНЕЛЬ С КНОПКАМИ. РЕЖИМ ВЫБОРОЧНОГО УДАЛЕНИЯ ТОВАРОВ С КОРЗИНЫ -->
                     <!-- Отрисовывается когда включен режим deleteModeCart -->
-                    <form type="submit">
-                        <div class="delete-mode-cart--btns">
-                            <!-- Кнопка "ВЫБРАТЬ ВСЁ" -->
-                            <button-comp 
-                            class="select-all-cart-item"
-                            v-show="deleteModeCart"
-                            @click.prevent="this.$store.commit('CartModule/activeSelectCartProduct')"
-                            >
-                                Выбрать всё
-                            </button-comp>
-    
-                            <!-- Кнопка "СНЯТЬ ВЫДЕЛЕНИЕ" -->
-                            <button-comp
-                            v-show="deleteModeCart"
-                            @click.prevent="this.$store.commit('CartModule/changeRemoveCartProduct')"
-                            >
-                                Снять выделение
-                            </button-comp>
-    
-                            <!-- Кнопка "УДАЛИТЬ ВЫБРАННОЕ" -->
-                            <button-comp
-                            v-show="deleteModeCart"
-                            @click="deleteAllSelectProducts"
-                            >
-                                Удалить выбранное
-                            </button-comp>
-    
-                            <!-- TESTING -->
-                            <button-comp
-                            v-show="deleteModeCart"
-                            @click.prevent="log"
-                            >
-                                log_
-                            </button-comp>
-    
-                        </div>
-                    </form>
-
-                    <!-- Блок для подтверждения удаления всех товаров с корзины -->
-                    <!-- Отрисовывается когда открыто нажата кнопка "Очистить корзину" -->
-                    <form type="submit">
-                        <notification-confirm 
-                        class="confirm--cart"
-                        :show="isShowConfirmDelete" 
-                        @eventNo="isShowConfirmDelete = false"
-                        @eventYes="cartClear"
-                        
+                    <div class="delete-mode-cart--btns">
+                        <!-- Кнопка "ВЫБРАТЬ ВСЁ" -->
+                        <button-comp 
+                        class="select-all-cart-item"
+                        v-show="deleteModeCart && !this.selectCartProduct"
+                        @click="selectAllCartItem"
                         >
-                            Вы действительно хотите очистить корзину?
-    
-                        </notification-confirm>
-                    </form>
+                            Выбрать всё
+                        </button-comp>
+
+                        <!-- Кнопка "СНЯТЬ ВЫДЕЛЕНИЕ" -->
+                        <button-comp
+                        v-show="(deleteModeCart && selectCartProduct) || forDeleteProducts.length >= 1"
+                        @click="this.$store.commit('CartModule/changeRemoveCartProduct')"
+                        >
+                            Снять выделение
+                        </button-comp>
+
+                        <!-- Кнопка "УДАЛИТЬ ВЫБРАННОЕ" -->
+                        <button-comp
+                        v-show="deleteModeCart && this.forDeleteProducts.length > 0"
+                        @click="isShowSelectConfirmDelete = true"
+                        >
+                            Удалить выбранное
+                        </button-comp>
+
+                        <!-- TESTING -->
+                        <button-comp
+                        v-show="deleteModeCart"
+                        @click="log"
+                        >
+                            _log
+                        </button-comp>
+                    
+                        <p 
+                        v-show="deleteModeCart"
+                        class="select-quantity">
+                            Выбрано:   <strong>{{ this.forDeleteProducts.length }}</strong>
+                        </p>
+                    </div>
+
+
 
                     <!-- Заголовок показывается когда корзина пуста -->
                     <h2 v-show="cartProducts.length <= 0" class="empty-cart-products">В вашей ебучей корзине нема товара, добавьте что-нибудь...</h2>
@@ -204,8 +218,14 @@ export default {
             // Поле используется для включения режима удаления товара на выбор
             // deleteModeCart: false,
 
-            // Поле используется для отображения уведомления об подтверждении удаления всего товара
+            // Поле используется для отображения уведомления об подтверждении удаления ВСЕГО товара
             isShowConfirmDelete: false,
+
+            // Поле используется для отображения уведомления об подтверждении удаления ВЫБРАННОГО товара
+            isShowSelectConfirmDelete: false,
+
+            // true Если нажата кнопка "Выбрать всё", при режиме удаления
+            isSelectAll: false,
             
             // Массив в который записываются товары выбранные для выборочного удаления
             forDeleteProducts: [],
@@ -214,6 +234,7 @@ export default {
     methods: {
         log(){
             console.log('forDeleteProducts: ', this.forDeleteProducts);
+            console.log('copyList: ', this.copyList);
         },
         ...mapMutations({
             activateDeleteModeCart: 'CartModule/activateDeleteModeCart',
@@ -228,20 +249,24 @@ export default {
 
         // Метод добавляет выбранный товар в список для удаления
         selectCartProductOne(cartProduct){
-            
             // Поле cartProduct.data - содержит в себе выбранный товар в корзине
             // Поле cartProduct.isSelect - содержит в себе флаг выбран ли товар или удален из выбранного
             if(cartProduct.isSelect){
                 if(!this.forDeleteProducts.includes(cartProduct.data)){
                     this.forDeleteProducts.push(cartProduct.data)
+                    this.$store.commit('CartModule/falseSelectCartProduct')
                 }else{
                     return false
                 }
             }else{
                 if(this.forDeleteProducts.length > 0){
-                    this.forDeleteProducts.splice(this.forDeleteProducts.indexOf(cartProduct.data), 1)
+                    this.forDeleteProducts = this.forDeleteProducts.filter(product => {
+                        if(product !== cartProduct.data){
+                            return true
+                        }
+                    })
                 }else{
-                    return false
+                    this.$store.commit('CartModule/falseSelectCartProduct')
                 }
             }
         },
@@ -309,25 +334,38 @@ export default {
                         if(cartProduct.id === selectProduct.id){
                         }else{
                             if(!JSON.stringify(localeSelect).includes(JSON.stringify(cartProduct))){
-                                if(!newCartList.includes(cartProduct)) newCartList.push(cartProduct)
+                                if(!newCartList.includes(cartProduct)){
+                                    newCartList.push(cartProduct)
+                                } 
+                            }else{
+                                // корзина очищается полностью и после перезагружается страница для обновления данных
+                                this.cartClear()
+                                document.location.reload();
                             }
                         }
                     }
                 }
                 if(newCartList.length > 0){
                     localStorage.setItem('addedProducts', JSON.stringify(newCartList))
+                    document.location.reload();
                 }
-
             }else{
-                event.preventDefault();
                 console.log('вы не выбрали товар')
             }
         },
 
         // Метод позволяет выбрать все элементы при режиме deleteModeCart
         selectAllCartItem(){
-            console.log('selectAllCartItem');
+            if(!this.selectCartProduct){
+                if(this.forDeleteProducts.length <= 0){
+                    this.$store.commit('CartModule/activeSelectCartProduct')
+                }
+                if(this.forDeleteProducts.length >= 1){
+                    this.$store.commit('CartModule/activeSelectCartProduct')
+                }
+            }
         },
+        
     },
     watch: {
         // Режим выборочного удаления товара
@@ -509,15 +547,37 @@ export default {
             z-index: 999;
         }
         .delete-mode-cart--btns{
+            position: sticky;
             display: flex;
             justify-content: flex-start;
+            align-items: center;
+            top: 10px;
+            z-index: 10;
+            margin-top: 10px;
+            background-color: rgba(255, 255, 255, 0.504);
+            border-radius: $radius;
         }
-
+        .confirm--cart__delete-select{
+            position: relative;
+            top: 100px;
+            margin: 0 auto 0 auto;
+        }
+        .select-quantity{
+            position: absolute;
+            cursor: default;
+            display: flex;
+            align-self: flex-end;
+            right: 10px;
+            top: 5px;
+            background-color: rgba(245, 222, 179, 0.65);
+            padding: 10px;
+            border-radius: $radius;
+        }
         // Блок подтверждения удаления 
         .confirm--cart{
-            position: absolute;
+            position: relative;
             top: 100px;
-            left: 28%;
+            margin: 0 auto 0 auto;
         }
         .products-optional-header{
             display: flex;
