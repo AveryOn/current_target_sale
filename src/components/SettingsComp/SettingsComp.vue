@@ -8,7 +8,9 @@
             <div class="block-setting-layout">
                 <div class="group-setting">
                     <h2 class="group-setting-title">User Settings</h2>
-                    <div class="group-setting-body">User Settings Body</div>
+                    <div class="group-setting-body">User Settings Body
+                        <cart-setting-view></cart-setting-view>
+                    </div>
                 </div>
                 <div class="group-setting">
                     <h2 class="group-setting-title">Moderator Settings</h2>
@@ -24,8 +26,12 @@
 </template>
 <script>
 import ShowTemplate from '@/mixins/ShowTemplate';
+import cartSettingView from '@/components/CartPage/cartSettingView.vue';
 export default {
     mixins: [ShowTemplate],
+    components: {
+        cartSettingView,
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -35,7 +41,7 @@ export default {
     display: flex;
     flex-direction: column;
     height: 70vh;
-    width: 100%;
+    width: max-content;
     background-color: white;
     border: $border;
     border-radius: $radius;
@@ -48,8 +54,10 @@ export default {
     flex-direction: column;
     justify-content: flex-end;
     .setting-header{
+        padding: 50px;
         position: sticky;
         top: 5px;
+        width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -89,7 +97,7 @@ export default {
         margin: 10px;
     }
     .group-setting-body{
-        width: 100%;
+        width: max-content;
         height: 600px;
         border: $border;
         border-radius: $radius;

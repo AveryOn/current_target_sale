@@ -11,6 +11,9 @@ export const CartModule = {
 
         // Снимает всё выделение с товара
         removeSelectAll: false,
+
+        // Стиль оформления отрисовки товара в корзине (line || block)
+        isSelectModeViewCart: localStorage.getItem('isSelectModeViewCart'),
         
     }),
     _mutations: {
@@ -35,7 +38,18 @@ export const CartModule = {
         },
         falseRemoveCartProduct(state) {
             state.removeSelectAll = false
-        }
+        },
+        // Мутация меняет режим оформления отрисовки товара в корзине
+        // Отрисовка СПИСКОМ
+        cartViewLine(state){
+            state.isSelectModeViewCart = 'line'
+        },
+        // Мутация меняет режим оформления отрисовки товара в корзине
+        // Отрисовка БЛОКАМИ
+        cartViewBlock(state){
+            state.isSelectModeViewCart = 'block'
+        },
+
     },
     get mutations() {
         return this._mutations
