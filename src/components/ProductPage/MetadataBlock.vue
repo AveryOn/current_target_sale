@@ -55,8 +55,12 @@ export default {
         }
     },
     methods: {
+        // Добавление товара в localeStorage в массив товара
         addProductToCart(){
             let listCartProducts = JSON.parse(localStorage.getItem('addedProducts'))
+            // массив удаленного товара
+            let listDeleteProducts = JSON.parse(localStorage.getItem('deleteProducts'))
+
             if(listCartProducts){
                 if(listCartProducts.length > 0){
                     for(const product of listCartProducts){
@@ -67,6 +71,8 @@ export default {
                             window.setTimeout(() => {
                                 this.addProductCart = false
                             }, 2500)
+
+
                         }
                         else{
                             if(!this.addProductCart){
@@ -87,6 +93,20 @@ export default {
                         this.addProductCart = false
                     }, 2500)
                 }
+
+                if(listDeleteProducts){
+                    if(JSON.stringify(listDeleteProducts).includes(JSON.stringify(this.currentProduct))){
+                        listDeleteProducts = listDeleteProducts.filter(delProduct => {
+                            if(JSON.stringify(delProduct) !== JSON.stringify(this.currentProduct)){
+                                return true
+                            }else{
+                                return false
+                            }
+                        })
+                        localStorage.setItem('deleteProducts', JSON.stringify(listDeleteProducts))
+                    }
+                }
+
             }else{
                 localStorage.setItem('addedProducts', JSON.stringify([this.currentProduct]))
                 this.addProductCart = true

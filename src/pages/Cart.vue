@@ -76,10 +76,9 @@
                                 {{ (deleteModeCart)? 'Отменить удаление' : 'Удалить несколько' }}
                             </button-comp>
 
-
-                            <button-comp 
+                            <button-comp
                             class="btn-optional"
-                            v-show="cartProducts.length  > 0" 
+                            v-show="cartProducts.length > 0" 
                             :disabled="isShowConfirmDelete" 
                             >
                                 View...
@@ -88,16 +87,32 @@
                             <button-comp 
                             class="btn-optional" 
                             :disabled="isShowConfirmDelete"
+                            @click="isShowRestoreCart = true"
                             >
                                 Недавно удаленный товар
                             </button-comp>
 
-                            <modal-comp :show="true">
+                            <modal-comp @click="isShowRestoreCart = false" :show="isShowRestoreCart">
                                 <div class="cart-restore-block">
-                                    <div class="cart-restore-block__header">
 
+                                    <!-- ШАПКА -->
+                                    <div class="cart-restore-block__header">
+                                        <h2>Недавно удаленные</h2>
+                                        <div class="__header__btns">
+                                            <button-comp @click="isShowRestoreCart = false">Закрыть</button-comp>
+                                        </div>
                                     </div>
-                                    <div class="cart-restore-block__body"></div>
+
+                                    <!-- ОСНОВАНАЯ ЧАСТЬ -->
+                                    <div class="cart-restore-block__body">
+                                        <div class="__body__list-products">
+                                            <cart-product-item 
+                                            :cartProduct="{id: 1, name: 'test'}"
+                                            v-for="cartItem in 5"
+                                            ></cart-product-item>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </modal-comp>
 
@@ -147,8 +162,6 @@
                         </p>
                     </div>
 
-
-
                     <!-- Заголовок показывается когда корзина пуста -->
                     <h2 v-show="cartProducts.length <= 0" class="empty-cart-products">В вашей ебучей корзине нема товара, добавьте что-нибудь...</h2>
                     
@@ -175,7 +188,6 @@
                     <!-- Отрисовка товара в корзине -->
                     <div v-show="cartProducts.length > 0" class="cart-products-items">
 
-                        
                         <!-- Отрисовка товаров в корзине -->
                         <cart-product-item
                         v-for="cartProduct in cartProducts"
@@ -221,6 +233,9 @@ export default {
             // Поле получает с localStorage данные массива с товаром для корзины
             addedProducts: JSON.parse(localStorage.getItem('addedProducts')),
 
+            // Поле получает с localStorage массив недавно удаленного товара
+            deleteProducts: JSON.parse(localStorage.getItem('deleteProducts')),
+
             // Поле получает с localStorage булевую перменную показывающая развернута или свернута корзина
             openListCart: JSON.parse(localStorage.getItem('openListCartProduct')),
 
@@ -235,6 +250,9 @@ export default {
 
             // true Если нажата кнопка "Выбрать всё", при режиме удаления
             isSelectAll: false,
+
+            // Открытие блока с недавно удаленным товаром
+            isShowRestoreCart: false,
             
             // Массив в который записываются товары выбранные для выборочного удаления
             forDeleteProducts: [],
@@ -243,7 +261,6 @@ export default {
     methods: {
         log(){
             console.log('forDeleteProducts: ', this.forDeleteProducts);
-            console.log('copyList: ', this.copyList);
         },
         ...mapMutations({
             activateDeleteModeCart: 'CartModule/activateDeleteModeCart',
@@ -253,7 +270,34 @@ export default {
         deleteProductCart(cartProduct){
             const cartStorage = this.addedProducts.filter(product => product.id !== cartProduct.id)
             localStorage.setItem('addedProducts', JSON.stringify(cartStorage))
-            console.log(this.addedProducts);
+
+            // Запись в массив удаленных товаров в localeStorage
+            this.appendDeleteCartProducts(cartProduct)
+        },
+
+        // Метод добавляет товар в список недавно удаленного товара
+        // Вызывается в методе this.deleteProductCart
+        appendDeleteCartProducts(cartProduct){
+            let newListDeleteCart = JSON.parse(localStorage.getItem('deleteProducts'))
+            const cartItemForDeleteList = {id: cartProduct.id, name: cartProduct.name, article: cartProduct.article}
+            if(newListDeleteCart){
+                if(newListDeleteCart.length > 0){
+                    for(const product of newListDeleteCart){
+                        if(!JSON.stringify(newListDeleteCart).includes(JSON.stringify(cartItemForDeleteList))){
+                            newListDeleteCart.push(cartItemForDeleteList)
+                            localStorage.setItem('deleteProducts', JSON.stringify(newListDeleteCart))
+                        }
+                        else{
+                            continue
+                        }
+                    }
+                }else{
+                    newListDeleteCart.push(cartItemForDeleteList)
+                    localStorage.setItem('deleteProducts', JSON.stringify(newListDeleteCart))
+                }
+            }else{
+                localStorage.setItem('deleteProducts', JSON.stringify([cartItemForDeleteList]))
+            }
         },
 
         // Метод добавляет выбранный товар в список для удаления
@@ -310,6 +354,10 @@ export default {
 
         // Метод очищает корзину
         cartClear(){
+            // перед очищением корзины все товары заносятся в список удаленных
+            this.addedProducts.forEach(product => {
+                this.appendDeleteCartProducts(product)
+            })
             localStorage.setItem('addedProducts', JSON.stringify([]))
         },
 
@@ -341,14 +389,16 @@ export default {
                 for(const selectProduct of localeSelect){
                     for(const cartProduct of this.addedProducts){
                         if(cartProduct.id === selectProduct.id){
+                            // Выбранный товар добавляется в массив недавно удаленных
+                            this.appendDeleteCartProducts(selectProduct)
                         }else{
                             if(!JSON.stringify(localeSelect).includes(JSON.stringify(cartProduct))){
                                 if(!newCartList.includes(cartProduct)){
                                     newCartList.push(cartProduct)
-                                } 
+                                }
                             }else{
                                 // корзина очищается полностью и после перезагружается страница для обновления данных
-                                this.cartClear()
+                                localStorage.setItem('addedProducts', JSON.stringify([]))
                                 document.location.reload();
                             }
                         }
@@ -474,7 +524,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @include h1-gradient;
-// @include h3-gradient;
+@include h2-gradient;
 .cart-page{
     z-index: 1;
     display: flex;
@@ -548,17 +598,31 @@ export default {
             display: flex;
             flex-direction: column;
             background-color: white;
-            min-width: 800px;
+            width: 900px;
             min-height: 60vh;
-            width: max-content;
-            max-height: 50vh;
+            max-height: 70vh;
             border: $border;
             border-radius: $radius;
             &__header{
-                background-color: black;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background-color: white;
+                min-height: 80px;
+                width: 100%;
+                border-bottom: $border;
+                border-top-left-radius: $radius;
+                border-top-right-radius: $radius;
+                padding: 0 10px 0 10px;
+                &__btns{
+
+                }
+            }
+            &__body{
                 border: $border;
-                min-height: 100px;
-                min-width: 90%;
+                margin: 20px 0 20px 0;
+                overflow-x: hidden;
+                overflow-y: auto;
             }
         }
         // Слой перекрывающий окно корзины при подтверждении очищения корзины
@@ -615,9 +679,7 @@ export default {
             border-top-left-radius: $radius;
             border-top-right-radius: $radius;
             // ТЕСТОВЫЙ СЕЛЕКТОР
-            div{
-                margin-left: 20px;
-            }
+
             .optional-btns{
                 display: flex;
                 justify-content: center;

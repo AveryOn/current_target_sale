@@ -31,11 +31,9 @@
         </div>
         <div class="buttons-item">
             <button-comp @click="$router.push({name: 'product', params: {productId: cartProduct.id}})" class="btn-item">Open</button-comp>
-            <form type="submit">
-                <button-comp @click="deleteProductCart" class="btn-item">
-                    Delete Product
-                </button-comp>
-            </form>
+            <button-comp @click="deleteProductCart" class="btn-item">
+                Delete Product
+            </button-comp>
             <button-comp class="btn-item">Buy!</button-comp>
         </div>
     </div>
@@ -59,6 +57,7 @@ export default {
         // Метод удаляет товар с корзины
         deleteProductCart(){
             this.$emit('deleteProductCart', this.cartProduct)
+            document.location.reload();
         },
 
         // Метод отмечает карточку товара при режиме удаления
