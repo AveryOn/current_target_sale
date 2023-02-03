@@ -47,6 +47,67 @@
                         </form>
                     </div>
 
+                    <modal-comp @click="isViewToCart = false" :show="isViewToCart">
+                        <div class="cart-setting-view">
+                            
+                            <!-- ШАПКА -->
+                            <div class="cart-setting-view__header">
+                                <h2>Выберте вид отрисовки товара...</h2>
+                            </div>
+
+                            <!-- ОСНОВНАЯ ЧАСТЬ -->
+                            <div class="cart-setting-view__container">
+                                <div class="cart-setting-view__body">
+
+                                    <!-- Пример отрисовки СПИСКОМ -->
+                                    <div class="cart-setting-view__example-line">
+                                        <div 
+                                        v-show="isSelectModeViewCart === 'line'"
+                                        class="cart-setting-view__checked-block"
+                                        >
+                                            Выбрано!
+                                            
+                                        </div>
+                                        <div class="example-line__list">
+                                            <div class="example-line__list__item"></div>
+                                            <div class="example-line__list__item"></div>
+                                            <div class="example-line__list__item"></div>
+                                        </div>
+                                        <button-comp 
+                                        class="cart-setting-view__btn"
+                                        @click="cartViewLine"
+                                        >
+                                            {{ (isSelectModeViewCart === 'line') ? 'Уже выбрано!' : 'Выбрать' }} 
+                                        </button-comp>
+                                    </div>
+
+                                    <!-- Пример отрисовки БЛОКАМИ -->
+                                    <div class="cart-setting-view__example-block">
+                                        <div 
+                                        v-show="isSelectModeViewCart === 'block'"
+                                        class="cart-setting-view__checked-block"
+                                        >
+                                            Выбрано!
+
+                                        </div>
+                                        <div class="example-block__list">
+                                            <div class="example-block__list__item"></div>
+                                            <div class="example-block__list__item"></div>
+                                            <div class="example-block__list__item"></div>
+                                        </div>
+                                        <button-comp
+                                        class="cart-setting-view__btn"
+                                        @click="cartViewBlock"
+                                        >
+                                            {{ (isSelectModeViewCart === 'block') ? 'Уже выбрано!' : 'Выбрать' }} 
+                                        </button-comp>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </modal-comp>
+
                     <div class="products-optional-header">
                         <div>#тут будет TagsBar</div>
 
@@ -76,10 +137,10 @@
 
                             <button-comp
                             class="btn-optional"
-                            v-show="cartProducts.length > 0" 
-                            :disabled="isShowConfirmDelete" 
+                            :disabled="isShowConfirmDelete"
+                            @click="isViewToCart = true"
                             >
-                                View...
+                                Вид
                             </button-comp>
                             
                             <button-comp 
@@ -240,14 +301,17 @@ export default {
             // Поле получает с localStorage булевую перменную показывающая развернута или свернута корзина
             openListCart: JSON.parse(localStorage.getItem('openListCartProduct')),
 
-            // Поле используется для включения режима удаления товара на выбор
-            // deleteModeCart: false,
+            // Поле используется для определения режима оформления отрисовки товара в корзине (line ||  block)
+            isSelectModeViewCart: localStorage.getItem('isSelectModeViewCart'),
 
             // Поле используется для отображения уведомления об подтверждении удаления ВСЕГО товара
             isShowConfirmDelete: false,
 
             // Поле используется для отображения уведомления об подтверждении удаления ВЫБРАННОГО товара
             isShowSelectConfirmDelete: false,
+
+            // Отображение окна настроек. Смена вида карточек товара. Список <=> Иконки
+            isViewToCart: false,
 
             // true Если нажата кнопка "Выбрать всё", при режиме удаления
             isSelectAll: false,
@@ -276,7 +340,9 @@ export default {
             this.appendDeleteCartProducts(cartProduct)
         },
 
-        
+        // Метод открывает модальное окно в котором можно изменить
+        // changeViewToCart
+
         // Метод добавляет товар в список недавно удаленного товара
         // Вызывается в методе this.deleteProductCart
         appendDeleteCartProducts(cartProduct){
@@ -467,6 +533,18 @@ export default {
                 }
             }
         },
+
+        // Метод включает режим отрисовки товара СПИСКОМ
+        cartViewLine(){
+            this.isSelectModeViewCart = 'line'
+            localStorage.setItem('isSelectModeViewCart', 'line')
+        },
+
+        // Метод включает режим отрисовки товара БЛОКАМИ
+        cartViewBlock(){
+            this.isSelectModeViewCart = 'block'
+            localStorage.setItem('isSelectModeViewCart', 'block')
+        }
         
     },
     watch: {
@@ -562,6 +640,25 @@ export default {
         },
     },
     mounted() {
+        // Проверяет есть ли в localeStorage переменная isSelectModeViewCart
+        if(!this.isSelectModeViewCart){
+            // Если свойства нет то оно создается со значением 'line' - значение по умолчанию
+            localStorage.setItem('isSelectModeViewCart', 'line')
+        }
+
+        // Меняет оформление относительно isSelectModeViewCart - режима отображения товара в корзине (line || block)
+
+        // Режим отрисовки СПИСКОМ
+        if(this.isSelectModeViewCart === 'line'){
+            const cartProductsItems = document.querySelector('.cart-products-items')
+            cartProductsItems.style.flexDirection = 'row'
+        }
+
+        // Режим отрисовки БЛОКАМИ
+        if(this.isSelectModeViewCart === 'block'){
+            console.log('режим: block');
+        }
+
         // Если нет переменной openListCartProduct в localeStorage, то this.openListCart = false
         if(!localStorage.getItem('openListCartProduct')){
             this.openListCart = false
@@ -750,6 +847,123 @@ export default {
             position: relative;
             top: 100px;
             margin: 0 auto 0 auto;
+        }
+        // Модальное окно с настройками карточек товара в Корзине
+        .cart-setting-view{
+            position: relative;
+            background-color: white;
+            border-radius: $radius;
+            border: $border;
+            width: 80vh;
+            min-height: 70vh;
+            height: max-content;
+            padding: 10px;
+            .cart-setting-view__checked-block{
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: max-content;
+                height: 50px;
+                top: 10px;
+                left: 10px;
+                background-color: rgba(40, 238, 40, 0.653);
+                color: rgb(255, 255, 255);  
+                padding: 10px;
+                border-radius: $radius;
+                cursor: default;
+            }
+            &__header{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 10vh;
+                border-bottom: $border;
+            }
+            &__body{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                height: max-content;
+                overflow-y: auto;
+            }
+            // Пример отрисовки СПИСКОМ
+            &__example-line{
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-content: center;
+                width: 70%;
+                height: 250px;
+                border: $border;
+                margin: 5px 5px 20px 5px;
+                padding: 10px 5px 10px 5px;
+                border-radius: $radius;
+                background: $background-gr;
+            }
+            .example-line__list{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 90%;
+                height: 90%;
+                border: $border;
+                border-radius: $radius;
+                margin: 0 auto 0 auto;
+                background-color: white;
+                &__item{
+                    width: 90%;
+                    height: 30%;
+                    border: $border;
+                    border-radius: $radius;
+                    margin: 5px;
+                    background: $background-gr;
+                }
+            }
+
+            // Пример отрисовки БЛОКАМИ
+            &__example-block{
+                position: relative;
+                margin-top: 50px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 70%;
+                height: 250px;
+                border: $border;
+                margin: 5px;
+                padding: 10px 5px 10px 5px;
+                border-radius: $radius;
+                background: $background-gr;
+            }
+            .example-block__list{
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+                width: 90%;
+                height: 90%;
+                border: $border;
+                border-radius: $radius;
+                margin: 0 auto 0 auto;
+                background-color: white;
+                &__item{
+                    width: 30%;
+                    height: 50%;
+                    border: $border;
+                    border-radius: $radius;
+                    margin: 5px;
+                    background: $background-gr;
+                }
+            }
+            &__btn{
+                position: relative;
+                justify-content: center;
+                width: 90%;
+                margin: 10px auto 0 auto;
+                
+            }
         }
         .products-optional-header{
             display: flex;
