@@ -62,8 +62,6 @@
                             >
                                 Очистить корзину
                             </button-comp>
-                            <!-- <form type="submit">
-                            </form> -->
 
                             <!-- Кнопка ползволяет удалить несколько товаров на выбор -->
                             <button-comp 
@@ -106,10 +104,11 @@
                                     <!-- ОСНОВАНАЯ ЧАСТЬ -->
                                     <div class="cart-restore-block__body">
                                         <div class="__body__list-products">
-                                            <cart-product-item 
-                                            :cartProduct="{id: 1, name: 'test'}"
-                                            v-for="cartItem in 5"
-                                            ></cart-product-item>
+                                            <cart-product-item-delete
+                                            v-for="cartProduct in cartDeleteProducts"
+                                            :cartProduct="cartProduct"
+                                            @removeProductCart="removeProductCart(cartProduct)"
+                                            ></cart-product-item-delete>
                                         </div>
                                     </div>
 
@@ -222,11 +221,13 @@
 <script>
 import FilterPanel from '@/components/CatalogPage/FilterPanel.vue'
 import cartProductItem from '@/components/CartPage/cartProductItem.vue'
+import cartProductItemDelete from  '@/components/CartPage/cartProductItemDelete.vue'
 import { mapState, mapMutations } from 'vuex';
 export default {
     components: {
         FilterPanel,
         cartProductItem,
+        cartProductItemDelete,
     },
     data(){ 
         return{
@@ -275,6 +276,7 @@ export default {
             this.appendDeleteCartProducts(cartProduct)
         },
 
+        
         // Метод добавляет товар в список недавно удаленного товара
         // Вызывается в методе this.deleteProductCart
         appendDeleteCartProducts(cartProduct){
@@ -297,6 +299,47 @@ export default {
                 }
             }else{
                 localStorage.setItem('deleteProducts', JSON.stringify([cartItemForDeleteList]))
+            }
+        },
+        
+        addProductAfterDelete(cartProduct){
+            let listCartProducts = JSON.parse(localStorage.getItem('addedProducts'))
+
+            if(listCartProducts){
+                if(listCartProducts.length > 0){
+                    for(const product of listCartProducts){
+                        if(!JSON.stringify(listCartProducts).includes(JSON.stringify(cartProduct))){
+                            listCartProducts.push(cartProduct)
+                            localStorage.setItem('addedProducts', JSON.stringify(listCartProducts))
+                        }
+                        else{
+                            continue
+                        }
+                    }
+                }else{
+                    listCartProducts.push(cartProduct)
+                    localStorage.setItem('addedProducts', JSON.stringify(listCartProducts))
+                }
+            }else{
+                localStorage.setItem('addedProducts', JSON.stringify([cartProduct]))
+            }
+        },
+
+        // Метод восстанавливает товар находящийся в списке недавно удаленных 
+        removeProductCart(cartProduct){
+            if(this.deleteProducts){
+                let newDeleteProducts = []
+                for(const product of this.deleteProducts){
+                    if(product.id === cartProduct.id){
+                        // newDeleteProducts.push(product)
+                        this.addProductAfterDelete(product)
+                    }else{
+                        newDeleteProducts.push(product)
+                        console.log(newDeleteProducts);
+                    }
+                }
+                localStorage.setItem('deleteProducts', JSON.stringify(newDeleteProducts))
+                document.location.reload();
             }
         },
 
@@ -493,6 +536,30 @@ export default {
             // Возвращаем массив товара который в корзине
             return cartProductsData
         },
+
+        // Свойство достает все недавно удаленные товары с localeStorage
+        cartDeleteProducts(){
+            let cartDeleteData = new Array()
+            // Итерируемся по массиву товаров со стора (state.products),
+            if(this.deleteProducts){
+                for(const product of this.products){
+                    // Итерируемся по массиву товаров в localStorage (addedProducts)
+                    for(const cartItem of this.deleteProducts){
+                        if(JSON.stringify(product.id) === JSON.stringify(cartItem.id)){
+                            if(!cartDeleteData.includes(product)){
+                                cartDeleteData.push(product)
+                            }
+                        }else{
+                            continue
+                        }
+                    }
+                }
+            }else{
+                return []
+            }
+            // Возвращаем массив товара который в корзине
+            return cartDeleteData
+        },
     },
     mounted() {
         // Если нет переменной openListCartProduct в localeStorage, то this.openListCart = false
@@ -598,7 +665,8 @@ export default {
             display: flex;
             flex-direction: column;
             background-color: white;
-            width: 900px;
+            min-width: 1000px;
+            width: max-content;
             min-height: 60vh;
             max-height: 70vh;
             border: $border;
@@ -619,10 +687,24 @@ export default {
                 }
             }
             &__body{
-                border: $border;
-                margin: 20px 0 20px 0;
+                margin: 0 0 10px 0;
                 overflow-x: hidden;
                 overflow-y: auto;
+                padding: 20px;
+            }
+            ::-webkit-scrollbar{
+            width: 10px;
+            height: 10px;
+            }
+            ::-webkit-scrollbar-track{
+                background: rgba(128, 128, 128, 0.2);
+                &:hover{
+                    background: rgba(128, 128, 128, 0.3);
+                }
+            }
+            ::-webkit-scrollbar-thumb{
+                border-radius: $radius;
+                background: linear-gradient(360deg, #fc3b22, $color-orange-white)
             }
         }
         // Слой перекрывающий окно корзины при подтверждении очищения корзины
