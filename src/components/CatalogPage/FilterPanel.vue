@@ -103,13 +103,6 @@ export default {
         }
     },
 
-    computed: {
-        ...mapState({
-            filterData: state => state.filterData,
-            tagsAddit: state => state.tagsAddit,
-        }),
-    },
-
     methods: {
         // Метод добавляет теги с фильтр панели в промежуточные массивы
         // которые после по нажатию кнопки будут добавлены в filterData
@@ -320,6 +313,39 @@ export default {
             fromInput.value = 0
             toInput.value = 0
         },
+    },
+
+    watch: {
+        darkMode(newValue){
+            // Смена темы для filterPanel
+            const filterPanel = document.querySelector('.filter-panel')
+            if(newValue){
+                filterPanel.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+                filterPanel.style.color = 'rgb(255, 205, 138)'
+            }else{
+                filterPanel.style.backgroundColor = ''
+                filterPanel.style.color = ''
+            }
+        }
+    },
+
+    computed: {
+        ...mapState({
+            filterData: state => state.filterData,
+            tagsAddit: state => state.tagsAddit,
+            darkMode: state => state.darkMode,
+        }),
+    },
+    mounted(){
+        // Смена темы для filterPanel
+        const filterPanel = document.querySelector('.filter-panel')
+        if(this.darkMode){
+            filterPanel.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            filterPanel.style.color = 'rgb(255, 205, 138)'
+        }else{
+            filterPanel.style.backgroundColor = ''
+            filterPanel.style.color = ''
+        }
     }
 }
 </script>
@@ -350,7 +376,6 @@ export default {
         display: flex;
         width: max-content;
         height: max-content;
-        background-color: rgba(255, 255, 255, 0.282);
         border: $border;
         border-radius: $radius;
         margin: 2px;

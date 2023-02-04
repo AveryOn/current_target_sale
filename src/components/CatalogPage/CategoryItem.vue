@@ -20,5 +20,9 @@ export default {
     width: 250px;
     height: 250px;
     margin: 20px;
+    cursor: pointer;
+    &:hover{
+        box-shadow: $shadow;
+    }
 }
 </style>

@@ -6,6 +6,7 @@
             <h1 class="title-text">Cart</h1>
         </div>
         <div class="cart-body">
+            <!-- ШАПКА -->
             <div class="body-top">
                 <h1 class="body-top-text">Your added products</h1>
                 <input-comp placeholder="Search..." class="search-cart-products"></input-comp>
@@ -55,7 +56,6 @@
                     </modal-comp>
 
                     <div class="products-optional-header">
-                        <div>#тут будет TagsBar</div>
 
                         <!-- НАВБАР ДЛЯ УПРАВЛЕНИЯ КОРЗИНОЙ -->
                         <div class="optional-btns">
@@ -581,9 +581,10 @@ export default {
     },
     watch: {
         // Режим выборочного удаления товара
-        deleteModeCart(){
+        deleteModeCart(newvalue){
             // Если deleteModeCart = true то бэкграунд цвет кнопки будет красным
-            if(this.deleteModeCart){
+            
+            if(newvalue){
                 const activeDeleteModeCart = document.querySelector('#deleteModeCart')
                 activeDeleteModeCart.style.backgroundColor = '#ff3419'
                 activeDeleteModeCart.style.color = 'white'
@@ -606,12 +607,44 @@ export default {
                 this.forDeleteProducts = this.cartProducts
             }
         },
+
         // Отслеживает нажатие кнопки "Выбрать весь товар" при режиме выборочного удаления
         removeSelectAll(newValue){
             if(newValue){
                 this.forDeleteProducts = []
             }
+        },
+
+        // Меняет темную тему для некоторых элементов корзины    
+        darkMode(newValue){
+            // Смена темы для bodyTop
+            const bodyTop = document.querySelector('.body-top')
+            if(newValue){
+                bodyTop.style.backgroundColor = 'rgba(47, 44, 44, 0.9)'
+            }else{
+                bodyTop.style.backgroundColor = ''
+            }
+
+            // Смена темы для cartProductsLayout
+            const cartProductsLayout = document.querySelector('.cart-products-layout')
+            if(newValue){
+                cartProductsLayout.style.backgroundColor = 'rgba(47, 44, 44, 0.9)'
+            }else{
+                cartProductsLayout.style.backgroundColor = ''
+            }
+
+            // Смена темы для deleteModeCart_btns
+            const deleteModeCart_btns = document.querySelector('.delete-mode-cart--btns')
+            if(newValue){
+                deleteModeCart_btns.style.backgroundColor = 'rgba(139, 133, 133, 0.504)'
+            }else{
+                deleteModeCart_btns.style.backgroundColor = ''
+            }
+
+
         }
+
+        
         
     },
     computed: {
@@ -619,6 +652,7 @@ export default {
         ...mapState({
             // Основной массив товара
             products: state => state.products,
+            darkMode: state => state.darkMode,
             
             // Режим удаления товаров с корзины
             deleteModeCart: state => state.CartModule.deleteModeCart,
@@ -682,6 +716,47 @@ export default {
         },
     },
     mounted() {
+        // Смена темы для bodyTop
+        const bodyTop = document.querySelector('.body-top')
+        if(this.darkMode){
+            bodyTop.style.backgroundColor = 'rgba(47, 44, 44, 0.9)'
+        }else{
+            bodyTop.style.backgroundColor = ''
+        }
+
+        // Смена темы для cartProductsLayout
+        const cartProductsLayout = document.querySelector('.cart-products-layout')
+        if(this.darkMode){
+            cartProductsLayout.style.backgroundColor = 'rgba(47, 44, 44, 0.9)'
+        }else{
+            cartProductsLayout.style.backgroundColor = ''
+        }
+
+        // Смена темы для deleteModeCart_btns
+        const deleteModeCart_btns = document.querySelector('.delete-mode-cart--btns')
+        if(this.darkMode){
+            deleteModeCart_btns.style.backgroundColor = 'rgba(139, 133, 133, 0.504)'
+        }else{
+            deleteModeCart_btns.style.backgroundColor = ''
+        }
+
+        // Если deleteModeCart = true при темной теме то бэкграунд цвет кнопки будет красным
+        if(this.darkMode && this.deleteModeCart){
+            const activeDeleteModeCart = document.querySelector('#deleteModeCart')
+            activeDeleteModeCart.style.backgroundColor = '#ff3419'
+            activeDeleteModeCart.style.color = 'white'
+            activeDeleteModeCart.style.border = '2px dashed white'
+            activeDeleteModeCart.style.position = 'relative'
+            activeDeleteModeCart.style.top = '-5px'
+        }else{
+            const activeDeleteModeCart = document.querySelector('#deleteModeCart')
+            activeDeleteModeCart.style.background = ''
+            activeDeleteModeCart.style.color = ''
+            activeDeleteModeCart.style.border = ''
+            activeDeleteModeCart.style.position = ''
+            activeDeleteModeCart.style.top = ''
+        }
+
         // Проверяет есть ли в localeStorage переменная isSelectModeViewCart
         if(localStorage.getItem('isSelectModeViewCart')){
             if(localStorage.getItem('isSelectModeViewCart') === 'line'){
@@ -924,7 +999,7 @@ export default {
             display: flex;
             align-self: flex-end;
             right: 10px;
-            top: 5px;
+            top: 4px;
             background-color: rgba(245, 222, 179, 0.65);
             padding: 10px;
             border-radius: $radius;

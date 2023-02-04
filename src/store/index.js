@@ -14,13 +14,16 @@ export default createStore({
     isMiniChat: false,
     isButtonUp: false,
     isTagAll: 'Весь товар',
+    
+    // Для смены темы день/ночь
+    darkMode: JSON.parse(localStorage.getItem('darkMode')),
 
     // Массив с товарами
     products: [
         {
         id: 1,
         price: 3600, 
-        name: 'курткаasdasdasdadкурткаasdasdasdadкурткаasdasdasdadкурткаasdasdasdad',
+        name: 'куртка',
         specifications: {colors: ['черный'], material: ["синтетика", "шерсть"],},
         category: {name: 'куртки'}, 
         group: {name: 'лето'},
@@ -146,7 +149,16 @@ export default createStore({
     },
     tagsEdit(state, tagsEdit){
       state.tags = tagsEdit
-    }
+    },
+
+    // Активирует темную тему
+    darkModeActive(state){
+      state.darkMode = true
+    },
+    // Деактивирует ночную тему
+    darkModeDisabled(state){
+      state.darkMode = false
+    },
   },
 
   getters: {

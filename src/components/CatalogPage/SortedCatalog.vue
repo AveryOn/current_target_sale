@@ -16,9 +16,7 @@
         </tags-bar>
         <div class="body-sorted-catalog">
             <!-- ПАНЕЛЬ-ФИЛЬТР ТОВАРОВ -->
-            <!-- :tagsAccess="$store.getters.tagsAccess"
-            :colorsAccess="$store.getters.colorsAccess"
-            :materialsAccess="$store.getters.materialsAccess" -->
+
             <filter-panel
                 :tagsAccess="tagsAccess"
                 :colorsAccess="colorsAccess"
@@ -32,7 +30,6 @@
                     <h2 v-if="searchProducts?.length > 0">Products in the selected category</h2>
                     <h2 v-else>По вашему запросу ничего не найдено</h2>
                 </div>
-                <hr>
                 <!-- КАРТОЧКИ ТОВАРОВ -->
                 <product-items-list :products="this.searchProducts"></product-items-list>
             </div>
@@ -52,12 +49,21 @@ export default {
     },
     data(){
         return{
-            test: ['one', 'two'],
-            test1: ['one', 'two', 'three','one', 'two', 'three','one', 'two', 'three'],
         }
     },
     methods: {
 
+    },
+    watch: {
+        darkMode(newValue){
+            // Смена темы для itemsBlockSorted
+            const itemsBlockSorted = document.querySelector('.items-block-sorted')
+            if(newValue){
+                itemsBlockSorted.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            }else{
+                itemsBlockSorted.style.backgroundColor = ''
+            }
+        }
     },
     // В ЭТОМ COMPUTED БЛОКЕ ПОСТРОЕНА ФИЛЬТР-ЛОГИКА 
     computed: {
@@ -69,6 +75,9 @@ export default {
             tags: state => state.tags,
             isTagAll: state => state.isTagAll,
             tagsAddit: state => state.tagsAddit,
+
+            // Темная тема
+            darkMode: state => state.darkMode,
         }),
         // Для фильтр панели, возвращает массив всех доступных тегов для фильтр панели.
         // Теги фильтруются по массиву всех товаров 
@@ -334,6 +343,16 @@ export default {
         // },
     },
     mounted(){
+
+    },
+    mounted(){
+        // Смена темы для itemsBlockSorted
+        const itemsBlockSorted = document.querySelector('.items-block-sorted')
+        if(this.darkMode){
+            itemsBlockSorted.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+        }else{
+            itemsBlockSorted.style.backgroundColor = ''
+        }
     },
     created(){
         this.$watch(
@@ -391,16 +410,14 @@ export default {
         border-radius: $radius;
         box-shadow: $shadow;
         background-color: white;
-        hr{
-            width: 95%;
-            margin: 0 auto;
-        }
     }
     .items-header-sorted{
-        width: 100%;
+        width: 95%;
         display: flex;
         justify-content: center;
-        padding: 10px 10px 5px 10px;    
+        align-self: center;
+        padding: 10px;
+        border-bottom: $border;
     }
 
 

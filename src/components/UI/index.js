@@ -15,6 +15,7 @@ import RangeInput from '@/components/UI/rangeInput'
 import NotificationErrorComp from '@/components/UI/notificationErrorComp'
 import NotificationSuccessComp from '@/components/UI/notificationSuccessComp'
 import NotificationConfirmComp from '@/components/UI/notificationConfirmComp'
+import checkButton from '@/components/UI/checkButton'
 import icons from './icons'
  
 export default [
@@ -34,5 +35,6 @@ export default [
     NotificationErrorComp,
     NotificationSuccessComp,
     NotificationConfirmComp,
+    checkButton,
     ...icons,
 ]

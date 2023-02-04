@@ -19,9 +19,8 @@ export default {
             default: () => []
         }
     },
-    computed: {
 
-    },
+
     methods:{
         openProduct(product){
             this.$router.push({name: 'product', params: {productId: product.id}})

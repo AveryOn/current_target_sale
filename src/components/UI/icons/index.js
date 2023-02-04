@@ -6,6 +6,7 @@ import settings from './settings'
 import colorTheme from './colorTheme'
 import login from './login'
 import arrowRight from './arrow-right-icon'
+import toUp from './toUp'
 
 export default [
     home,
@@ -16,4 +17,5 @@ export default [
     colorTheme,
     login,
     arrowRight,
+    toUp,
 ]

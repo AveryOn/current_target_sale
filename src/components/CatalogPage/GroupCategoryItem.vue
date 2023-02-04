@@ -31,6 +31,7 @@ export default {
     border-radius: $radius;
     width: 90%;
     margin: 20px 0 30px 0;
+    box-shadow: $shadow;
 }
 .title-group-block{
     display: flex;

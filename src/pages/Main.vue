@@ -1,13 +1,13 @@
 <!-- ГЛАВНАЯ СТРАНИЦА -->
 <template>
-    <div class="MainBlock">
+    <div :class="{'dark': darkMode}" class="MainBlock">
         <!-- ПОИСКОВАЯ СТРОКА -->
-        <input-comp placeholder="Search..." class="search-input"></input-comp>
+        <input-comp placeholder="Search..." class="search-input" :class="{'dark-input': darkMode}"></input-comp>
         <!-- ЭТО ГРАДИЕНТНЫЙ ЗАГОЛОВОК -->
-        <h1 class="header-text">Welcome to our store!</h1>
+        <h1 class="header-text" >Welcome to our store!</h1>
         <!-- #это главная страница -->
         <!-- АКЦИОННЫЙ БЛОК -->
-        <div class="current-info-block">
+        <div class="current-info-block" :class="{'dark': darkMode}">
             <h1 class="header-info">the site is currently under development</h1>
         </div>
         <!-- ТИТУЛЬНЫЙ БЛОК ТОВАРОВ ПО АКЦИИ -->
@@ -17,13 +17,70 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
     methods: {
 
     },
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        }),
+    },
+    watch: {
+        darkMode(newValue){
+            // Смена темы для currentInfoBblock
+            const currentInfoBblock = document.querySelector('.current-info-block')
+            if(newValue){
+                currentInfoBblock.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            }else{
+                currentInfoBblock.style.backgroundColor = ''
+            }
+
+            // Смена темы для blockProductsPromotion
+            const currentInfoBlock = document.querySelector('.block-products-promotion')
+            if(newValue){
+                currentInfoBlock.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            }else{
+                currentInfoBlock.style.backgroundColor = ''
+            }
+
+            // Смена темы для search-input
+            const searchInput = document.querySelector('.search-input')
+            if(newValue){
+                searchInput.style.backgroundColor = 'rgba(47, 44, 44, 0.9)'
+            }else{
+                searchInput.style.backgroundColor = ''
+            }
+        }
+    },
     mounted(){
 
-    }
+        // Смена темы для currentInfoBblock
+        const currentInfoBlock = document.querySelector('.current-info-block')
+        if(this.darkMode){
+            currentInfoBlock.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+        }else{
+            currentInfoBlock.style.backgroundColor = ''
+        }
+
+        // Смена темы для blockProductsPromotion
+        const blockProductsPromotion = document.querySelector('.block-products-promotion')
+        if(this.darkMode){
+            blockProductsPromotion.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            
+        }else{
+            blockProductsPromotion.style.backgroundColor = ''
+        }
+
+        // Смена темы для search-input
+        const searchInput = document.querySelector('.search-input')
+        if(this.darkMode){
+            searchInput.style.backgroundColor = 'rgba(47, 44, 44, 0.9)'
+        }else{
+            searchInput.style.backgroundColor = ''
+        }
+    },
 }
 </script>
 <style lang="scss" scoped>
@@ -79,6 +136,7 @@ export default {
         background-color: white;
     }
 }
-
+@include darkMode_input;
+@include darkMode;
 @import '@/styles/media/main__m.scss'
 </style>

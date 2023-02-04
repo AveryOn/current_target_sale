@@ -12,15 +12,15 @@
 
     </modal-comp>
     <!-- СЮДА ВСТРАИВАЮТСЯ ВСЕ КОМПОНЕНТЫ И СТРАНИЦЫ  -->
-    <main-app-rendering class="Basic-view"></main-app-rendering>
+    <main-app-rendering :class="{'dark': darkMode}" class="Basic-view"></main-app-rendering>
 
     <mini-chat v-show="$store.state.isMiniChat"></mini-chat>
     <mini-chat-button @click="$store.commit('openMiniChat')"></mini-chat-button>
     <!-- КНОПКА СКРОЛЛА ВВЕРХ -->
-    <!-- Принимает пропсом булевое значение для отображения (аналог v-show) -->
-    <button-up :listclass="$store.state.isButtonUp">up</button-up>
+    <!-- Принимает пропсом булевое значение для отображения (аналог v-show) (Это UI-компонент)-->
+    <button-up :listclass="this.$store.state.isButtonUp"></button-up>
     <!-- Футер -->
-    <!-- <footer-comp></footer-comp> -->
+    <footer-comp></footer-comp>
 </template>
 <script>
 import MainAppRendering from '@/pages/MainAppRendering.vue'
@@ -29,6 +29,8 @@ import FooterComp from '@/components/Footer/FooterComp.vue'
 import MiniChat from '@/components/MiniChat/MiniChat.vue'
 import MiniChatButton from '@/components/MiniChat/MiniChatButton.vue'
 import SettingsComp from '@/components/SettingsComp/SettingsComp.vue'
+
+import { mapState } from 'vuex';
 export default {
     components: {
         MainAppRendering,
@@ -38,10 +40,32 @@ export default {
         MiniChatButton,
         SettingsComp,
     },
+    data(){
+        return{
+            isDarkMode: localStorage.getItem('darkMode'),
+        }
+    },
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        }),
+    },
     created(){
+    },
+    watch: {
+        darkMode(newValue){
+            // Проверяется есть активирована темная тема или нет
+            const app = document.querySelector('#app')
+            if(newValue){
+                app.style.background = 'rgb(36, 33, 33)'
+            }else{
+                app.style.background = ''
+            }
+        }
     },
     mounted(){
 
+        // Появление кнопки "Наверх" если произошел большой скролл вниз
         window.addEventListener('scroll', () => {
             if (window.scrollY >= 300){
                 this.$store.commit('showButtonUp')
@@ -50,6 +74,14 @@ export default {
                 this.$store.commit('hideButtonUp')
             }
         });
+
+        // Проверяется есть активирована темная тема или нет
+        const app = document.querySelector('#app')
+        if(this.darkMode){
+            app.style.background = 'rgb(36, 33, 33)'
+        }else{
+            app.style.background = ''
+        }
 
     }
 }

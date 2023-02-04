@@ -1,7 +1,7 @@
 
 <!-- ПАНЕЛЬ НАСТРОЙКИ ВНЕШНЕГО ВИДА ОТОБРАЖЕНИЯ ТОВАРА В КОРЗИНЕ -->
 <template>
-    <div class="cart-setting-view">
+    <div class="cart-setting-view" :class="{'dark': darkMode}">
             
             <!-- ШАПКА -->
             <div class="cart-setting-view__header">
@@ -61,6 +61,7 @@
         </div>
 </template>
 <script>
+
 import { mapState } from 'vuex'
 export default {
     data(){
@@ -80,12 +81,37 @@ export default {
             localStorage.setItem('isSelectModeViewCart', 'line')
         },
     },
+    watch: {
+        darkMode(newValue){
+            // Смена темы для exampleLine__list
+            const exampleLine__list = document.querySelector('.example-line__list')
+            if(newValue){
+                exampleLine__list.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            }else{
+                exampleLine__list.style.backgroundColor = ''
+            }
+        }
+    },
     computed: {
         ...mapState({
             // Стиль оформления отрисовки товара в корзине (line || block)
             isSelectModeViewCart: state => state.CartModule.isSelectModeViewCart,
+
+            // Темная тема
+            darkMode: state => state.darkMode,
         })
-    }
+    },
+    mounted() {
+        // example-line__list   example-block__list
+        // Смена темы для exampleLine__list
+        const exampleLine__list = document.querySelector('.example-line__list')
+        exampleLine__list.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+        if(this.darkMode){
+            console.log(true);
+        }else{
+            exampleLine__list.style.backgroundColor = ''
+        }
+    },
 }
 </script>
 <style lang="scss" scoped>
@@ -208,4 +234,5 @@ export default {
         
     }
 }
+@include darkMode;
 </style>

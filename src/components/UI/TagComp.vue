@@ -22,7 +22,6 @@ export default {
 <style lang="scss" scoped>
 .tag{
     display: flex;
-    background-color: rgba(0,0,0, .15);
     border-radius: $radius;
     padding: 0 8px;
     margin: 1px 5px;

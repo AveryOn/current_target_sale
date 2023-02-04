@@ -76,10 +76,11 @@ export default {
             selectCartProduct: state => state.CartModule.selectCartProduct,
             removeSelectAll: state => state.CartModule.removeSelectAll,
             selectCartProduct_prefix: state => state.CartModule.selectCartProduct_prefix,
+            // Темная тема 
+            darkMode: state => state.darkMode,
         }),
     },
     watch:{
-
         // Свойство отслеживает изменение клика по кнопке "Выбрать всё" 
         selectCartProduct(newValue){
             if(newValue){
@@ -109,10 +110,116 @@ export default {
             }else{
                 this.$emit('selectCartProductOne', {data: this.cartProduct, isSelect: false})
             }
-        }
+        },
+        // Смена dark темы 
+        darkMode(newValue){
+            // Смена темы для cart__GrayLayout
+            const cart__GrayLayout = document.querySelectorAll('.cart__gray-layout')
+            if(newValue){
+                cart__GrayLayout.forEach(item => {
+                    item.style.backgroundColor = 'rgba(36, 33, 33, 0.7)'
+                    item.style.color = 'rgba(187, 177, 177, 0.789)'
+                })
+            }else{
+                cart__GrayLayout.forEach(item => {
+                    item.style.backgroundColor = ''
+                })
+            }
+
+            // Смена темы для image
+            const image = document.querySelectorAll('.image')
+            if(newValue){
+                image.forEach(item => {
+                    item.style.backgroundColor = 'rgb(36, 33, 33)'
+                })
+            }else{
+                image.forEach(item => {
+                    item.style.backgroundColor = ''
+                })
+            }
+
+            // Смена темы для descriptionItem
+            const descriptionItem = document.querySelectorAll('.description-item')
+            if(newValue){
+                descriptionItem.forEach(item => {
+                    item.style.backgroundColor = 'rgb(36, 33, 33)'
+                    item.style.border = '1px solid rgb(36, 33, 33)'
+                })
+            }else{
+                descriptionItem.forEach(item => {
+                    item.style.backgroundColor = ''
+                    item.style.border = ''
+                })
+            }
+
+            // Смена темы для descriptionItem
+            const descriptionTitle = document.querySelectorAll('.description-title')
+            if(newValue){
+                descriptionTitle.forEach(item => {
+                    item.style.backgroundColor = 'rgb(36, 33, 33)'
+                    item.style.color = 'rgb(255, 205, 138)'
+                })
+            }else{
+                descriptionTitle.forEach(item => {
+                    item.style.backgroundColor = ''
+                    item.style.color = ''
+                })
+            }
+        },
     },
     mounted(){
+        // Смена темы для cart__GrayLayout
+        const cart__GrayLayout = document.querySelectorAll('.cart__gray-layout')
+        if(this.darkMode){
+            cart__GrayLayout.forEach(item => {
+                item.style.backgroundColor = 'rgba(36, 33, 33, 0.7)'
+                item.style.color = 'rgba(187, 177, 177, 0.789)'
+            })
+        }else{
+            cart__GrayLayout.forEach(item => {
+                item.style.backgroundColor = ''
+            })
+        }
 
+        // Смена темы для image   
+        const image = document.querySelectorAll('.image')
+        if(this.darkMode){
+            image.forEach(item => {
+                item.style.backgroundColor = 'rgb(36, 33, 33)'
+            })
+        }else{
+            image.forEach(item => {
+                item.style.backgroundColor = ''
+            })
+        }
+
+        // Смена темы для descriptionItem
+        const descriptionItem = document.querySelectorAll('.description-item')
+        if(this.darkMode){
+            descriptionItem.forEach(item => {
+                item.style.backgroundColor = 'rgb(36, 33, 33)'
+                item.style.border = '1px solid rgb(36, 33, 33)'
+            })
+        }else{
+            descriptionItem.forEach(item => {
+                item.style.backgroundColor = ''
+                item.style.border = ''
+            })
+        }
+
+        // Смена темы для descriptionItem
+        const descriptionTitle = document.querySelectorAll('.description-title')
+        if(this.darkMode){
+            descriptionTitle.forEach(item => {
+                item.style.backgroundColor = 'rgb(36, 33, 33)'
+                item.style.color = 'rgb(255, 205, 138)'
+            })
+        }else{
+            descriptionTitle.forEach(item => {
+                item.style.backgroundColor = ''
+                item.style.color = ''
+            })
+        }
     },
 }
 </script>
@@ -126,9 +233,9 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(128, 128, 128, 0.379);
+    background-color: rgba(107, 102, 102, 0.588);
     border-radius: $radius;
-    color: rgba(128, 128, 128, 0.789);
+    color: rgba(113, 106, 106, 0.789);
     font-size: 30px;
     font-weight: bolder;
     cursor: pointer;

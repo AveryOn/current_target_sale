@@ -5,11 +5,33 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
-
-    computed: {
-
+    watch: {
+        darkMode(newValue){
+            // Смена темы для tags-bar
+            const tagsBar = document.querySelector('.tags-bar')
+            if(newValue){
+                tagsBar.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            }else{
+                tagsBar.style.backgroundColor = ''
+            }
+        }
     },
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        }),
+    },
+    mounted(){
+        // Смена темы для tags-bar
+        const tagsBar = document.querySelector('.tags-bar')
+        if(this.darkMode){
+            tagsBar.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+        }else{
+            tagsBar.style.backgroundColor = ''
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -27,5 +49,4 @@ export default {
     background-color: white;
     box-shadow: $shadow;
 }
-
 </style>

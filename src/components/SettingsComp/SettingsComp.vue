@@ -1,14 +1,15 @@
 <template>
-    <div v-show="show" class="settings">
+    <div v-show="show" :class="{'dark': darkMode}" class="settings">
         <!-- ШАПКА -->
         <div class="settings-header">
-            <h1 class="settings-title-text">{{ settingsTitle }}</h1>
-            <button-comp @click="$emit('close')">Закрыть</button-comp>
+            <h1 :class="{'dark': darkMode}" class="settings-title-text">{{ settingsTitle }}</h1>
+            <button-comp :class="{'dark-btn': darkMode}" @click="$emit('close')">Закрыть</button-comp>
         </div>
 
         <!-- Кнопка для возврата на главную панель настроек -->
         <button-comp 
         class="settings__to-back-btn"
+        :class="{'dark': darkMode}" 
         v-show="openChapterSetting.isOpen && openChapterSetting.tabName !== ''" 
         @click="backSettingStart"
         >
@@ -21,7 +22,17 @@
             <!-- В этом компоненте содержатся настройки доступные для рядового пользователя -->
             <div class="settings-body-list__user">
 
+                <!-- Контейнер с кнопками -->
+                <div class="settings-btns__list">
+                    <div class="settings-btns__list--item">
+                        <h3>Темная тема</h3>
+                        <check-button :isCheck="isDarkMode" @checked="darkModeActive"></check-button>
+                    </div>
+                </div>
+
+                <!-- Контейнер со спиком вкладок -->
                 <div class="settings-tab__list">
+                    <h3 class="settings-tab__list--title">Разделы настроек</h3>
                     <!-- Вкладка содержащая набор настроек относящихся в определенной области магазина -->
                     <setting-tab :tabName="'cart-setting'" @openTab="openTab">
                         Настройки корзины
@@ -46,7 +57,7 @@
         :openChapterSetting="openChapterSetting" 
         class="settings-body-item_comp"
         >
-            <cart-setting-view></cart-setting-view>
+            <cart-setting-view :class="{'dark': darkMode}"></cart-setting-view>
 
         </setting-chapter>
 
@@ -54,13 +65,15 @@
 </template>
 <script>
 import ShowTemplate from '@/mixins/ShowTemplate';
-// Импорт панель настроек выбора. Тип оформления отображения товара в корзине
+// Импорт панели выбора оформления отображения товара в корзине
 import cartSettingView from '@/components/CartPage/cartSettingView.vue';
 
 // Импорт вкладки настроек
 import settingTab from '@/components/SettingsComp/settingTab.vue'
 // Импорт раздела настроек
 import settingChapter from './settingChapter.vue';
+
+import { mapState } from 'vuex';
 export default {
     mixins: [ShowTemplate],
     components: {
@@ -75,7 +88,8 @@ export default {
             openChapterSetting: {
                 isOpen: false,
                 tabName: '',
-            }
+            },
+            isDarkMode: JSON.parse(localStorage.getItem('darkMode')),
         }
     },
     methods: {
@@ -90,6 +104,16 @@ export default {
                 return false
             }   
         },
+        // Метод включает и отключает темную тему
+        darkModeActive(checked){
+            if(checked){
+                this.$store.commit('darkModeActive')
+                localStorage.setItem('darkMode', true)
+            }else{
+                this.$store.commit('darkModeDisabled')
+                localStorage.setItem('darkMode', false)            
+            }
+        },
 
         // Метод возвращает пользователя на исходную странцу настроек
         backSettingStart(){
@@ -100,6 +124,9 @@ export default {
         }
     },
     computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        }),
         // Свойство возрвращает название для окна настроек в Шапке относительно открытого раздела настроек
         settingsTitle(){
             // Title когда открыт раздел настроек Корзины
@@ -111,12 +138,33 @@ export default {
                 return 'Общие настройки'
             }
         }
+    },
+    watch: {
+        // Меняет цветовую тему у хедера окна настроек 
+        darkMode(newValue){
+            const header = document.querySelector('.settings-header')
+            if(newValue){
+                header.style.backgroundColor = 'rgb(36, 33, 33)'
+            }else{
+                header.style.backgroundColor = ''
+            }
+        } 
+    },
+    mounted(){
+        // Меняет цветовую тему у хедера окна настроек 
+        const header = document.querySelector('.settings-header')
+        if(this.darkMode){
+            header.style.backgroundColor = 'rgb(36, 33, 33)'
+        }else{
+            header.style.backgroundColor = ''
+        }
     }
 }
 </script>
 <style lang="scss" scoped>
 @include h1-gradient;
 @include h2-gradient;
+@include h3-gradient;
 
 .settings{
     display: flex;
@@ -130,6 +178,10 @@ export default {
     padding: 0 10px 0 10px;
     overflow:auto;
     overflow-x: hidden;
+    &::-webkit-scrollbar{
+        width: 9px;
+        height: 9px;
+    }
     .settings__to-back-btn{
         align-self: flex-start;
         font-size: 16px;
@@ -142,10 +194,10 @@ export default {
         align-items: center;
         justify-content: space-between;
         align-self: center;
+        background-color: white;
         top: 5px;
         width: 100%;
         padding: 50px;
-        background-color: white;
         border: $border;
         border-radius: $radius;
         padding: 5px 20px;
@@ -169,20 +221,45 @@ export default {
         margin: 0 10px 0 10px;
         .settings-body-list__user{
             display: flex;
-            
+            flex-direction: column;
             width: max-content;
             width: 100%;
             height: max-content;
+            .settings-btns__list{
+                display: flex;
+                flex-direction: column;
+                width: max-content;
+                width: 100%;
+                border-bottom: $border;
+                padding: 5px; 
+                margin-bottom: 10px;
+            }
+            .settings-btns__list--item{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: $border;
+                border-radius: $radius;
+                padding: 10px;
+                width: 100%;
+                max-width: 100%;
+                margin: 0 0 10px 0;
+            }
             .settings-tab__list{
                 display: flex;
                 flex-direction: column;
                 width: max-content;
                 width: 100%;
-                border: $border;
                 padding: 5px;                
+            }
+            .settings-tab__list--title{
+                align-self: center;
+                margin-bottom: 10px;
             }
         }
     }
 
 }
+@include darkMode;
+@include darkMode_btn;
 </style>

@@ -1,10 +1,16 @@
 <!-- СТАНДАРТНАЯ КНОПКА -->
 <template>
-    <button class="btn"><slot></slot></button>
+    <button class="btn" :class="{'dark-btn': darkMode}"><slot></slot></button>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
     name: 'button-comp',
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        })
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -32,4 +38,5 @@ export default {
         // border-right: 2px solid rgb(124, 80, 8);
     }
 }
+@include darkMode_btn;
 </style>

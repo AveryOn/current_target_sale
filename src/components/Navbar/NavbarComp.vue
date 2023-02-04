@@ -2,9 +2,11 @@
 <template>
     <div @click="showLog" ref="navbar" class="navbar">
         <div class="title">
-            <div class="logo">
+            <div class="logo" :class="{'dark': darkMode}">
             </div>
-            <h1 class="title--text" @click="$router.push({name: 'main'})">Current Target Sale</h1>
+            <h1 class="title--text" :class="{'dark': darkMode}" @click="$router.push({name: 'main'})">
+                {{ (this.darkMode)? 'PornHub' : 'Current Target Sale'}}
+            </h1>
         </div>
     </div>
     <!-- Навигационные кнопки для комп. версии -->
@@ -15,28 +17,32 @@
                 <button-comp 
                 @click="$router.push({name: 'main'})" 
                 title="Home"
-                class="left--btn">
+                class="left--btn"
+                >
                     <i-home></i-home> Home
                 </button-comp>
 <!-- Кнопка Каталог -->
                 <button-comp 
                 @click="$router.push({name: 'category'})" 
                 title="Catalog"
-                class="left--btn">
+                class="left--btn"
+                >
                     <i-catalog></i-catalog> Catalog
                 </button-comp>
 <!-- кнопка Корзина -->
                 <button-comp 
                 @click="$router.push({name: 'cart'})" 
                 title="Cart"
-                class="left--btn">
+                class="left--btn"
+                >
                 <i-cart></i-cart> Cart
                 </button-comp>
 <!-- Кнопка Настройки -->
                 <button-comp 
                 @click="$store.commit('SettingsModule/openSettingsModal')" 
                 title="Settings"
-                class="left--btn"> 
+                class="left--btn"
+                > 
                     <i-settings></i-settings> Settings
                 </button-comp>
             </div>
@@ -65,6 +71,7 @@
 </template>
 <script>
 import NavMenuMobile from '@/components/Navbar/NavMenuMobile.vue'
+import { mapState } from 'vuex';
 export default {
     components: {
         NavMenuMobile,
@@ -79,6 +86,31 @@ export default {
     },
     methods: {
     },
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        })
+    },
+    watch: {
+        darkMode(newValue){
+            // Смена темы для логотипа
+            const logo = document.querySelector('.logo')
+            if(newValue){
+                logo.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            }else{
+                logo.style.backgroundColor = ''
+            }
+        }
+    },
+    mounted(){
+        // Смена темы для логотипа
+        const logo = document.querySelector('.logo')
+        if(this.darkMode){
+            logo.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+        }else{
+            logo.style.backgroundColor = ''
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -116,11 +148,11 @@ h1{
     .logo{
         display: flex;
         align-items: center;
-        background-color: white;
         width: 90px;
         height: 90px;
         border-radius: 50%;
         margin: 10px 0 0 30px;
+        background-color: white;
     }
 }
 .btns{
@@ -139,5 +171,8 @@ h1{
     .btns__right{
         display: flex;
     }
+@include darkMode;
+@include darkMode_btn;
+// Импорт файла адаптации под мобильные ус-ва
 @import '@/styles/media/navbar__m.scss'
 </style>

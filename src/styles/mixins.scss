@@ -61,5 +61,28 @@
     }
 }
 
+// Общие настройки темной темы
+@mixin darkMode(){
+    .dark{
+        background-color: rgba(36, 33, 33, 0.9);
+    }
+}
+
+// Настройки темной темы для кнопок
+@mixin darkMode_btn(){
+    .dark-btn{
+        background-color: rgba(36, 33, 33, 1);
+        color: rgb(253, 148, 11);
+    }
+}
+
+// Настройки темной темы для инпутов
+@mixin darkMode_input(){
+    .dark-input{
+        background-color: rgba(47, 44, 44, 1);
+        color: rgb(253, 148, 11);
+    }
+}
+
 // Иконки для мобильной версии
 

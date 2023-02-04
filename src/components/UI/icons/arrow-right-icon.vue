@@ -13,6 +13,8 @@ export default {
 .arrow-right{
     position: relative;
     top: 1%;
+    width: 23px;
+    height: 23px;
     fill: orange;
 }
 </style>

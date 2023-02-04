@@ -1,7 +1,8 @@
 <template>
-    <input class="input" @input="updateInput" :value="modelValue">
+    <input class="input" :class="{'dark-input': darkMode}" @input="updateInput" :value="modelValue">
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
     name: 'input-comp',
     props: {
@@ -11,7 +12,12 @@ export default {
         updateInput(event){
             this.$emit("update:modelValue", event.target.value)
         }
-    }
+    },
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        }),
+    },
 }
 </script>
 <style lang="scss" scoped>
@@ -34,4 +40,5 @@ export default {
         border-right: 1px solid red;
     }
 }
+@include darkMode_input;
 </style>
