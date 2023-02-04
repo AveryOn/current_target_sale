@@ -178,7 +178,7 @@
                         <button-comp
                         v-show="deleteModeCart"
                         @click="log"
-                        >
+                        >   
                             _log
                         </button-comp>
                     
@@ -212,7 +212,7 @@
                         </div>
                     </div>
 
-                    <!-- ОТРИСОВКА ТОВАРОВ В КОРЗИНЕ -->
+                    <!-- ОТРИСОВКА ТОВАРОВ В КОРЗИНЕ СПИСКОМ -->
                     <!-- Стандартный стиль отрисовки товаров тип: line  (this.isSelectModeViewCart = 'line') -->
                     <div v-show="cartProducts.length > 0" class="cart-products-items">
                         <cart-product-item
@@ -227,7 +227,7 @@
 
                     </div>
 
-                    <!-- ОТРИСОВКА ТОВАРОВ В КОРЗИНЕ -->
+                    <!-- ОТРИСОВКА ТОВАРОВ В КОРЗИНЕ БЛОКАМИ -->
                     <!-- БЛОЧНАЯ отрисовка. стиль отрисовки товаров тип: block  (this.isSelectModeViewCart = 'block') -->
                     <div v-show="cartProducts.length > 0" class="cart-products-items-view-block">
                         <cart-product-item-view-block

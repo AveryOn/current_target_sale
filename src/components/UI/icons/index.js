@@ -5,6 +5,7 @@ import cart from './cart'
 import settings from './settings'
 import colorTheme from './colorTheme'
 import login from './login'
+import arrowRight from './arrow-right-icon'
 
 export default [
     home,
@@ -14,4 +15,5 @@ export default [
     settings,
     colorTheme,
     login,
+    arrowRight,
 ]

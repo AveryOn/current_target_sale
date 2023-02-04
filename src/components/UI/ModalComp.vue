@@ -26,5 +26,11 @@ export default {
     bottom: -30px;
     background-color: rgba(0,0,0,.5);
     padding: 0 50px;
+    .modal-block{
+        width: max-content;
+        height: max-content;
+        border-radius: $radius;
+        box-shadow: $shadow;
+    }
 }
 </style>
