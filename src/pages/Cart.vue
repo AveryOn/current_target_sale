@@ -620,7 +620,7 @@ export default {
             // Смена темы для bodyTop
             const bodyTop = document.querySelector('.body-top')
             if(newValue){
-                bodyTop.style.backgroundColor = 'rgba(47, 44, 44, 0.9)'
+                bodyTop.style.backgroundColor = 'rgba(36, 33, 33, 1)'
             }else{
                 bodyTop.style.backgroundColor = ''
             }
@@ -628,7 +628,7 @@ export default {
             // Смена темы для cartProductsLayout
             const cartProductsLayout = document.querySelector('.cart-products-layout')
             if(newValue){
-                cartProductsLayout.style.backgroundColor = 'rgba(47, 44, 44, 0.9)'
+                cartProductsLayout.style.backgroundColor = 'rgba(36, 33, 33, 1)'
             }else{
                 cartProductsLayout.style.backgroundColor = ''
             }
@@ -647,6 +647,14 @@ export default {
                 cartRestoreBlock.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
             }else{
                 cartRestoreBlock.style.backgroundColor = ''
+            }
+
+            // Смена темы для cartRestoreBlock__grayLayout
+            const cartRestoreBlock__grayLayout = document.querySelector('.cart-restore-block__gray-layout')
+            if(newValue){
+                cartRestoreBlock__grayLayout.style.backgroundColor = 'rgba(36, 33, 33, 0.7)'
+            }else{
+                cartRestoreBlock__grayLayout.style.backgroundColor = ''
             }
         }
         
@@ -723,7 +731,7 @@ export default {
         // Смена темы для bodyTop
         const bodyTop = document.querySelector('.body-top')
         if(this.darkMode){
-            bodyTop.style.backgroundColor = 'rgba(47, 44, 44, 0.9)'
+            bodyTop.style.backgroundColor = 'rgba(36, 33, 33, 1)'
         }else{
             bodyTop.style.backgroundColor = ''
         }
@@ -731,7 +739,7 @@ export default {
         // Смена темы для cartProductsLayout
         const cartProductsLayout = document.querySelector('.cart-products-layout')
         if(this.darkMode){
-            cartProductsLayout.style.backgroundColor = 'rgba(47, 44, 44, 0.9)'
+            cartProductsLayout.style.backgroundColor = 'rgba(36, 33, 33, 1)'
         }else{
             cartProductsLayout.style.backgroundColor = ''
         }
@@ -751,7 +759,24 @@ export default {
         }else{
             cartRestoreBlock.style.backgroundColor = ''
         }
+    
+        // Смена темы для cartRestoreBlock__grayLayout
+        const cartRestoreBlock__grayLayout = document.querySelector('.cart-restore-block__gray-layout')
+        if(this.darkMode){
+            cartRestoreBlock__grayLayout.style.backgroundColor = 'rgba(36, 33, 33, 0.7)'
+        }else{
+            cartRestoreBlock__grayLayout.style.backgroundColor = ''
+        }
 
+        // 
+
+        // Смена темы для cartRestoreBlock__grayLayout
+        const openContentBlock = document.querySelector('.open-content-block')
+        if(this.darkMode){
+            openContentBlock.style.background = 'linear-gradient(360deg, rgba(36, 33, 33, 1), rgba(34, 32, 32, 0.85), rgba(0, 0, 0, 0))'
+        }else{
+            openContentBlock.style.background = ''
+        }
 
         // Если deleteModeCart = true при темной теме то бэкграунд цвет кнопки будет красным
         if(this.darkMode && this.deleteModeCart){
@@ -924,6 +949,7 @@ export default {
                 right: 0;
                 left: 0;
                 background-color: rgba(128, 128, 128, 0.5);
+                border-radius: $radius;
                 z-index: 1005;
             }
 
@@ -1024,7 +1050,7 @@ export default {
         }
         .products-optional-header{
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             margin: -1px;
             background: $background-gr;

@@ -38,6 +38,8 @@ export default {
             selectCartProduct: state => state.CartModule.selectCartProduct,
             removeSelectAll: state => state.CartModule.removeSelectAll,
             selectCartProduct_prefix: state => state.CartModule.selectCartProduct_prefix,
+
+            darkMode: state => state.darkMode,
         }),
     },
     watch:{
@@ -57,7 +59,70 @@ export default {
                 this.$store.commit('CartModule/falseSelectCartProduct')
             }
         },
+
+        // Смена темной темы
+        darkMode(newValue){
+            // Смена темы для image, description-item, description-title
+            const image = document.querySelectorAll('.image')
+            const descriptionItem = document.querySelectorAll('.description-item')
+            const descriptionTitle = document.querySelectorAll('.description-title')
+            if(newValue){
+                image.forEach(item => {
+                    item.style.backgroundColor = 'rgba(36, 33, 33, 1)'
+                })
+                descriptionItem.forEach(item => {
+                    item.style.backgroundColor = 'rgba(36, 33, 33, 1)'
+                })
+                descriptionTitle.forEach(item => {
+                    item.style.backgroundColor = 'rgba(36, 33, 33, 1)'
+                })
+            }else{
+                image.forEach(item => {
+                    item.style.backgroundColor = ''
+                })
+                descriptionItem.forEach(item => {
+                    item.style.backgroundColor = ''
+                })
+                descriptionTitle.forEach(item => {
+                    item.style.backgroundColor = ''
+                })
+            }
+        },
     },
+    mounted(){
+        // Смена темы для image, description-item, description-title
+        const image = document.querySelectorAll('.image')
+        const descriptionItem = document.querySelectorAll('.description-item')
+        const descriptionTitle = document.querySelectorAll('.description-title')
+        if(this.darkMode){
+            image.forEach(item => {
+                item.style.backgroundColor = 'rgba(36, 33, 33, 1)'
+            })
+            descriptionItem.forEach(item => {
+                item.style.backgroundColor = 'rgba(36, 33, 33, 1)'
+                item.style.border = '1px solid rgba(36, 33, 33, 1)'
+                item.style.color = 'rgb(255, 205, 138)'
+            })
+            descriptionTitle.forEach(item => {
+                item.style.backgroundColor = 'rgba(36, 33, 33, 1)'
+                item.style.color = 'rgb(255, 205, 138)'
+            })
+        }else{
+            image.forEach(item => {
+                item.style.backgroundColor = ''
+            })
+            descriptionItem.forEach(item => {
+                item.style.backgroundColor = ''
+                item.style.border = ''
+                item.style.color = ''
+            })
+            descriptionTitle.forEach(item => {
+                item.style.backgroundColor = ''
+                item.style.color = ''
+            })
+        }
+
+    }
 }
 </script>
 <style lang="scss" scoped>
