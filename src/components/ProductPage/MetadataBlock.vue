@@ -116,12 +116,22 @@ export default {
             }
         },
     },
-    mounted(){
+    watch: {
+        darkMode(newValue){
+            // Смена темы для metadataBlock
+            const metadataBlock = document.querySelector('.metadata-block')
+            if(newValue){
+                metadataBlock.style.color = 'rgb(255, 205, 138)'
+            }else{
+                metadataBlock.style.color = ''
+            }
+        }
     },
     computed:{
         // извлечение данных товара со стора
         ...mapState({
             products: state => state.products,
+            darkMode: state => state.darkMode,
         }),
         currentProduct(){
             for(const product of this.products){
@@ -202,7 +212,16 @@ export default {
                 }
             }
         },
-    }
+    },
+    mounted(){
+        // Смена темы для metadataBlock
+        const metadataBlock = document.querySelector('.metadata-block')
+        if(this.darkMode){
+            metadataBlock.style.color = 'rgb(255, 205, 138)'
+        }else{
+            metadataBlock.style.color = ''
+        }
+    },
 }
 </script>
 <style lang="scss" scoped>

@@ -64,9 +64,10 @@
 // Общие настройки темной темы
 @mixin darkMode(){
     .dark{
-        background-color: rgba(36, 33, 33, 0.9);
+        background-color: rgba(36, 33, 33, 1);
     }
 }
+
 
 // Настройки темной темы для кнопок
 @mixin darkMode_btn(){

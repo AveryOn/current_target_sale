@@ -1,14 +1,15 @@
 <template>
     <div class="comment">
-        <div class="UserMetadata">
-            <div class="CommentPhoto"></div>
-            <div class="Username">{{ comment.username }}</div>
+        <div class="user-metadata">
+            <div class="comment-photo"></div>
+            <div class="username">{{ comment.username }}</div>
             <p>_________user ID: {{ comment.ownerId }}</p>
         </div>
-        <p class="CommentMessage">{{ comment.comment }}</p>
+        <p class="comment-message">{{ comment.comment }}</p>
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
     props: {
         comment: {
@@ -16,8 +17,44 @@ export default {
             required: true,
         }
     },
-    mounted() {
+    watch: {
+        darkMode(newValue){
+            // Смена темы для comment
+            const comment = document.querySelectorAll('.comment')
+            if(newValue){
+                comment.forEach(item => {
+                    item.style.backgroundColor = 'rgba(44, 44, 44, 1)'
+                    item.style.color = 'rgb(255, 205, 138)'
+                })
+            }else{
+                comment.forEach(item => {
+                    item.style.backgroundColor = ''
+                    item.style.color = ''
+                })
+            }
+        }
+    },
 
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        }),
+    },
+
+    mounted() {
+        // Смена темы для comment
+        const comment = document.querySelectorAll('.comment')
+        if(this.darkMode){
+            comment.forEach(item => {
+                item.style.backgroundColor = 'rgba(44, 44, 44, 1)'
+                item.style.color = 'rgb(255, 205, 138)'
+            })
+        }else{
+            comment.forEach(item => {
+                item.style.backgroundColor = ''
+                item.style.color = ''
+            })
+        }
     },
 }
 </script>
@@ -38,20 +75,20 @@ export default {
         box-shadow: $shadow;
     }
 } 
-.UserMetadata{
+.user-metadata{
     display: flex;
     align-items: center;
 }
-.CommentPhoto{
+.comment-photo{
     width: 40px;
     height: 40px;
     background-color: black;
     border-radius: 50%;
 }
-.Username{
+.username{
     margin-left: 10px;
 }
-.CommentMessage{
+.comment-message{
     margin-top: 10px;
 } 
 </style>

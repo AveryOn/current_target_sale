@@ -1,6 +1,10 @@
 <!-- БЛОК С КОММЕНТАРИЯМИ -->
 <template>
-    <h1 class="title-text">Отзывы о товаре</h1>
+    <h1 class="title-text">
+        <p class="p">
+            Отзывы о товаре
+        </p>
+    </h1>
     <div class="comments-block">
         <!-- ОТРИСОВКА КОММЕНТАРИЕВ -->
         <comment-comp
@@ -41,7 +45,18 @@ h1, h2{
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-   .comments-block{
+.title-text{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-top: $border;
+    margin-top: 50px;
+    .p{
+      align-self: center;
+      margin-top: 30px;  
+    }
+}
+.comments-block{
     width: 90%;
     height: 400px;
     border-bottom: $border;

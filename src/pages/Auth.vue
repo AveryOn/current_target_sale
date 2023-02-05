@@ -9,7 +9,7 @@
             <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione officia temporibus reprehenderit architecto autem recusandae ad adipisci, neque eum blanditiis perferendis velit eaque praesentium commodi maiores fugiat eos in itaque!</p>
             <!-- ФОРМА АУТЕНТИФИКАЦИИ -->
             <!-- Блок авторизации -->
-            <div v-if="!$store.state.AuthModule.isRegistration" class="auth-form">
+            <div v-show="!$store.state.AuthModule.isRegistration" class="auth-form">
                 <h2 class="summary-auth-form">Login</h2>
                 <p class="p">Enter your email or username</p>
                 <input-comp
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <!-- Блок Регистрации -->
-            <div v-else class="auth-form">
+            <div v-show="$store.state.AuthModule.isRegistration" class="auth-form__registration">
                 <h2 class="summary-auth-form">Registration</h2>
                 <p class="p">Enter your Email</p>
                 <input-comp 
@@ -58,6 +58,7 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
     data(){
         return{
@@ -65,7 +66,70 @@ export default {
             username: '',
             password: '', 
         }
-    }
+    },
+    watch: {
+        darkMode(newValue){
+            // Смена темы для description
+            const description = document.querySelector('.description')
+            if(newValue){
+                description.style.backgroundColor = 'rgba(36, 36, 36, 0.9)'
+                description.style.color = 'rgb(255, 205, 138)'
+            }else{
+                description.style.backgroundColor = ''
+                description.style.color = ''
+            }
+
+            // Смена темы для authForm && authForm__registration
+            const authForm = document.querySelector('.auth-form')
+            const authForm__registration = document.querySelector('.auth-form__registration')
+            if(newValue){
+                authForm.style.backgroundColor = 'rgba(36, 36, 36, 0.9)'
+                authForm.style.color = 'rgb(255, 205, 138)'
+                authForm__registration.style.backgroundColor = 'rgba(36, 36, 36, 0.9)'
+                authForm__registration.style.color = 'rgb(255, 205, 138)'
+            }else{
+                authForm.style.backgroundColor = ''
+                authForm.style.color = ''
+                authForm__registration.style.backgroundColor = ''
+                authForm__registration.style.color = ''
+            }
+        }
+    },
+
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+            isRegistration: state => state.isRegistration,
+        }),
+    },
+
+    mounted(){
+        // Смена темы для description
+        const description = document.querySelector('.description')
+        if(this.darkMode){
+            description.style.backgroundColor = 'rgba(36, 36, 36, 0.9)'
+            description.style.color = 'rgb(255, 205, 138)'
+        }else{
+            description.style.backgroundColor = ''
+            description.style.color = ''
+        }
+
+        // Смена темы для authForm && authForm__registration
+        const authForm = document.querySelector('.auth-form')
+        const authForm__registration = document.querySelector('.auth-form__registration')
+        if(this.darkMode){
+            authForm.style.backgroundColor = 'rgba(36, 36, 36, 0.9)'
+            authForm.style.color = 'rgb(255, 205, 138)'
+            authForm__registration.style.backgroundColor = 'rgba(36, 36, 36, 0.9)'
+            authForm__registration.style.color = 'rgb(255, 205, 138)'
+        }else{
+            authForm.style.backgroundColor = ''
+            authForm.style.color = ''
+            authForm__registration.style.backgroundColor = ''
+            authForm__registration.style.color = ''
+        }
+
+    },
 }
 </script>
 <style lang="scss" scoped>
@@ -127,6 +191,23 @@ export default {
             }
         }
     }
+    .auth-form__registration{
+        display: flex;
+        flex-direction: column;
+        width: 30%;
+        height: max-content;
+        border: $border;
+        border-radius: $radius;
+        padding: 30px;
+        box-shadow: $shadow;
+        background-color: white;
+        .input{
+            box-shadow: none;
+            &:focus{
+                box-shadow: $shadow;
+            }
+        }
+    }
     .summary-auth-form{
         display: flex;
         margin: 20px 0 30px 0;
@@ -158,5 +239,5 @@ export default {
         }
     }
 }
-
+@include darkMode;
 </style> 

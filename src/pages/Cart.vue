@@ -770,7 +770,7 @@ export default {
 
         // 
 
-        // Смена темы для cartRestoreBlock__grayLayout
+        // Смена темы для openContentBlock
         const openContentBlock = document.querySelector('.open-content-block')
         if(this.darkMode){
             openContentBlock.style.background = 'linear-gradient(360deg, rgba(36, 33, 33, 1), rgba(34, 32, 32, 0.85), rgba(0, 0, 0, 0))'
@@ -1054,10 +1054,8 @@ export default {
             align-items: center;
             margin: -1px;
             background: $background-gr;
-            // border-radius: $radius;
             border-top-left-radius: $radius;
             border-top-right-radius: $radius;
-            // ТЕСТОВЫЙ СЕЛЕКТОР
 
             .optional-btns{
                 display: flex;

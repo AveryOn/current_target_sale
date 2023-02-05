@@ -96,7 +96,7 @@ export default {
             // Смена темы для логотипа
             const logo = document.querySelector('.logo')
             if(newValue){
-                logo.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+                logo.style.backgroundColor = 'rgba(36, 33, 33, 1)'
             }else{
                 logo.style.backgroundColor = ''
             }
@@ -106,7 +106,7 @@ export default {
         // Смена темы для логотипа
         const logo = document.querySelector('.logo')
         if(this.darkMode){
-            logo.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            logo.style.backgroundColor = 'rgba(36, 33, 33, 1)'
         }else{
             logo.style.backgroundColor = ''
         }

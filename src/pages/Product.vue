@@ -3,24 +3,19 @@
     <div class="Product-page">
         <h1 class="title-page-text">Page Block ID</h1>
         <!-- КОНТЕЙНЕР ДЛЯ ВНУТРЕННЕГО КОНТЕНТА -->
-        #product-container
         <div class="product-container">
-            #product-content {{ $route.params.productId }}
             <div class="product-content">
-                <h2>Header Block</h2>
-                <hr>
+                
                 <div class="header-block">
                     <!-- БЛОК ИЗОБАЖЕНИЙ ТОВАРА -->
                     <image-block></image-block>
                     <!-- МЕТАДАННЫЕ ТОВАРА  -->
                     <metadata-block></metadata-block>
                 </div>
-                <hr>
-                <h2>Описание товара</h2>
                 <div class="body-block">
+                    <h2>Описание товара</h2>
                     <!-- БЛОК ОПИСАНИЯ ТОВАРА -->
                     <descr-block></descr-block>
-                    <hr>
                     <!-- БЛОК КОММЕНТАРИЕВ -->
                     <comments-block></comments-block>
                 </div>
@@ -113,15 +108,20 @@ hr{
 }
 .header-block{
     display: flex;
-    width: 100%;
+    width: 95%;
     justify-content: space-around;
-    margin: 20px 0 40px 0;
+    margin: 20px 0 50px 0;
+    border-top: $border;
+    padding-top: 50px;
 }
 .body-block{
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 95%;
     margin: 20px 10px;
     min-height: 20vh;
+    border-top: $border;
+    padding-top: 30px;
 }
 </style>
