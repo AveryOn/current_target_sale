@@ -34,6 +34,7 @@ import CommentsBlock from '@/components/ProductPage/CommentsBlock.vue'
 import DescrBlock from '@/components/ProductPage/DescrBlock.vue'
 import MetadataBlock from '@/components/ProductPage/MetadataBlock.vue'
 import ImageBlock from '@/components/ProductPage/ImageBlock.vue'
+import { mapState } from 'vuex';
 export default {
     components:{
         CommentsBlock,
@@ -46,6 +47,32 @@ export default {
 
         }
     },
+    watch: {
+        darkMode(newValue){
+            // Смена темы для ProductPage
+            const ProductPage = document.querySelector('.Product-page')
+            if(newValue){
+                ProductPage.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            }else{
+                ProductPage.style.backgroundColor = ''
+            }
+        }
+    },
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        }),
+    },
+    mounted(){
+        // Смена темы для ProductPage
+        const ProductPage = document.querySelector('.Product-page')
+        if(this.darkMode){
+            ProductPage.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+        }else{
+            ProductPage.style.backgroundColor = ''
+        }
+
+    }
 }
 </script>
 <style lang="scss" scoped>

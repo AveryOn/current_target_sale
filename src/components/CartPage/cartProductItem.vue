@@ -235,7 +235,7 @@ export default {
     justify-content: center;
     background-color: rgba(107, 102, 102, 0.588);
     border-radius: $radius;
-    color: rgba(113, 106, 106, 0.789);
+    color: rgba(98, 96, 96, 0.8);
     font-size: 30px;
     font-weight: bolder;
     cursor: pointer;

@@ -641,10 +641,14 @@ export default {
                 deleteModeCart_btns.style.backgroundColor = ''
             }
 
-
+            // Смена темы для cartRestoreBlock
+            const cartRestoreBlock = document.querySelector('.cart-restore-block')
+            if(newValue){
+                cartRestoreBlock.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            }else{
+                cartRestoreBlock.style.backgroundColor = ''
+            }
         }
-
-        
         
     },
     computed: {
@@ -739,6 +743,15 @@ export default {
         }else{
             deleteModeCart_btns.style.backgroundColor = ''
         }
+
+        // Смена темы для cartRestoreBlock
+        const cartRestoreBlock = document.querySelector('.cart-restore-block')
+        if(this.darkMode){
+            cartRestoreBlock.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+        }else{
+            cartRestoreBlock.style.backgroundColor = ''
+        }
+
 
         // Если deleteModeCart = true при темной теме то бэкграунд цвет кнопки будет красным
         if(this.darkMode && this.deleteModeCart){
@@ -924,7 +937,6 @@ export default {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                background-color: white;
                 min-height: 80px;
                 width: 100%;
                 border-bottom: $border;
@@ -999,7 +1011,7 @@ export default {
             display: flex;
             align-self: flex-end;
             right: 10px;
-            top: 4px;
+            top: 3px;
             background-color: rgba(245, 222, 179, 0.65);
             padding: 10px;
             border-radius: $radius;

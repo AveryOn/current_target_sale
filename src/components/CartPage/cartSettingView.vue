@@ -84,11 +84,27 @@ export default {
     watch: {
         darkMode(newValue){
             // Смена темы для exampleLine__list
-            const exampleLine__list = document.querySelector('.example-line__list')
+            const exampleLine__list = document.querySelectorAll('.example-line__list')
             if(newValue){
-                exampleLine__list.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+                exampleLine__list.forEach(item => {
+                    item.style.backgroundColor = 'rgba(36, 33, 33, 1)'
+                })
             }else{
-                exampleLine__list.style.backgroundColor = ''
+                exampleLine__list.forEach(item => {
+                    item.style.backgroundColor = ''
+                })
+            }
+
+            // Смена темы для exampleBlock__list
+            const exampleBlock__list = document.querySelectorAll('.example-block__list')
+            if(newValue){
+                exampleBlock__list.forEach(item => {
+                    item.style.backgroundColor = 'rgba(36, 33, 33, 1)'
+                })
+            }else{
+                exampleBlock__list.forEach(item => {
+                    item.style.backgroundColor = ''
+                })
             }
         }
     },
@@ -102,15 +118,30 @@ export default {
         })
     },
     mounted() {
-        // example-line__list   example-block__list
         // Смена темы для exampleLine__list
-        const exampleLine__list = document.querySelector('.example-line__list')
-        exampleLine__list.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+        const exampleLine__list = document.querySelectorAll('.example-line__list')
         if(this.darkMode){
-            console.log(true);
+            exampleLine__list.forEach(item => {
+                item.style.backgroundColor = 'rgba(36, 33, 33, 1)'
+            })
         }else{
-            exampleLine__list.style.backgroundColor = ''
+            exampleLine__list.forEach(item => {
+                item.style.backgroundColor = ''
+            })
         }
+
+        // Смена темы для exampleBlock__list
+        const exampleBlock__list = document.querySelectorAll('.example-block__list')
+        if(this.darkMode){
+            exampleBlock__list.forEach(item => {
+                item.style.backgroundColor = 'rgba(36, 33, 33, 1)'
+            })
+        }else{
+            exampleBlock__list.forEach(item => {
+                item.style.backgroundColor = ''
+            })
+        }
+        
     },
 }
 </script>
@@ -181,6 +212,7 @@ export default {
         border: $border;
         border-radius: $radius;
         margin: 0 auto 0 auto;
+        padding: 10px 0 10px 0;
         background-color: white;
         &__item{
             width: 90%;
@@ -229,6 +261,7 @@ export default {
     &__btn{
         position: relative;
         justify-content: center;
+        align-self: center;
         width: 90%;
         margin: 10px auto 0 auto;
         
