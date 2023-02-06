@@ -48,12 +48,15 @@
             </div>
 <!-- ПРАВОСТОРОННИЕ КНОПКИ -->
             <div class="btns__right">
+
 <!-- Кнопка смены цветовой темы -->
                 <button-comp
                 class="right--btn"
+                @click="darkModeActive"
                 >
-                    <i-theme></i-theme> Theme: {{ ($store.state.darkTheme)? 'Dark' : 'Light' }}
+                    <i-theme></i-theme> Theme: {{ (darkMode)? 'Dark' : 'Light' }}
                 </button-comp>
+
 <!-- Кнопка Войти -->
                 <button-comp 
                 @click="$router.push({name: 'auth'})" 
@@ -81,10 +84,22 @@ export default {
         size: {
             width: 25,
             height: 25,
-        }
+        },
+        isDarkMode: JSON.parse(localStorage.getItem('darkMode')),
       }  
     },
     methods: {
+        // Метод включает и отключает темную тему
+        darkModeActive(){
+            this.isDarkMode = !this.isDarkMode
+            if(!JSON.parse(localStorage.getItem('darkMode'))){
+                this.$store.commit('darkModeActive')
+                localStorage.setItem('darkMode', true)
+            }else{
+                this.$store.commit('darkModeDisabled')
+                localStorage.setItem('darkMode', false)            
+            }
+        },
     },
     computed: {
         ...mapState({

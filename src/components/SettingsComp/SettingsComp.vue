@@ -26,7 +26,7 @@
                 <div class="settings-btns__list">
                     <div class="settings-btns__list--item">
                         <h3>Темная тема</h3>
-                        <check-button :isCheck="isDarkMode" @checked="darkModeActive"></check-button>
+                        <check-button :isCheck="darkMode" @checked="darkModeActive"></check-button>
                     </div>
                 </div>
 

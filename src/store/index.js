@@ -106,11 +106,13 @@ export default createStore({
         ]
       },
     ],
+
     // Группы товара
     groups: [
         {name: 'зима'},
         {name: 'лето'},
-    ] ,
+    ],
+    
     // Категории товара
     categories: [
         {name: 'обувь', parentGroup: 'зима'},

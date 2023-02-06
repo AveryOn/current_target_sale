@@ -36,6 +36,24 @@ export default {
             }
         }
     },
+    watch: {
+        isCheck(newValue){
+            // Этот блок кода служит для того чтобы чекбокс не слетал если параметр с пропса isCheck == true
+            // Если чекбокс по умолчанию должен быть акивен то с него биндится isCheck с булевым значением
+            const checkCircle = document.querySelector('.check-circle')
+            const checkButton = document.querySelector('.check-button')
+            if(newValue){
+                checkCircle.style.marginLeft = 'auto'
+                checkCircle.style.marginRight = ''
+                checkButton.style.backgroundColor = 'rgba(78, 207, 66, 0.637)'
+            }else{
+                checkCircle.style.marginRight = 'auto'
+                checkCircle.style.marginLeft = ''
+                checkButton.style.backgroundColor = ''
+            }
+        }
+    },
+
     mounted(){
         // Этот блок кода служит для того чтобы чекбокс не слетал если параметр с пропса isCheck == true
         // Если чекбокс по умолчанию должен быть акивен то с него биндится isCheck с булевым значением
