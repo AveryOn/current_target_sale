@@ -5,8 +5,33 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
-    
+    watch: {
+        darkMode(newValue){
+            // Смена темы для statistics
+            const statistics = document.querySelector('.statistics')
+            if(newValue){
+                statistics.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            }else{
+                statistics.style.backgroundColor = ''
+            }
+        }
+    }, 
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        }),
+    },
+    mounted(){
+             // Смена темы для statistics
+             const statistics = document.querySelector('.statistics')
+            if(this.darkMode){
+                statistics.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            }else{
+                statistics.style.backgroundColor = ''
+            }
+    },
 }
 </script>
 <style lang="scss" scoped>

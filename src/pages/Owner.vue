@@ -5,7 +5,6 @@
         <div class="navbar-owner-page">
             <h1 class="descr-text">Hello, Owner!</h1>
         </div>
-        <hr>
         <!-- ОСНОВНАЯ РАБОЧАЯ ОБЛАСТЬ -->
         <div class="basic-block">
             <!-- ОСНОВНОЙ ИНФОРМАЦИОННЫЙ СТЕНД -->
@@ -44,7 +43,6 @@
                     </manager-tools-block> 
                 </modal-comp>
 
-                #basic-info
                 <!-- СТАТИСТИКА САЙТА -->
                 <statistics-store></statistics-store>
                 <!-- СПИСОК МОДЕРАТОРОВ. ДАННЫЕ О НИХ -->
@@ -112,8 +110,10 @@ h1{
     // border: $border;
     // border-radius: $radius;
     .navbar-owner-page{
+        width: 98%;
         display: flex;
-        align-self: flex-start;
+        align-self: center;
+        border-bottom: $border;
         h1{
             font-size: 3.5em;
             margin: 20px;

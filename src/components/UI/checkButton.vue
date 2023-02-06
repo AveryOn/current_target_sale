@@ -21,18 +21,20 @@ export default {
 
     methods: {
         checked(){
-            this.isChecked = !this.isChecked
-            this.$emit('checked', this.isChecked)
             const checkCircle = document.querySelector('.check-circle')
             const checkButton = document.querySelector('.check-button')
-            if(this.isChecked){
-                checkCircle.style.marginLeft = 'auto'
-                checkCircle.style.marginRight = ''
-                checkButton.style.backgroundColor = 'rgba(78, 207, 66, 0.637)'
-            }else{
+            if(this.isCheck){
+                this.isChecked = false
+                this.$emit('checked', this.isChecked)
                 checkCircle.style.marginRight = 'auto'
                 checkCircle.style.marginLeft = ''
                 checkButton.style.backgroundColor = ''
+            }else{
+                this.isChecked = true
+                this.$emit('checked', this.isChecked)
+                checkCircle.style.marginLeft = 'auto'
+                checkCircle.style.marginRight = ''
+                checkButton.style.backgroundColor = 'rgba(78, 207, 66, 0.637)'
             }
         }
     },

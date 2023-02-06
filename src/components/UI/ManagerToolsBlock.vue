@@ -25,6 +25,7 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
     name: 'manager-tools-block',
     // props: {
@@ -39,7 +40,24 @@ export default {
             this.$store.commit('OwnerModule/closeModal')
         }
     },
+    watch: {
+        darkMode(newValue){
+            // Смена темы для statistics
+            const managerProduct = document.querySelector('.manager-product')
+            if(newValue){
+                managerProduct.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+                managerProduct.style.color = 'rgb(255, 205, 138)'
+            }else{
+                managerProduct.style.backgroundColor = ''
+                managerProduct.style.color = ''
+            }
+        }
+    }, 
     computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        }),
+
         isShowTool(){
             if(this.$store.state.ManagerModule.selectToolName != ''){
                 return true
@@ -56,7 +74,18 @@ export default {
                 return this.$store.state.OwnerModule.selectToolName
             }
         }
-    }
+    },
+    mounted(){
+        // Смена темы для managerProduct
+        const managerProduct = document.querySelector('.manager-product')
+        if(this.darkMode){
+            managerProduct.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            managerProduct.style.color = 'rgb(255, 205, 138)'
+        }else{
+            managerProduct.style.backgroundColor = ''
+            managerProduct.style.color = ''
+        }
+    },
 }
 </script>
 <style lang="scss" scoped>

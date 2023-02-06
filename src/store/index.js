@@ -16,7 +16,7 @@ export default createStore({
     isTagAll: 'Весь товар',
     
     // Для смены темы день/ночь
-    darkMode: JSON.parse(localStorage.getItem('darkMode')),
+    darkMode: false,
 
     // Массив с товарами
     products: [

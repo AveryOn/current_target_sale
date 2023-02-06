@@ -12,7 +12,8 @@ export default {
         show:{
             required: true,
         }
-    }
+    },
+  
 }
 </script>
 <style lang="scss" scoped>

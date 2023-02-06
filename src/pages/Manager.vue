@@ -4,7 +4,6 @@
         <!-- ОСНОВНОЙ БЛОК -->
         <div class="header-block">
             <h1 class="hello">Hello, {{ name }}!</h1>
-            #ЭТО СТРАНИЦА МОДЕРАТОРА
         </div>
         <div class="Main-page-child-container">
             <div class="Main-page-child">
@@ -56,6 +55,8 @@ import PromotionProduct from '@/components/ManagerPage/Promotion.vue'
 import EventProduct from '@/components/ManagerPage/EventProduct.vue'
 import CreatorGroup from '@/components/ManagerPage/CreatorGroup.vue'
 import ManagerToolMixin from '@/mixins/ManagerToolMixin'
+
+import { mapState } from 'vuex';
 export default {
     // С этого миксина берутся данные со стора (ManagerModule) для работы с панелью модератора (Manager == Moderator)
     mixins: [ManagerToolMixin],
@@ -68,8 +69,33 @@ export default {
     },
     data(){
         return{
-            name: 'Tomas',
+            name: 'Manager',
         }
+    },
+    watch: {
+        darkMode(newValue){
+            // Смена темы для historyEditor
+            const historyEditor = document.querySelector('.history-editor')
+            if(newValue){
+                historyEditor.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            }else{
+                historyEditor.style.backgroundColor = ''
+            }
+        }
+    }, 
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        }),
+    },
+    mounted(){
+             // Смена темы для historyEditor
+             const historyEditor = document.querySelector('.history-editor')
+            if(this.darkMode){
+                historyEditor.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
+            }else{
+                historyEditor.style.backgroundColor = ''
+            }
     },
 
 }

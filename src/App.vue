@@ -82,6 +82,13 @@ export default {
         }else{
             app.style.background = ''
         }
+        // JSON.parse(localStorage.getItem('darkMode'))
+        // Проверяется есть активирована темная тема или нет
+        if(JSON.parse(localStorage.getItem('darkMode'))){
+            this.$store.commit('darkModeActive')
+        }else{
+            this.$store.commit('darkModeDisabled')
+        }
 
     }
 }
