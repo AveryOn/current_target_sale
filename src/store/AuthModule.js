@@ -1,6 +1,6 @@
 export const AuthModule = {
     state: () => ({
-        isRegistration: true
+        isRegistration: false
     }),
     mutations:{
         openRegBlock(state){

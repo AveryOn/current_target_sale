@@ -75,19 +75,27 @@ export default {
             }
         });
 
-        // Проверяется есть активирована темная тема или нет
+        // Проверяется активирована темная тема или нет
         const app = document.querySelector('#app')
         if(this.darkMode){
             app.style.background = 'rgb(36, 33, 33)'
         }else{
             app.style.background = ''
         }
+
         // JSON.parse(localStorage.getItem('darkMode'))
-        // Проверяется есть активирована темная тема или нет
+        // Проверяется активирована темная тема или нет
         if(JSON.parse(localStorage.getItem('darkMode'))){
             this.$store.commit('darkModeActive')
         }else{
+            localStorage.setItem('darkMode', false)
             this.$store.commit('darkModeDisabled')
+        }
+
+        // Проверяется есть ли перменная localStorage с выбором отрисовки товара
+        // Если нет то создается. По умолчанию Line
+        if(!localStorage.getItem('isSelectModeViewCart')){
+            localStorage.getItem('isSelectModeViewCart', 'line')
         }
 
     }

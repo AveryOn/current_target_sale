@@ -2,10 +2,9 @@
 <template>
     <div @click="showLog" ref="navbar" class="navbar">
         <div class="title">
-            <div class="logo" :class="{'dark': darkMode}">
-            </div>
+            <logo-comp class="logo" :class="{'dark': darkMode}"/>
             <h1 class="title--text" :class="{'dark': darkMode}" @click="$router.push({name: 'main'})">
-                {{ (this.darkMode)? 'PornHub' : 'Current Target Sale'}}
+                Current Target Sale
             </h1>
         </div>
     </div>
@@ -74,10 +73,13 @@
 </template>
 <script>
 import NavMenuMobile from '@/components/Navbar/NavMenuMobile.vue'
+// импорт логотипа
+import logoComp from '@/components/Navbar/logoComp.vue'
 import { mapState } from 'vuex';
 export default {
     components: {
         NavMenuMobile,
+        logoComp,
     },
     data(){
       return {
@@ -160,15 +162,14 @@ h1{
     // justify-content: space-between;
     justify-content: flex-start;
     align-items: center;
-    .logo{
-        display: flex;
-        align-items: center;
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        margin: 10px 0 0 30px;
-        background-color: white;
-    }
+    // .logo{
+    //     display: flex;
+    //     align-items: center;
+    //     width: 90px;
+    //     height: 90px;
+    //     border-radius: 50%;
+    //     margin: 10px 0 0 30px;
+    // }
 }
 .btns{
     position: absolute;
@@ -179,7 +180,7 @@ h1{
     padding: 0 20px;
     margin-top: 20px;
     }
-        // НавБар Лев.кнопки и Прав.кнопки
+    // НавБар Лев.кнопки и Прав.кнопки
     .btns__left{
         display: flex;
     }
