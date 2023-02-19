@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/avery/Desktop/backend-current_target_sale/env"
+VIRTUAL_ENV="/home/avery/Desktop/Backend/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

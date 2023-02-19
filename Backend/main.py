@@ -1,82 +1,48 @@
-from fastapi import FastAPI, Form, HTTPException as hex, Depends
+##########################################################################################
+#                               ОСНОВНОЙ СВЯЗУЮЩИЙ МОДУЛЬ                                #
+##########################################################################################
+
+# Инструменты FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from fastapi.exceptions import RequestValidationError
-from fastapi.responses import PlainTextResponse
-from fastapi.encoders import jsonable_encoder
+# Импорт отдельных маршрутов с операциями для путей
+from requiests_module.owner import owner         # Модуль операций Владельца
+from requiests_module.manager import manager         # Модуль операций Модератора
+from requiests_module.users import user         # Модуль операций с Пользователями
+from requiests_module.auth import auth         # Модуль операций с Аутентификацией
+from requiests_module.messanger import messanger        # Модуль операций с Чатами и Сообщениями
+from requiests_module.products import products           # Модуль операций с Товарами
 
-from typing import Any
-from pydantic import BaseModel, Field, EmailStr
 
 app = FastAPI()
 
+# Связывает все маршруты в один роутер
+app.include_router(user)
+app.include_router(auth)
+app.include_router(messanger)
+app.include_router(products)
+app.include_router(owner)
+app.include_router(manager)
 
+
+# Ресурсы которым разрешено получать доступ к данному приложению (Серверу) согласно политике CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins="http://localhost:8080/",
+    allow_origins=[
+        "http://localhost:8080", 
+        "http://localhost:8081",
+        "http://192.168.1.148:8080"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-class Net_linX(BaseModel):
-    state: int | None = None
-
-@app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request, exc):
-    return PlainTextResponse(str(exc), status_code=409)
-
-class UserData(BaseModel):
-    username: str
-    password: str
 
 
-# Зависимость
-async def first(q: str | None=None):
-    return q
-
-async def second(q: str = Depends(first), some: str | None=None):
-    if not q:
-        return some
-    if q and some:
-        return [q, some]
-    else:
-        return []
-
-# class User:
-#     def __init__(self, q: str | None=None, some: str | None=None):
-#         self.q = q
-#         self.some = some
-
-@app.get("/test/", tags=['Get Requests'])
-async def create_item(params = Depends(second)) -> list[Any]:
-    return params
+@app.get('/', tags=['Main'])
+async def get_text():
+    return 'main APP!'
 
 
-@app.post("/test/", tags=['Post Requests'])
-async def post_text(userData: UserData) -> UserData:
-    if (len(userData.username) and len(userData.password)) <= 0:
-        raise hex(status_code=409, detail='The form fields are empty')
-    else:
-        # print('successful POST!', {'username': userData.username, 'password': userData.password})
-        print(jsonable_encoder(userData))
-
-    return userData
-
-class Item(BaseModel):
-    name: str
-    age: int
-    description: str
-    tax: int = 10
-
-items = {
-    "foo": {"name": "Foo", "tax": 50.2},
-    "bar": {"name": "Bar", "description": "The bartenders", "tax": 20.2},
-    "baz": {"name": "Baz", "description": None, "tax": 10.5},
-}
-
-@app.put("/put_data/{new_value}")
-async def put_data(new_value: str, item: Item):
-    items[new_value] = jsonable_encoder(item)
-    
-    return item.dict(exclude_unset=False)

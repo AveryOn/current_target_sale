@@ -1,4 +1,4 @@
-#!/home/avery/Desktop/backend-current_target_sale/env/bin/python
+#!/home/avery/Desktop/Backend/env/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
