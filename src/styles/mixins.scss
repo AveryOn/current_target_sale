@@ -65,6 +65,7 @@
 @mixin darkMode(){
     .dark{
         background-color: rgba(36, 33, 33, 1);
+        color: rgb(255, 205, 138);
     }
 }
 
@@ -85,5 +86,4 @@
     }
 }
 
-// Иконки для мобильной версии
 

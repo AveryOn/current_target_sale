@@ -1,7 +1,7 @@
 <!-- ПАНЕЛЬ ФИЛЬТРОВ КОТОРАЯ УПРАВЛЯЕТ СОРТИРОВКОЙ ТОВАРА
     НА ДАННЫЙ МОМЕНТ АДАПТИРОВАНА ТОЛЬКО ПОД СТРАНИЦУ SortedCatalog -->
 <template>
-    <div class="filter-panel">
+    <div class="filter-panel" :class="{'dark': darkMode}">
         <h2 class="filter-panel-header">Filter panel</h2>
         <!-- Панель с тегами -->
         <div class="panel-tags" >
@@ -315,20 +315,6 @@ export default {
         },
     },
 
-    watch: {
-        darkMode(newValue){
-            // Смена темы для filterPanel
-            const filterPanel = document.querySelector('.filter-panel')
-            if(newValue){
-                filterPanel.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
-                filterPanel.style.color = 'rgb(255, 205, 138)'
-            }else{
-                filterPanel.style.backgroundColor = ''
-                filterPanel.style.color = ''
-            }
-        }
-    },
-
     computed: {
         ...mapState({
             filterData: state => state.filterData,
@@ -336,17 +322,7 @@ export default {
             darkMode: state => state.darkMode,
         }),
     },
-    mounted(){
-        // Смена темы для filterPanel
-        const filterPanel = document.querySelector('.filter-panel')
-        if(this.darkMode){
-            filterPanel.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
-            filterPanel.style.color = 'rgb(255, 205, 138)'
-        }else{
-            filterPanel.style.backgroundColor = ''
-            filterPanel.style.color = ''
-        }
-    }
+
 }
 </script>
 <style lang="scss" scoped>
@@ -397,4 +373,5 @@ export default {
     padding: 10px 0 5px 0;
     border-bottom: $border;
 }
+@include darkMode;
 </style>
