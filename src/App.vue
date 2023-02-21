@@ -64,7 +64,8 @@ export default {
         }
     },
     mounted(){
-
+        // this.$store.dispatch('AuthModule/action', {text: 'hello'})
+        
         // Появление кнопки "Наверх" если произошел большой скролл вниз
         window.addEventListener('scroll', () => {
             if (window.scrollY >= 300){

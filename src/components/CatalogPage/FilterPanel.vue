@@ -373,5 +373,5 @@ export default {
     padding: 10px 0 5px 0;
     border-bottom: $border;
 }
-@include darkMode;
+@include darkMode-filterPanel;
 </style>

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from '@/store'
+import store from '@/store/'
 
 import MainAppRendering from '@/pages/MainAppRendering.vue'
 import Main from '@/pages/Main'
@@ -13,9 +13,14 @@ import SortedCatalog from '@/components/CatalogPage/SortedCatalog'
 import CategoryProducts from '@/components/CatalogPage/CategoryProducts'
 import Cart from '@/pages/Cart'
 import NotFound from '@/pages/NotFound'
+
+// Поле isAuth в AuthModule (vuex)
+const isAuth = store._modules.root.state.AuthModule.isAuth
+
 const routes = [
   {
-    path: (store.state.isAuth.isAuth)? '/'+store.state.isAuth.prefix+'/'+store.state.isAuth.id : '/',
+    // Роль пользователя подставляется в URL если он авторизован
+    path: (isAuth.isAuth)? '/'+isAuth.prefix+'/'+isAuth.id : '/',
     // Контейнер для отображения основных компонентов
     name: 'MainAppRendering',
     component: MainAppRendering,

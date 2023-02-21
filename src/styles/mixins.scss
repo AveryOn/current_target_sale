@@ -65,10 +65,16 @@
 @mixin darkMode(){
     .dark{
         background-color: rgba(36, 33, 33, 1);
-        color: rgb(255, 205, 138);
     }
 }
 
+// Настройки темной темы для filterPanel
+@mixin darkMode-filterPanel(){
+    .dark{
+        background-color: rgba(36, 33, 33, 1);
+        color: rgb(255, 205, 138);
+    }
+}
 
 // Настройки темной темы для кнопок
 @mixin darkMode_btn(){

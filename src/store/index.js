@@ -10,7 +10,6 @@ import { AuthModule } from './AuthModule'
 
 export default createStore({
   state: () => ({
-    isAuth: {isAuth: false, prefix: null, id: null},
     isMiniChat: false,
     isButtonUp: false,
     isTagAll: 'Весь товар',
