@@ -103,6 +103,7 @@ export default {
 }
 </script>
 <style lang="scss">
+//                                       ¯\_(ツ)_/¯
 *{
     margin: 0;
     padding: 0;

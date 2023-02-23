@@ -141,7 +141,7 @@ export default {
     border: $border;
     border-radius: $radius;
     box-shadow: $shadow;
-    margin: 0 20px;
+    margin: 50px 20px 0 20px;
     .auth-title-header{
         display: flex;
         width: 100%;

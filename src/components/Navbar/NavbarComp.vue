@@ -152,6 +152,7 @@ h1{
     background: $background-gr;
     margin-bottom: 20px;
     box-shadow: $shadow;
+    font-family: 'Righteous', cursive;
     border: {
         bottom-left-radius: $radius;
         bottom-right-radius: $radius;
