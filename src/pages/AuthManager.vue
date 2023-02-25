@@ -92,7 +92,7 @@
                 </div>
                 <!-- Панель Кнопок формы -->
                 <div class="form__btns">
-                    <button-comp @click="this.$store.dispatch('AuthModule/authEmploy')">Подтвердить</button-comp>
+                    <button-comp @click="this.$store.dispatch('AuthModule/authEmploy', {formData})">Подтвердить</button-comp>
                     <button-comp @click="clearFormData">Очистить поля</button-comp>
                 </div>
             </form>
