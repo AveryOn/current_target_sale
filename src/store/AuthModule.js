@@ -36,7 +36,6 @@ export const AuthModule = {
             }catch (e){
                 console.log(e);
             }
-            
         }
     },
     namespaced: true,
