@@ -5,7 +5,6 @@ import MainAppRendering from '@/pages/MainAppRendering.vue'
 import Main from '@/pages/Main'
 import Manager from '@/pages/Manager'
 import Owner from '@/pages/Owner'
-import Chat from '@/pages/Chat'
 import Product from '@/pages/Product'
 import CatalogProducts from '@/pages/CatalogProducts'
 import SortedCatalog from '@/components/CatalogPage/SortedCatalog'
@@ -43,21 +42,32 @@ const routes = [
                 path: 'manager-tools', 
                 name: 'manager', 
                 component: Manager,
-                meta: {auth: {isAuth: true, role: 'manager'}}
+                meta: {auth: true, employ: true},
             },
 
             // Чат Менеджера(Модератора)
             {
                 path: 'manager-tool/chat', 
                 name: 'manager-chat', 
-                component: Chat
+                meta: {auth: true, employ: true},
+                component: () => import('@/pages/Chat.vue')
             },
 
             // Рабочая панель ВЛАДЕЛЬЦА
-            {path: 'owner-tools', name: 'owner', component: Owner},
+            {
+                path: 'owner-tools', 
+                name: 'owner', 
+                meta: {auth: true, employ: true},
+                component: Owner,
+            },
             
             // Чат ВЛАДЕЛЬЦА
-            {path: 'owner-tools/chat', name: 'owner-chat', component: Chat},
+            {
+                path: 'owner-tools/chat', 
+                name: 'owner-chat', 
+                meta: {auth: true, employ: true},
+                component: () => import('@/pages/Chat.vue')
+            },
 
             // Страница товара
             {
@@ -108,22 +118,37 @@ const router = createRouter({
 
 // Роутер защита от перенаправления на страницу Модератора и Владельца 
 
-// router.beforeEach(async (to) => {
-//     if (store.state.isAuth.isAuth === false && to.name == 'owner') {
-//         return { name: 'notFound' }
-//     }
-//     if (store.state.isAuth.prefix != 'owner' && to.name == 'owner'){
-//         return { name: 'notFound' }
-//     }
-// })
+async function verificateEmploy(){
+    let isVerificate = false
+    const ACCESS_TOKEN = (localStorage.getItem('ACCESS_TOKEN'))
+    if(ACCESS_TOKEN){
+        try{
+            await axios.get(state.localhost + 'manager/verificate/', {
+                headers: {
+                    'Authorization': 'Bearer ' + ACCESS_TOKEN
+                    }
+            }).then(response => {
+                isVerificate = true
+            })
+        }catch (e){
+            return false
+        }
+    }else{
+        router.push({name: 'auth_manager'})
+    }
+    return isVerificate
+}
+import axios from 'axios'
 
-// router.beforeEach(async (to) => {
-//     if (store.state.isAuth.isAuth === false && to.name == 'manager') {
-//         return { name: 'notFound' }
+// router.beforeEach(async(to, from, next) => {
+//     const employ = to.matched.some(record => record.meta.employ)
+//     const requireAuth = to.matched.some(record => record.meta.auth)
+//     if(requireAuth){
+//         if(employ){
+            
+//         }
 //     }
-//     if (store.state.isAuth.prefix != 'manager' && to.name == 'manager'){
-//         return { name: 'notFound' }
-//     }
+
 // })
 
 export default router

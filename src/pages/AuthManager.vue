@@ -1,7 +1,12 @@
 <!-- СТРАНИЦА ДЛЯ АВТОРИЗАЦИИ СОТРУДНИКОВ СЕРВИСА -->
 <template>
     <div class="auth-manager" :class="{'dark': darkMode}">
-        
+        <notification-error 
+        @click="this.$store.commit('AuthModule/errorFalse')" 
+        :show="this.$store.state.AuthModule.error.isError"
+        >
+            {{ this.$store.state.AuthModule.error.data }}
+        </notification-error>
         <h1 class="auth-manager_title">Авторизация сотрудника</h1>
 
         <div class="auth-manager_body">
