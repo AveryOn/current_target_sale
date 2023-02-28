@@ -48,7 +48,7 @@ export const AuthModule = {
                             'Authorization': 'Bearer ' + ACCESS_TOKEN
                           }
                     }).then(response => {
-                        console.log(response);
+                        return response.data
                     })
                 }catch (e){
                     console.log(e);
@@ -81,13 +81,18 @@ export const AuthModule = {
                         password: formData.password,
                     }).then(response => {
                         localStorage.setItem('ACCESS_TOKEN' ,response.data[0].access_token)
+                        commit('changeIsAuth', {isAuth: true, role: response.data[1].role, id: response.data[1].UUID})
+                        localStorage.setItem('isAuth', JSON.stringify(state.isAuth))
                         commit('changeACCESS_TOKEN', response.data[0].access_token)
                         if(response.data[1].role === 'manager'){
-                            router.push({name: 'manager'})
-                        }else if(response.data[1].role === 'owner'){
-                            router.push({name: 'owner'})
+                            router.push(`/manager/${response.data[1].UUID}/manager-tools`)
                         }
-                        console.log(response);
+                        else if(response.data[1].role === 'owner'){
+                            router.push(`/owner/${response.data[1].UUID}/owner-tools`)
+                        }
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 500)
                     })
                 }catch (e){
                     commit('errorTrue', {isError: true, data: e?.response?.data?.detail})

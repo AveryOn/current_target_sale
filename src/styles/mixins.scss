@@ -68,6 +68,16 @@
     }
 }
 
+// Общие настройки темной темы с светлым шрифтом
+@mixin darkMode_with_font(){
+    .dark{
+        background-color: rgba(36, 33, 33, 1);
+        background: rgba(36, 33, 33, 1);
+        color: rgb(255, 205, 138);
+    }
+}
+
+
 // Настройки темной темы для filterPanel
 @mixin darkMode-filterPanel(){
     .dark{

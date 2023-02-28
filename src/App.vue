@@ -31,6 +31,7 @@ import MiniChatButton from '@/components/MiniChat/MiniChatButton.vue'
 import SettingsComp from '@/components/SettingsComp/SettingsComp.vue'
 
 import { mapState } from 'vuex';
+import axios from 'axios'
 export default {
     components: {
         MainAppRendering,
@@ -45,9 +46,33 @@ export default {
             isDarkMode: localStorage.getItem('darkMode'),
         }
     },
+    methods: {
+        async verificateEmployByToken(){
+            const ACCESS_TOKEN = (localStorage.getItem('ACCESS_TOKEN'))
+            if(ACCESS_TOKEN){
+                try{
+                    await axios.get(this.localhost + 'manager/verificate/', {
+                        headers: {
+                            'Authorization': 'Bearer ' + ACCESS_TOKEN
+                            }
+                    }).then(response => {
+                        this.$store.commit("AuthModule/changeIsAuth", {isAuth: true, role: response.data.role, id: response.data.UUID})
+                        localStorage.setItem('isAuth', JSON.stringify(this.isAuth))
+                        // this.$router.push(`/${response.data.role}/${response.data.UUID}`)
+                    })
+                }catch (e){
+                    // this.$router.push('/')
+                }
+            }else{
+                // this.$router.push('/')
+            }
+        },
+    },
     computed: {
         ...mapState({
             darkMode: state => state.darkMode,
+            localhost: state => state.AuthModule.localhost,
+            isAuth: state => state.AuthModule.isAuth
         }),
     },
     created(){
@@ -64,8 +89,11 @@ export default {
         }
     },
     mounted(){
-        // this.$store.dispatch('AuthModule/action', {text: 'hello'})
         
+        // Проверка токена доступа 
+        // Если он существует то создается пермеенная localStorage
+        this.verificateEmployByToken()
+
         // Появление кнопки "Наверх" если произошел большой скролл вниз
         window.addEventListener('scroll', () => {
             if (window.scrollY >= 300){

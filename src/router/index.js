@@ -13,12 +13,16 @@ import Cart from '@/pages/Cart'
 import NotFound from '@/pages/NotFound'
 
 // Поле isAuth в AuthModule (vuex)
-const isAuth = store._modules.root.state.AuthModule.isAuth
+let isAuth = {isAuth: false, role: null, id: null}
+const isAuth_localStorage = JSON.parse(localStorage.getItem('isAuth'))
+if(isAuth_localStorage){
+    isAuth = isAuth_localStorage
+}
 
 const routes = [
     {
         // Роль пользователя подставляется в URL если он авторизован
-        path: (isAuth.isAuth)? '/'+isAuth.prefix+'/'+isAuth.id : '/',
+        path: (isAuth.isAuth)? '/'+isAuth.role+'/'+isAuth.id : '/',
         // Контейнер для отображения основных компонентов
         name: 'MainAppRendering',
         component: MainAppRendering,
@@ -118,37 +122,22 @@ const router = createRouter({
 
 // Роутер защита от перенаправления на страницу Модератора и Владельца 
 
-async function verificateEmploy(){
-    let isVerificate = false
-    const ACCESS_TOKEN = (localStorage.getItem('ACCESS_TOKEN'))
-    if(ACCESS_TOKEN){
-        try{
-            await axios.get(state.localhost + 'manager/verificate/', {
-                headers: {
-                    'Authorization': 'Bearer ' + ACCESS_TOKEN
-                    }
-            }).then(response => {
-                isVerificate = true
-            })
-        }catch (e){
-            return false
+
+router.beforeEach(async(to, from) => {
+    const employ = to.matched.some(record => record.meta.employ)
+    const requireAuth = to.matched.some(record => record.meta.auth)
+    if(requireAuth){
+        if(employ){
+            const isAuth = JSON.parse(localStorage.getItem('isAuth'))
+            if(!isAuth){
+                return {name: 'notFound'}
+            }
+            if(isAuth && isAuth.isAuth && localStorage.getItem('ACCESS_TOKEN')){
+                return true
+            }
         }
-    }else{
-        router.push({name: 'auth_manager'})
     }
-    return isVerificate
-}
-import axios from 'axios'
 
-// router.beforeEach(async(to, from, next) => {
-//     const employ = to.matched.some(record => record.meta.employ)
-//     const requireAuth = to.matched.some(record => record.meta.auth)
-//     if(requireAuth){
-//         if(employ){
-            
-//         }
-//     }
-
-// })
+})
 
 export default router
