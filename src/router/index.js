@@ -36,10 +36,26 @@ const routes = [
             },
 
             // Страница авторизации ПОЛЬЗОВАТЕЛЕЙ
-            {path: 'auth', name: 'auth', component: () => import('@/pages/Auth.vue'),},
+            {
+                path: 'auth', 
+                name: 'auth', 
+                component: () => import('@/pages/Auth.vue'),
+            },
 
             // Страница авторизации СОТРУДНИКОВ
-            {path: 'auth-manager', name: 'auth_manager', component: () => import('@/pages/AuthManager.vue')},
+            {
+                path: 'auth-manager', 
+                name: 'auth_manager', 
+                component: () => import('@/pages/AuthManager.vue')
+            },
+
+            // Страница данных пользователя/сотрудника (Аккаунт клиента)
+            {
+                path: 'me', 
+                meta: {auth: true}, 
+                name: 'account', 
+                component: () => import('@/pages/Account.vue')
+            },
 
             // Рабочая панель Менеджера(Модератора)
             {
@@ -120,19 +136,29 @@ const router = createRouter({
     routes
 })
 
+
 // Роутер защита от перенаправления на страницу Модератора и Владельца 
+// Также от перенаправления на аккаунт пользователя/сотрудника
 router.beforeEach(async(to, from) => {
     const employ = to.matched.some(record => record.meta.employ)
     const requireAuth = to.matched.some(record => record.meta.auth)
     if(requireAuth){
+        const auth = JSON.parse(localStorage.getItem('isAuth'))
         if(employ){
-            const isAuth = JSON.parse(localStorage.getItem('isAuth'))
-            if(!isAuth){
+             // если маршрут имеет мета-свойство auth=true  и  мета-свойство employ = true
+            if(!auth){
                 return {name: 'notFound'}
             }
-            if(isAuth && isAuth.isAuth && localStorage.getItem('ACCESS_TOKEN')){
+            if(auth && auth.isAuth && localStorage.getItem('ACCESS_TOKEN')){
                 return true
             }
+        }
+        // если маршрут имеет мета-свойство auth=true
+        if(!auth){
+            return {name: 'notFound'}
+        }
+        if(auth && auth.isAuth && localStorage.getItem('ACCESS_TOKEN')){
+            return true
         }
     }
 })

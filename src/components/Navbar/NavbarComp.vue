@@ -61,8 +61,29 @@
                 @click="$router.push({name: 'auth'})" 
                 title="Login and Registred" 
                 class="right--btn"
+                v-show="!isLogin"
                 >
                 Login <i-login></i-login>
+                </button-comp>
+
+<!-- Кнопка Входа в рабочую область (для сотрудников) -->
+                <button-comp 
+                @click="employRole" 
+                title="Офис" 
+                class="right--btn"
+                v-show="isEmployButton"
+                > <i-office></i-office>
+                Офис 
+                </button-comp>
+
+<!-- Кнопка для входа на личную страницу пользователя/сотрудника -->
+                <button-comp 
+                @click="this.$router.push({name: 'account'})" 
+                title="Аккаунт" 
+                class="right--btn"
+                v-show="isLogin"
+                > <i-account></i-account>
+                Аккаунт 
                 </button-comp>
             </div>
     </div>
@@ -88,6 +109,10 @@ export default {
             height: 25,
         },
         isDarkMode: JSON.parse(localStorage.getItem('darkMode')),
+
+        isLogin: false,
+        isEmployButton: false,
+
       }  
     },
     methods: {
@@ -102,11 +127,24 @@ export default {
                 localStorage.setItem('darkMode', false)            
             }
         },
+
+        // Метод открывает рабочую панель сотрудника в зависимости от его роли
+        employRole(){
+            const auth = JSON.parse(localStorage.getItem('isAuth'))
+            if(auth.role === 'manager'){
+                this.$router.push({name: 'manager'})
+            }
+            if(auth.role === 'owner'){
+                this.$router.push({name: 'owner'})
+            }
+        },
+
     },
     computed: {
         ...mapState({
             darkMode: state => state.darkMode,
-        })
+        }),
+
     },
     watch: {
         darkMode(newValue){
@@ -119,7 +157,14 @@ export default {
             }
         }
     },
+
     mounted(){
+        const auth = JSON.parse(localStorage.getItem('isAuth'))
+        if(auth && auth.isAuth){
+            this.isEmployButton = true
+            this.isLogin = true
+        }
+
         // Смена темы для логотипа
         const logo = document.querySelector('.logo')
         if(this.darkMode){

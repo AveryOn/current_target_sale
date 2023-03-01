@@ -49,9 +49,13 @@ export const AuthModule = {
                           }
                     }).then(response => {
                         commit('changeIsAuth', {isAuth: true, role: response.data.role, id: response.data.UUID})
+                        localStorage.setItem('isAuth', JSON.stringify({isAuth: true, role: response.data.role, id: response.data.UUID}))
+                        return state.isAuth
                     })
                 }catch (e){
-                    console.log(e);
+                    localStorage.removeItem('ACCESS_TOKEN')
+                    localStorage.removeItem('isAuth')
+                    window.location.reload()
                 }
             }else{
                 // console.log('ACCESS_TOKEN - empty!');

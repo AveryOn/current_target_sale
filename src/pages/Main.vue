@@ -56,7 +56,6 @@ export default {
     },
     mounted(){
 
-
         // Смена темы для currentInfoBblock
         const currentInfoBlock = document.querySelector('.current-info-block')
         if(this.darkMode){

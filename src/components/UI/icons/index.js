@@ -7,7 +7,8 @@ import colorTheme from './colorTheme'
 import login from './login'
 import arrowRight from './arrow-right-icon'
 import toUp from './toUp'
-
+import account from './account'
+import office from './office'
 export default [
     home,
     settings,
@@ -18,4 +19,6 @@ export default [
     login,
     arrowRight,
     toUp,
+    account,
+    office,
 ]
