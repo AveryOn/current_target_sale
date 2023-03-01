@@ -13,6 +13,8 @@ export default createStore({
     isMiniChat: false,
     isButtonUp: false,
     isTagAll: 'Весь товар',
+    // Для активации спиннера загрузки
+    isLoading: false,
     
     // Для смены темы день/ночь
     darkMode: false,
@@ -148,8 +150,18 @@ export default createStore({
     hideButtonUp(state){
       state.isButtonUp = false
     },
-    tagsEdit(state, tagsEdit){
-      state.tags = tagsEdit
+    tagsEdit(state, newValue){
+      state.tags = newValue
+    },
+
+    // Активирует спиннер загрузки
+    showLoading(state){
+      state.isLoading = true
+    },
+
+    // Деактивирует спиннер загрузки
+    hideLoading(state){
+      state.isLoading = false
     },
 
     // Активирует темную тему

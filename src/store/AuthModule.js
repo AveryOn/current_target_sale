@@ -1,5 +1,6 @@
 import axios from 'axios'
 import router from '@/router'
+import store from '@/store'
 
 export const AuthModule = {
     state: () => ({
@@ -38,11 +39,13 @@ export const AuthModule = {
         }
     },
     actions: {
-        // ВЕРИФИКАЦИЯ ПО ТОКЕНУ
+        
+        // ВЕРИФИКАЦИЯ СОТРУДНИКОВ ПО ТОКЕНУ
         async verificateEmployByToken({state, commit}){
             const ACCESS_TOKEN = (localStorage.getItem('ACCESS_TOKEN'))
             if(ACCESS_TOKEN){
                 try{
+                    store.commit("showLoading")
                     await axios.get(state.localhost + 'manager/verificate/', {
                         headers: {
                             'Authorization': 'Bearer ' + ACCESS_TOKEN
@@ -56,6 +59,8 @@ export const AuthModule = {
                     localStorage.removeItem('ACCESS_TOKEN')
                     localStorage.removeItem('isAuth')
                     window.location.reload()
+                }finally{
+                    store.commit("hideLoading")
                 }
             }else{
                 // console.log('ACCESS_TOKEN - empty!');
@@ -78,6 +83,7 @@ export const AuthModule = {
             }
             else{
                 try{
+                    store.commit("showLoading")
                     await axios.post(state.localhost + 'login-service-person/', {
                         UUID: formData.UUID,
                         KEY_ACCESS: formData.KEY_ACCESS,
@@ -104,6 +110,8 @@ export const AuthModule = {
                         commit('errorFalse')
                     }, 2500)
                     console.log(e);
+                }finally{
+                    store.commit("hideLoading")
                 }
             }
         }

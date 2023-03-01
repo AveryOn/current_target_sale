@@ -63,7 +63,7 @@
                 class="right--btn"
                 v-show="!isLogin"
                 >
-                Login <i-login></i-login>
+                Войти <i-login></i-login>
                 </button-comp>
 
 <!-- Кнопка Входа в рабочую область (для сотрудников) -->

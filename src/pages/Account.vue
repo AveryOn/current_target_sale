@@ -1,15 +1,21 @@
+
+<!-- АККАУНТ КЛИЕНТА (ПОЛЬЗОВАТЕЛЯ ИЛИ СОТРУДНИКА) -->
 <template>
+    <!-- ГЛАВНЫЙ БЛОК -->
     <div class="account-main" :class="{'dark': darkMode}">
 
+        <!-- ШАПКА СТРАНИЦЫ АККАУНТ -->
         <header class="account-main_header">
             <h1 class="account-main_header__text">Ваш аккаунт</h1>
         </header>
 
+        <!-- ТЕЛО СТРАНИЦЫ -->
         <div class="account-main_body">
 
+            <!-- БЛОК С ОБЩЕЙ ИНФОРМАЦИЕЙ О КЛИЕНТЕ -->
             <div class="account-main_body__client-info">
 
-                <!-- БЛОК ВЗАИМОДЕЙСТВИЯ С АВАТАРКОЙ -->
+                <!-- БЛОК ВЗАИМОДЕЙСТВИЯ С АВАТАРКОЙ КЛИЕНТА -->
                 <div class="client-info__image-block">
                     <div class="client-info__image"></div>
                     <div class="client-info__image-btns">
@@ -22,38 +28,38 @@
                 <div class="client-info__data-block">
                     <ul type="none">
                         <!-- Имя -->
-                        <li class="data-block__item">
-                            <p class="data-block__item--title">Name</p>
-                            <p class="data-block__item--value">Vlad</p>
-                        </li>
+                        <itemComp :titleItem="'Имя'"></itemComp>
+
                         <!-- Фамилия -->
-                        <li class="data-block__item">
-                            <p class="data-block__item--title">Last Name</p>
-                            <p class="data-block__item--value">Avery</p>
-                        </li>
+                        <itemComp :titleItem="'Фамилия'"></itemComp>
+
                         <!-- Никнейм (Username) -->
-                        <li class="data-block__item">
-                            <p class="data-block__item--title">Username</p>
-                            <p class="data-block__item--value">vlad123</p>
-                        </li>
+                        <itemComp :titleItem="'Никнейм'"></itemComp>
+
                         <!-- Эл. почта -->
-                        <li class="data-block__item">
-                            <p class="data-block__item--title">Email</p>
-                            <p class="data-block__item--value">lnkonion2@gmail.com</p>
-                        </li>
+                        <itemComp :titleItem="'Эл.почта'"></itemComp>
                     </ul>
                 </div>
 
                 <!-- КНОПКИ ВЗАИМОДЕЙСТВИЯ С ДАННЫМИ КЛИЕНТА -->
                 <div class="client-info__btns-block">
-                    <button-comp>Change Data</button-comp>
-                    <button-comp>Save</button-comp>
+                    <button-comp>Редактровать</button-comp>
+                    <button-comp>Сохранить изменения</button-comp>
                 </div>
             </div>
 
             <!-- БЛОК СТАТИСТИКИ КЛИЕНТА -->
             <div class="account-main_body__client-statistics">
-                hello! client-statistics
+
+                <ul type="none">
+                    <!-- Дата регистрации -->
+                    <itemComp :titleItem="'Дата регистрации'" :valueItem="'12.07.2022'"></itemComp>
+
+                    <itemComp :titleItem="'Последнее изменение аккаунта'" :valueItem="'24.01.2023'"></itemComp>
+
+                    <!-- <itemComp :titleItem="'Имя'" :valueItem="'Vlad'"></itemComp> -->
+                </ul>
+
             </div>
 
         </div>
@@ -61,8 +67,12 @@
     </div>
 </template>
 <script>
+import itemComp from '@/components/AccountPage/itemComp.vue';
 import { mapState } from 'vuex';
 export default {
+    components: {
+        itemComp
+    },
     name: 'account',
     computed: {
         ...mapState({
@@ -100,6 +110,7 @@ export default {
     .account-main_body{
         display: flex;
         justify-content: space-evenly;
+        padding: 20px 0;
         // border: $border;
         // border-radius: $radius;
     }
@@ -112,6 +123,7 @@ export default {
         border-radius: $radius;
         margin: 20px 0;
         padding: 0 15px;
+        box-shadow: $shadow;
         .client-info__image-block{
             display: flex;
             width: max-content;
@@ -147,26 +159,6 @@ export default {
             // border: $border;
             // border-radius: $radius;
             margin: 20px 0;
-            .data-block__item{
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                border: $border;
-                border-radius: $radius;
-                margin: 10px 5px;
-                cursor: default;
-            }
-            .data-block__item--title{
-                font-size: 1.3em;
-                color: $or-wh-txt;
-                margin: 10px 20px;
-            }
-            .data-block__item--value{
-                font-size: 1.3em;
-                color: $or-wh-txt;
-                font-weight: bolder;
-                margin: 10px 20px;
-            }
         }
         .client-info__btns-block{
             display: flex;
@@ -183,6 +175,8 @@ export default {
         border: $border;
         border-radius: $radius;
         margin: 20px 0;
+        padding: 5px 10px;
+        box-shadow: $shadow;
     }
 } 
 @include darkMode_with_font;
