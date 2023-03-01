@@ -40,6 +40,86 @@ export const AuthModule = {
     },
     actions: {
         
+        // РЕГИСТРАЦИЯ НОВОГО ПОЛЬЗОВАТЕЛЯ
+        async registrationUser({state, commit}, {email, username, password}){
+            try{
+                store.commit('showLoading')
+                await axios.post(state.localhost + 'user/registration/', {
+                  email: email,
+                  username: username, 
+                  password: password,
+                  creation_time: JSON.stringify(Date.now()),
+                }).then(res => {
+                  console.log(res);
+                  window.location.reload()
+                })
+              }catch (e){
+                console.log(e);
+              }finally{
+                store.commit('hideLoading')
+              }
+        },
+
+        // АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ
+        async authUser({state, commit}, {login, password}){
+            if(
+                login === '' ||
+                password === ''
+            ){
+                commit('errorTrue', {isError: true, data: 'Заполните все поля формы!'})
+                setTimeout(() => {
+                    commit('errorFalse')
+                }, 2500)
+            }else{
+                try{
+                    store.commit('showLoading')
+                    await axios.post(state.localhost + 'login-user/', {
+                      username: login, 
+                      password: password,
+                    }).then(response =>{
+                        commit('changeACCESS_TOKEN', response.data[0].access_token)
+                        localStorage.setItem('ACCESS_TOKEN' ,response.data[0].access_token)
+                        commit('changeIsAuth', {isAuth: true, role: response.data[1].role, id: response.data[1].user_id})
+                        localStorage.setItem('isAuth', JSON.stringify(state.isAuth))
+                      console.log(response);
+                    })
+                  }
+                  catch (e){
+                    console.log(e);
+                  }
+                  finally{
+                    store.commit('hideLoading')
+                  }
+            }
+        },
+
+        // ВЕРИФИКАЦИЯ ПОЛЬЗОВАТЕЛЯ ПО ТОКЕНУ
+        async verificateUserByToken({state, commit}){
+            const ACCESS_TOKEN = (localStorage.getItem('ACCESS_TOKEN'))
+            if(ACCESS_TOKEN){
+                try{
+                    store.commit("showLoading")
+                    await axios.get(state.localhost + 'user/verificate/', {
+                        headers: {
+                            'Authorization': 'Bearer ' + ACCESS_TOKEN
+                          }
+                    }).then(response => {
+                        commit('changeIsAuth', {isAuth: true, role: response.data.role, id: response.data.id})
+                        localStorage.setItem('isAuth', JSON.stringify(state.isAuth))
+                    })
+                }catch (e){
+                    console.log(e);
+                    localStorage.removeItem('ACCESS_TOKEN')
+                    localStorage.removeItem('isAuth')
+                    window.location.reload()
+                }finally{
+                    store.commit("hideLoading")
+                }
+            }else{
+                console.log('ACCESS_TOKEN - empty!');
+            }
+        },
+
         // ВЕРИФИКАЦИЯ СОТРУДНИКОВ ПО ТОКЕНУ
         async verificateEmployByToken({state, commit}){
             const ACCESS_TOKEN = (localStorage.getItem('ACCESS_TOKEN'))

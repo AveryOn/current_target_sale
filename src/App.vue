@@ -87,20 +87,50 @@ export default {
         }
     },
     created(){
-        // Проверка на авторизованность пользователя. Если пользователь авторизован, то в URL
-        // путь подставляются роль и ID пользователя/сотрудника 
-        this.$store.dispatch('AuthModule/verificateEmployByToken')
-        const isAuth = JSON.parse(localStorage.getItem('isAuth'))
-        if(isAuth && isAuth.isAuth){
-            this.$router.afterEach((to, from) => {
-                if(to.name === undefined){
-                    this.$router.push(`/${isAuth.role}/${isAuth.id}`)
-                    console.log(to.name === undefined)
-                }
-            })
-        }else{
-            this.$router.push({name: 'main'})
-        }
+//                                       ¯\_(ツ)_/¯
+
+
+        // const isAuth = JSON.parse(localStorage.getItem('isAuth'))
+        // if(isAuth){
+        //     if(isAuth.role === 'manager' || isAuth.role === 'owner'){
+        //         // Проверка на авторизованность СОТРУДНИКА. Если СОТРУДНИК авторизован, то в URL
+        //         // путь подставляются роль и UUID СОТРУДНИКА 
+        //         this.$store.dispatch('AuthModule/verificateEmployByToken')
+        //         if(isAuth.isAuth){
+        //             this.$router.afterEach((to, from) => {
+        //                 if(to.name === undefined){
+        //                     this.$router.push(`/${isAuth.role}/${isAuth.id}`)
+        //                 }
+        //             })
+        //         }
+        //     }
+        //     if(isAuth.role === 'user'){
+        //         // Проверка на авторизованность пользователя. Если пользователь авторизован, то в URL
+        //         // путь подставляются роль и ID пользователя 
+        //         this.$store.dispatch('AuthModule/verificateUserByToken')
+        //         if(isAuth.isAuth){
+        //             this.$router.afterEach((to, from) => {
+        //                 console.log(to.name)
+        //                 if(to.name === undefined){
+        //                     this.$router.push(`/${isAuth.role}/${isAuth.id}`)
+        //                 }
+        //             })
+        //         }
+        //     }
+        // }else{
+        //     this.$router.afterEach((to, from) => {
+        //         if(to.path !== '/'){
+        //             return true
+                    
+        //         }else{
+        //             return false
+        //         }
+        //        console.log(to.path)
+        //     //    this.$router.push()
+        //         // if(to.name === 'main'){
+        //         // }
+        //     })
+        // }
     },
     mounted(){
 

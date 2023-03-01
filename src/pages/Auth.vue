@@ -1,6 +1,15 @@
 <!-- СТРАНИЦА АЦТЕНТИФИКАЦИИ -->
 <template>
     <div class="Auth-Page">
+        
+        <!-- УВЕДОМЛЕНИЕ ОБ ОШИБКЕ -->
+        <notification-error 
+        :show="this.$store.state.AuthModule.error.isError"
+        @click="this.$store.commit('AuthModule/errorFalse')"
+        >
+            {{ this.$store.state.AuthModule.error.data }}
+        </notification-error>
+        
         <div class="auth-title-header">
             <h1 class="title-text">Auth</h1>
         </div>
@@ -8,7 +17,8 @@
             <!-- ОПИСАНИЕ МАГАЗИНА -->
             <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione officia temporibus reprehenderit architecto autem recusandae ad adipisci, neque eum blanditiis perferendis velit eaque praesentium commodi maiores fugiat eos in itaque!</p>
             <!-- ФОРМА АУТЕНТИФИКАЦИИ -->
-            <!-- Блок авторизации -->
+
+            <!-- Блок АВТОРИЗАЦИИ -->
             <div v-show="!$store.state.AuthModule.isRegistration" class="auth-form">
                 <h2 class="summary-auth-form">Login</h2>
                 <p class="p">Enter your email or username</p>
@@ -23,12 +33,22 @@
                 class="input" 
                 type="password"
                 placeholder="Password..."/>
+
                 <div class="auth-btns">
+
                     <a @click="$store.commit('AuthModule/openRegBlock')" class="reg-href">Registration...</a>
-                    <button-comp class="btn-confirm">Confirm</button-comp>
+
+                    <button-comp 
+                    class="btn-confirm" 
+                    @click="this.$store.dispatch('AuthModule/authUser', {login: username, password: password})"
+                    >
+                        Подтвердить
+                    </button-comp>
+
                 </div>
             </div>
-            <!-- Блок Регистрации -->
+
+            <!-- Блок РЕГИСТРАЦИИ -->
             <div v-show="$store.state.AuthModule.isRegistration" class="auth-form__registration">
                 <h2 class="summary-auth-form">Registration</h2>
                 <p class="p">Enter your Email</p>
@@ -51,7 +71,12 @@
                 placeholder="Password..."/>
                 <div class="auth-btns">
                     <a @click="$store.commit('AuthModule/closeRegBlock')" class="reg-href">Login-></a>
-                    <button-comp class="btn-confirm">Confirm</button-comp>
+                    <button-comp 
+                    class="btn-confirm" 
+                    @click="this.$store.dispatch('AuthModule/registrationUser', {email: email, username: username, password: password})"
+                    >
+                    Подтвердить
+                    </button-comp>
                 </div>
             </div>
         </div>
