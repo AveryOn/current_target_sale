@@ -75,8 +75,6 @@ export default {
             isAuth: state => state.AuthModule.isAuth
         }),
     },
-    created(){
-    },
     watch: {
         darkMode(newValue){
             // Проверяется есть активирована темная тема или нет
@@ -88,11 +86,23 @@ export default {
             }
         }
     },
+    created(){
+        // Проверка на авторизованность пользователя. Если пользователь авторизован, то в URL
+        // путь подставляются роль и ID пользователя/сотрудника 
+        this.$store.dispatch('AuthModule/verificateEmployByToken')
+        const isAuth = JSON.parse(localStorage.getItem('isAuth'))
+        if(isAuth && isAuth.isAuth){
+            this.$router.afterEach((to, from) => {
+                if(to.name === undefined){
+                    this.$router.push(`/${isAuth.role}/${isAuth.id}`)
+                    console.log(to.name === undefined)
+                }
+            })
+        }else{
+            this.$router.push({name: 'main'})
+        }
+    },
     mounted(){
-        
-        // Проверка токена доступа 
-        // Если он существует то создается пермеенная localStorage
-        this.verificateEmployByToken()
 
         // Появление кнопки "Наверх" если произошел большой скролл вниз
         window.addEventListener('scroll', () => {

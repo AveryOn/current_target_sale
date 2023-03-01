@@ -104,13 +104,12 @@
 
         </div>
 
-
     </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 export default {
-    data: ()=> ({
+    data: () => ({
         formData: {
             UUID: '',
             KEY_ACCESS: '',

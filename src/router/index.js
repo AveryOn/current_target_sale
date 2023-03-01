@@ -121,8 +121,6 @@ const router = createRouter({
 })
 
 // Роутер защита от перенаправления на страницу Модератора и Владельца 
-
-
 router.beforeEach(async(to, from) => {
     const employ = to.matched.some(record => record.meta.employ)
     const requireAuth = to.matched.some(record => record.meta.auth)
@@ -137,7 +135,6 @@ router.beforeEach(async(to, from) => {
             }
         }
     }
-
 })
 
 export default router

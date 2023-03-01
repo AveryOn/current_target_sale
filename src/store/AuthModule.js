@@ -48,13 +48,13 @@ export const AuthModule = {
                             'Authorization': 'Bearer ' + ACCESS_TOKEN
                           }
                     }).then(response => {
-                        return response.data
+                        commit('changeIsAuth', {isAuth: true, role: response.data.role, id: response.data.UUID})
                     })
                 }catch (e){
                     console.log(e);
                 }
             }else{
-                console.log('ACCESS_TOKEN - empty!');
+                // console.log('ACCESS_TOKEN - empty!');
             }
         },
 

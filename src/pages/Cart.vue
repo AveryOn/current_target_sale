@@ -728,6 +728,8 @@ export default {
         },
     },
     mounted() {
+
+
         // Смена темы для bodyTop
         const bodyTop = document.querySelector('.body-top')
         if(this.darkMode){
