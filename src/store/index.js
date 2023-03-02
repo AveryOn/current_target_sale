@@ -15,6 +15,11 @@ export default createStore({
     isTagAll: 'Весь товар',
     // Для активации спиннера загрузки
     isLoading: false,
+
+    // Роли доступные для клиента
+    roles: ['user', 'manager', 'owner',],
+    routes: [],
+    routesPath: [],
     
     // Для смены темы день/ночь
     darkMode: false,
@@ -172,11 +177,168 @@ export default createStore({
     darkModeDisabled(state){
       state.darkMode = false
     },
+
+    // Изменяет массив роутов
+    changeRoutes(state, newValue){
+      state.routes = newValue
+    },
+
+    // Изменяет массив путей всех маршрутов
+    changeRoutesPath(state, newValue){
+      state.routesPath = newValue
+    }
   },
 
   getters: {
+    // Форматирование строковых значений всех путей приложения
+    // В массиве содержатся все строковые значения маршрутов(путей) пример -> ['/', 'auth', 'manager-tools',]
+    validationRouterPath(state){
+      let output = []
+      state.routesPath.forEach(path => {
+        if(path !== '/' && path !== ''){
+          let parsePath = path.split('/')
+          if(parsePath.includes('')){
+            parsePath.splice(parsePath.indexOf(''), 1)
+          }
+
+          output.push(parsePath[0])
+        }
+      })
+      output.splice(0, 0, '/')
+      console.log(output);
+      return output
+    },
+
+    // Рекурсия получает строковые значения имен всех маршрутов приложения
+    computedRouterName(state){
+      let outputPaths = []
+
+      function computedPaths(route){
+        outputPaths.push(route.name)
+        if(route.children !== undefined){
+          route.children.forEach(child => {
+              computedPaths(child)
+            })
+        }
+      }
+      state.routes.forEach(route => {
+        computedPaths(route)
+        })
+      return outputPaths
+    },
+
   },
+
   actions: {
+    // Обработка адресной строки. Применяется для валидации адресной строки в случае
+    // истечения жизненного цикла токена доступа пользователя или сотрудника
+    handlerPath({state, getters}, str){
+      if(str){
+        let path
+        let outputPath = []
+        
+        if(
+            str[0] === '/' ||
+            str[str.length-1] === '/' ||
+            str[0] === '/' && str[str.length-1] === '/'
+  
+        ){
+            console.log('IF');
+            path = str.split('')
+            if(path[0] === '/'){
+              path.splice(0, 1)
+            }
+            if(path[path.length-1] === '/'){
+              path.splice(path.length-1, 1)
+            }
+            if(path[0] === '/' && path[path.length-1] === '/'){
+              path.splice(0, 1)
+              path.splice(path.length-1, 1)
+            }
+            path = path.join('')
+            path = path.split('/')
+            
+            
+            if(state.roles.includes(path[0])){
+              path.splice(0, 1)
+              path.splice(0, 1)
+              console.log(path);
+            
+            // Если введенного в адресную строку пути нет в массиве getters.validationRouterPath
+            // То возвращается /404 страница
+            }if(!getters.validationRouterPath.includes(path[0]) && path[0] !== ''){
+              return '/404'
+            }
+            path.forEach(e => {
+              outputPath.push('/')
+              outputPath.push(e)
+            });
+            outputPath = outputPath.join('')
+            if(outputPath === ''){
+              outputPath = '/'
+            }
+            
+        }else{
+          console.log('ELSE');
+          path = str.split('/')
+          if(state.roles.includes(path[0])){
+              path.splice(0, 1)
+              path.splice(0, 1)
+          }
+          path.forEach(e => {
+              outputPath.push('/')
+              outputPath.push(e)
+          });
+          outputPath = outputPath.join('')
+          if(outputPath === ''){
+            outputPath = '/'
+          }
+        }
+        console.log(outputPath);
+        return outputPath
+      }else{
+        console.log('передайте URL-путь в парметр');
+        return false
+      }
+    },
+
+    // Рекурсия получает строковые значения путей всех маршрутов приложения
+    computedRouterPath({state, commit}){
+      let outputPaths = []
+
+      function computedPaths(route){
+        outputPaths.push(route.path)
+        if(route.children !== undefined){
+          route.children.forEach(child => {
+              computedPaths(child)
+            })
+        }
+      }
+      state.routes.forEach(route => {
+        computedPaths(route)
+        })
+      commit('changeRoutesPath', outputPaths)
+      return outputPaths
+    },
+
+    // Рекурсия получает строковые значения имен всех маршрутов приложения
+    computedRouterName({state, commit}){
+        let outputPaths = []
+  
+        function computedPaths(route){
+          outputPaths.push(route.name)
+          if(route.children !== undefined){
+            route.children.forEach(child => {
+                computedPaths(child)
+              })
+          }
+        }
+        state.routes.forEach(route => {
+          computedPaths(route)
+          })
+        return outputPaths
+    },
+    
   },
   modules: {
     ManagerModule: ManagerModule,

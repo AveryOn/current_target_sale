@@ -131,10 +131,14 @@ const routes = [
     }
 ]
 
+
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes
 })
+
+store.commit('changeRoutes', routes)
+
 
 
 // Роутер защита от перенаправления на страницу Модератора и Владельца 

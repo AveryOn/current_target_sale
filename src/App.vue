@@ -44,29 +44,17 @@ export default {
     data(){
         return{
             isDarkMode: localStorage.getItem('darkMode'),
+
+            // Поле получает переменную isAuth с localStorage
+            auth: JSON.parse(localStorage.getItem('isAuth')),
+
+            // Поле получает переменную ACCESS_TOKEN с localStorage
+            token: localStorage.getItem('ACCESS_TOKEN'),
         }
     },
     methods: {
-        async verificateEmployByToken(){
-            const ACCESS_TOKEN = (localStorage.getItem('ACCESS_TOKEN'))
-            if(ACCESS_TOKEN){
-                try{
-                    await axios.get(this.localhost + 'manager/verificate/', {
-                        headers: {
-                            'Authorization': 'Bearer ' + ACCESS_TOKEN
-                            }
-                    }).then(response => {
-                        this.$store.commit("AuthModule/changeIsAuth", {isAuth: true, role: response.data.role, id: response.data.UUID})
-                        localStorage.setItem('isAuth', JSON.stringify(this.isAuth))
-                        // this.$router.push(`/${response.data.role}/${response.data.UUID}`)
-                    })
-                }catch (e){
-                    // this.$router.push('/')
-                }
-            }else{
-                // this.$router.push('/')
-            }
-        },
+
+
     },
     computed: {
         ...mapState({
@@ -74,6 +62,10 @@ export default {
             localhost: state => state.AuthModule.localhost,
             isAuth: state => state.AuthModule.isAuth
         }),
+
+        computedRouterName(){
+
+        },
     },
     watch: {
         darkMode(newValue){
@@ -87,52 +79,56 @@ export default {
         }
     },
     created(){
-//                                       ¯\_(ツ)_/¯
+//          лучше не трогай этот кусок кода, ну его науй :)  ¯\_(ツ)_/¯
+        
 
+        if(this.auth){
+            if(this.auth.role === 'manager' || this.auth.role === 'owner'){
+                // Проверка на авторизованность СОТРУДНИКА. Если СОТРУДНИК авторизован, то в URL
+                // путь подставляются роль и UUID СОТРУДНИКА 
+                this.$store.dispatch('AuthModule/verificateEmployByToken')
+                if(this.auth.isAuth){
+                    this.$router.afterEach((to, from) => {
+                        if(to.name === undefined){
+                            this.$router.push(`/${this.auth.role}/${this.auth.id}`)
+                        }
+                    })
+                }
+            }
+            if(this.auth.role === 'user'){
+                // Проверка на авторизованность пользователя. Если пользователь авторизован, то в URL
+                // путь подставляются роль и ID пользователя 
+                this.$store.dispatch('AuthModule/verificateUserByToken')
+                if(this.auth.isAuth){
+                    this.$router.afterEach((to, from) => {
+                        if(to.name === undefined){
+                            this.$router.push(`/${this.auth.role}/${this.auth.id}`)
+                        }
+                    })
+                }
+            }
+        }
+        else if(!this.auth && !this.token){
+            this.$router.afterEach((to, from) => {
+                if(from.name === undefined){
+                    // console.log('IF -> dispatch');
+                    this.$store.dispatch('handlerPath', to.path).then(path => {
+                        this.$router.push(path)
+                    })
+                }
+                
+                // if(!this.$store.getters.validationRouterPath.includes(to.path.split('/')[1])){
+                //     this.$router.push({name: 'notFound'})
+                // }
+            })
+        }
 
-        // const isAuth = JSON.parse(localStorage.getItem('isAuth'))
-        // if(isAuth){
-        //     if(isAuth.role === 'manager' || isAuth.role === 'owner'){
-        //         // Проверка на авторизованность СОТРУДНИКА. Если СОТРУДНИК авторизован, то в URL
-        //         // путь подставляются роль и UUID СОТРУДНИКА 
-        //         this.$store.dispatch('AuthModule/verificateEmployByToken')
-        //         if(isAuth.isAuth){
-        //             this.$router.afterEach((to, from) => {
-        //                 if(to.name === undefined){
-        //                     this.$router.push(`/${isAuth.role}/${isAuth.id}`)
-        //                 }
-        //             })
-        //         }
-        //     }
-        //     if(isAuth.role === 'user'){
-        //         // Проверка на авторизованность пользователя. Если пользователь авторизован, то в URL
-        //         // путь подставляются роль и ID пользователя 
-        //         this.$store.dispatch('AuthModule/verificateUserByToken')
-        //         if(isAuth.isAuth){
-        //             this.$router.afterEach((to, from) => {
-        //                 console.log(to.name)
-        //                 if(to.name === undefined){
-        //                     this.$router.push(`/${isAuth.role}/${isAuth.id}`)
-        //                 }
-        //             })
-        //         }
-        //     }
-        // }else{
-        //     this.$router.afterEach((to, from) => {
-        //         if(to.path !== '/'){
-        //             return true
-                    
-        //         }else{
-        //             return false
-        //         }
-        //        console.log(to.path)
-        //     //    this.$router.push()
-        //         // if(to.name === 'main'){
-        //         // }
-        //     })
-        // }
     },
     mounted(){
+
+        // console.log(this.computedRouterName);
+        this.$store.dispatch('computedRouterPath')
+
 
         // Появление кнопки "Наверх" если произошел большой скролл вниз
         window.addEventListener('scroll', () => {
@@ -171,7 +167,7 @@ export default {
 }
 </script>
 <style lang="scss">
-//                                       ¯\_(ツ)_/¯
+//                                                    ¯\_(ツ)_/¯
 *{
     margin: 0;
     padding: 0;
