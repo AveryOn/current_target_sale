@@ -19,7 +19,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 9999999;
     top: -30px;
     left: -30px;
     right: -30px;

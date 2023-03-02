@@ -20,6 +20,7 @@ export default {
     height: 25vh;
     background: $background-gr;
     margin-top: 50px;
+    z-index: 0;
     border: {
         top-left-radius: $radius;
         top-right-radius: $radius;

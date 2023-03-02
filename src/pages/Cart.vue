@@ -8,13 +8,39 @@
         <div class="cart-body">
             <!-- ШАПКА -->
             <div class="body-top">
-                <h1 class="body-top-text">Your added products</h1>
+                <h1 class="body-top-text">{{ (auth && auth.isAuth)? 'Ваши добавленные товары' : 'Корзина для выбранного товара' }}</h1>
                 <input-comp placeholder="Search..." class="search-cart-products"></input-comp>
             </div>
             <div class="body-content">
                 <!-- ФИЛЬТЕР ПАНЕЛЬ -->
                 <filter-panel class="filter-panel"></filter-panel>
                 <div class="cart-products-layout">
+                    
+                    <!-- Компонент отрисовывается если пользователь не авторизован
+                        Перекрывает корзины предлагая авторизоваться или зарегестрироватся
+                    -->
+                    <div 
+                    class="cart-products-layout__not-auth" 
+                    :class="{'dark': darkMode}"
+                    :style="(!darkMode)? {backgroundColor: 'white'} : {backgroundColor: ''}"
+                    v-show="!auth || !auth.isAuth"
+                    >
+                        <div class="not-auth__body">
+
+                            <h2 class="not-auth__body-text">Авторизуйтесь или зарегестрируйтесь для того, чтобы добавлять товары в корзину</h2>
+                        
+                            <p class="not-auth__body-action--description">
+                                Если вы не авторизованы в системе, вы не сможете совершать некоторые операции, 
+                                в том числе и добавление товара в корзину.
+                                Вы можете авторизоваться или зарегестрироватся, если впервые в нашем магазине.
+                                Так у вас будет больше привелегий!
+                            </p>
+                            <div class="not-auth__body-action--btns">
+                                <button-comp @click="this.$router.push({name: 'auth'})">Авторизация <i-login></i-login></button-comp>
+                                <button-comp @click="this.$router.push({name: 'main'})"><i-home></i-home> На главную </button-comp>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Слой перекрывает компоненты корзины если активно окно подтверждения очищения корзины -->
                     <div 
@@ -70,7 +96,7 @@
                                 Очистить корзину
                             </button-comp>
 
-                            <!-- Кнопка ползволяет удалить несколько товаров на выбор -->
+                            <!-- Кнопка позволяет удалить несколько товаров на выбор -->
                             <button-comp 
                             v-show="cartProducts.length > 1" 
                             class="btn-optional"
@@ -84,7 +110,7 @@
                             <button-comp
                             class="btn-optional"
                             :disabled="isShowConfirmDelete"
-                            @click="isViewToCart = true"
+                            @click="(auth && auth.isAuth)? isViewToCart = true : false"
                             >
                                 Вид
                             </button-comp>
@@ -92,7 +118,7 @@
                             <button-comp 
                             class="btn-optional" 
                             :disabled="isShowConfirmDelete"
-                            @click="isShowRestoreCart = true"
+                            @click="(auth && auth.isAuth)? isShowRestoreCart = true: false"
                             >
                                 Недавно удаленный товар
                             </button-comp>
@@ -199,13 +225,13 @@
                         <div class="block-open-catalog--btns">
                             <button-comp 
                             class="open-catalog__btn"
-                            @click="openCatalog"
+                            @click="(auth && auth.isAuth)? openCatalog : false"
                             >
                                 Открыть каталог
                             </button-comp>
                             <button-comp 
                             class="open-catalog__btn"
-                            @click="goHome"
+                            @click="(auth && auth.isAuth)? goHome : false"
                             >
                                 Вернуться на главную
                             </button-comp>
@@ -289,6 +315,10 @@ export default {
     },
     data(){ 
         return{
+
+            // оле получает с localStorage данные переменной isAuth
+            auth: JSON.parse(localStorage.getItem('isAuth')),
+
             // Поле получает с localStorage данные массива с товаром для корзины
             addedProducts: JSON.parse(localStorage.getItem('addedProducts')),
 
@@ -897,6 +927,7 @@ export default {
         }
         .body-top-text{
             align-self: center;
+            cursor: default;
         }
         .search-cart-products{
             margin-right: 30px;
@@ -929,6 +960,56 @@ export default {
             margin: 5px;
             box-shadow: $shadow;
             background-color: white;
+            .cart-products-layout__not-auth{
+                position: absolute;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                top: -2px;
+                bottom: -2px;
+                left: -2px;
+                right: -2px;
+                border: $border;
+                border-radius: $radius;
+                z-index: 1000;
+            }
+
+            .not-auth__body{
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 70%;
+                border: $border;
+                border-radius: $radius;
+                margin: 20px auto;
+                padding: 20px;
+                box-shadow: $shadow;
+            }
+            .not-auth__body-text{
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                border: $border;
+                border-radius: $radius;
+                padding: 20px;
+                margin-bottom: 20px;
+                cursor: default;
+            }
+            .not-auth__body-action--description{
+                display: flex;
+                flex-wrap: wrap;
+                width: 90%;
+                cursor: default;
+            }
+            .not-auth__body-action--btns{
+                display: flex;
+                margin: 20px 0 0 0 ;
+            }
         }
         // Окно товара который был недавно удален 
         .cart-restore-block{
@@ -1194,4 +1275,5 @@ export default {
         }
     }
 }
+@include darkMode_with_font
 </style>

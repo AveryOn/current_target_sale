@@ -161,7 +161,11 @@ export default {
     mounted(){
         const auth = JSON.parse(localStorage.getItem('isAuth'))
         if(auth && auth.isAuth){
-            this.isEmployButton = true
+            if(auth.role === 'manager' || auth.role === 'owner'){
+                this.isEmployButton = true
+            }else{
+                this.isEmployButton = false
+            }
             this.isLogin = true
         }
 

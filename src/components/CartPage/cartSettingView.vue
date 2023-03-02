@@ -158,6 +158,7 @@ export default {
     min-height: 70vh;
     height: max-content;
     padding: 10px;
+    z-index: 999;
     .cart-setting-view__checked-block{
         position: absolute;
         display: flex;
