@@ -205,7 +205,6 @@ export default createStore({
         }
       })
       output.splice(0, 0, '/')
-      console.log(output);
       return output
     },
 
@@ -232,18 +231,25 @@ export default createStore({
   actions: {
     // Обработка адресной строки. Применяется для валидации адресной строки в случае
     // истечения жизненного цикла токена доступа пользователя или сотрудника
+    // Возвращает строку пути которая будет обновлена в URL-адресе. 
+    // Если не был передан аргумент(str) то возвращается false 
     handlerPath({state, getters}, str){
       if(str){
         let path
         let outputPath = []
         
+        // Проверка. Если по краям или отдельно слева или справа строки есть '/'
+        // То выполняется данный блок кода if
         if(
             str[0] === '/' ||
             str[str.length-1] === '/' ||
             str[0] === '/' && str[str.length-1] === '/'
   
         ){
-            console.log('IF');
+
+            // Разбивает строку на символы.
+            // Далее в зависимости от проверки у первого и последнего индексов
+            // Вырезаются слеши ('/')
             path = str.split('')
             if(path[0] === '/'){
               path.splice(0, 1)
@@ -255,49 +261,78 @@ export default createStore({
               path.splice(0, 1)
               path.splice(path.length-1, 1)
             }
+
+            // Массив с разделенными символами входящей строки path соединяется в одну строку
+            // Которая не содержит в себе слешей '/' по краям
             path = path.join('')
-            path = path.split('/')
+            path = path.split('/')   // Снова разделяет строку только уже через слеш -> ['user', '/', '123']
             
-            
+            // Проверка. Если первый элемент строки есть в массиве state.roles 
+            // То начало адресной строки имеет примерный вид ('/user/123/catalog')
+            // Поэтому первые два элемента такие как 'user' и '123' удаляются через splice
             if(state.roles.includes(path[0])){
               path.splice(0, 1)
               path.splice(0, 1)
-              console.log(path);
             
             // Если введенного в адресную строку пути нет в массиве getters.validationRouterPath
             // То возвращается /404 страница
             }if(!getters.validationRouterPath.includes(path[0]) && path[0] !== ''){
               return '/404'
             }
+
+            // На данном этапе массив path не включает в себя роль клиента и его ID ('user', '123')
+            // Вид у path если открыт какой-нибудь путь например '/auth' будет таким ['auth']
+            // Поэтому через forEach в массив outputPath добавляется сначала "/" а потом элементы массива path
             path.forEach(e => {
               outputPath.push('/')
               outputPath.push(e)
             });
+
+            // Массив outputPath перезаписывается приводя массив outputPath в строку
             outputPath = outputPath.join('')
+
+            // Дополнительная проверка указывает, если по какой-то причине итоговая строка outputPath в значении ''
+            // То изменить значение outputPath на "/" что будет означать базовый маршрут main 
             if(outputPath === ''){
               outputPath = '/'
             }
-            
+        
+        // Если по краям входного параметра str нет слешей "/"
+        // То выполняется данный блок
         }else{
-          console.log('ELSE');
           path = str.split('/')
+
+          // Проверка. Если первый элемент строки есть в массиве state.roles 
+          // То начало адресной строки имеет примерный вид ('/user/123/catalog')
+          // Поэтому первые два элемента такие как 'user' и '123' удаляются через splice
           if(state.roles.includes(path[0])){
               path.splice(0, 1)
               path.splice(0, 1)
           }
+
+          // Если введенного в адресную строку пути нет в массиве getters.validationRouterPath
+          // То возвращается /404 страница
+          if(!getters.validationRouterPath.includes(path[0]) && path[0] !== ''){
+            return '/404'
+          }          
+
           path.forEach(e => {
               outputPath.push('/')
               outputPath.push(e)
           });
+
+          // Массив outputPath перезаписывается приводя массив outputPath в строку
           outputPath = outputPath.join('')
+
           if(outputPath === ''){
             outputPath = '/'
           }
         }
         console.log(outputPath);
         return outputPath
+
       }else{
-        console.log('передайте URL-путь в парметр');
+        console.log('передайте URL-путь в аргумент');
         return false
       }
     },

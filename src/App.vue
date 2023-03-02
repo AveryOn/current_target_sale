@@ -111,15 +111,26 @@ export default {
         else if(!this.auth && !this.token){
             this.$router.afterEach((to, from) => {
                 if(from.name === undefined){
-                    // console.log('IF -> dispatch');
-                    this.$store.dispatch('handlerPath', to.path).then(path => {
-                        this.$router.push(path)
-                    })
+                    if(to.meta.auth || to.meta.employ){
+                        this.$router.push({name: 'main'})
+                    }else{
+                        this.$store.dispatch('handlerPath', to.path).then(path => {
+                            if(
+                                path === '/owner-tools' ||
+                                path === '/owner-tools/chat' ||
+                                path === '/manager-tools' ||
+                                path === '/manager-tools/chat' ||
+                                path === '/me'
+
+                            ){
+                                this.$router.push({name: 'main'})
+                            }else{
+                                this.$router.push(path)
+                            }
+                        })
+                    }
                 }
-                
-                // if(!this.$store.getters.validationRouterPath.includes(to.path.split('/')[1])){
-                //     this.$router.push({name: 'notFound'})
-                // }
+
             })
         }
 
