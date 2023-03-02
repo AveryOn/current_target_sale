@@ -81,7 +81,9 @@ export const AuthModule = {
                         localStorage.setItem('ACCESS_TOKEN' ,response.data[0].access_token)
                         commit('changeIsAuth', {isAuth: true, role: response.data[1].role, id: response.data[1].user_id})
                         localStorage.setItem('isAuth', JSON.stringify(state.isAuth))
-                      console.log(response);
+                        router.push(`/${response.data[1].role}/response.data[1].user_id`)
+                        window.location.reload()
+                        console.log(response);
                     })
                   }
                   catch (e){

@@ -209,22 +209,22 @@ export default createStore({
     },
 
     // Рекурсия получает строковые значения имен всех маршрутов приложения
-    computedRouterName(state){
-      let outputPaths = []
+    // computedRouterName(state){
+    //   let outputPaths = []
 
-      function computedPaths(route){
-        outputPaths.push(route.name)
-        if(route.children !== undefined){
-          route.children.forEach(child => {
-              computedPaths(child)
-            })
-        }
-      }
-      state.routes.forEach(route => {
-        computedPaths(route)
-        })
-      return outputPaths
-    },
+    //   function computedPaths(route){
+    //     outputPaths.push(route.name)
+    //     if(route.children !== undefined){
+    //       route.children.forEach(child => {
+    //           computedPaths(child)
+    //         })
+    //     }
+    //   }
+    //   state.routes.forEach(route => {
+    //     computedPaths(route)
+    //     })
+    //   return outputPaths
+    // },
 
   },
 
@@ -273,7 +273,9 @@ export default createStore({
             if(state.roles.includes(path[0])){
               path.splice(0, 1)
               path.splice(0, 1)
-            
+              if(path.length <= 0){
+                path = ['']
+              }
             // Если введенного в адресную строку пути нет в массиве getters.validationRouterPath
             // То возвращается /404 страница
             }if(!getters.validationRouterPath.includes(path[0]) && path[0] !== ''){
@@ -296,12 +298,11 @@ export default createStore({
             if(outputPath === ''){
               outputPath = '/'
             }
-        
-        // Если по краям входного параметра str нет слешей "/"
-        // То выполняется данный блок
-        }else{
-          path = str.split('/')
-
+            // Если по краям входного параметра str нет слешей "/"
+            // То выполняется данный блок
+          }else{
+            path = str.split('/')
+            
           // Проверка. Если первый элемент строки есть в массиве state.roles 
           // То начало адресной строки имеет примерный вид ('/user/123/catalog')
           // Поэтому первые два элемента такие как 'user' и '123' удаляются через splice
@@ -328,7 +329,6 @@ export default createStore({
             outputPath = '/'
           }
         }
-        console.log(outputPath);
         return outputPath
 
       }else{
@@ -376,11 +376,11 @@ export default createStore({
     
   },
   modules: {
-    ManagerModule: ManagerModule,
-    OwnerModule: OwnerModule,
-    CatalogModule: CatalogModule,
-    CartModule: CartModule,
-    SettingsModule: SettingsModule,
-    AuthModule: AuthModule,
+    ManagerModule,
+    OwnerModule,
+    CatalogModule,
+    CartModule,
+    SettingsModule,
+    AuthModule,
   },
 })

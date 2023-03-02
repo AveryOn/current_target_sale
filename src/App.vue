@@ -63,9 +63,6 @@ export default {
             isAuth: state => state.AuthModule.isAuth
         }),
 
-        computedRouterName(){
-
-        },
     },
     watch: {
         darkMode(newValue){
@@ -121,7 +118,6 @@ export default {
                                 path === '/manager-tools' ||
                                 path === '/manager-tools/chat' ||
                                 path === '/me'
-
                             ){
                                 this.$router.push({name: 'main'})
                             }else{
@@ -137,7 +133,6 @@ export default {
     },
     mounted(){
 
-        // console.log(this.computedRouterName);
         this.$store.dispatch('computedRouterPath')
 
 

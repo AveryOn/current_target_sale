@@ -32,7 +32,8 @@ const routes = [
             {
                 path: '',
                 name: 'main',
-                component: Main
+                component: Main,
+                meta: {auth: false},
             },
 
             // Страница авторизации ПОЛЬЗОВАТЕЛЕЙ
@@ -52,9 +53,9 @@ const routes = [
             // Страница данных пользователя/сотрудника (Аккаунт клиента)
             {
                 path: 'me', 
-                meta: {auth: true}, 
                 name: 'account', 
-                component: () => import('@/pages/Account.vue')
+                meta: {auth: true}, 
+                component: () => import('@/pages/Account.vue'),
             },
 
             // Рабочая панель Менеджера(Модератора)
