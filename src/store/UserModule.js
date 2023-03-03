@@ -1,10 +1,21 @@
 // МОДУЛЬ ДЛЯ РАБОТЫ ПОЛЬЗОВАТЕЛЯ САЙТА
+import store from "@/store"
+import router from '@/router'
+import axios from 'axios'
+
 export const UserModule = {
     state: () => ({
+        
+        // Токен доступа
+        ACCESS_TOKEN: (localStorage.getItem('ACCESS_TOKEN'))? localStorage.getItem('ACCESS_TOKEN') : null,
+
+        userData: (JSON.parse(localStorage.getItem('userData')))? JSON.parse(localStorage.getItem('userData')) : {},
 
     }),
     mutations: {
-
+        changeUserData(state, newValue){
+            state.userData = {...newValue}
+        }
     },
 
     getters: {},
@@ -13,24 +24,31 @@ export const UserModule = {
 
     // ПОЛУЧЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ
     async getDataUser({state, commit}){
-        try{
-            store.commit('showLoading')
-            await axios.get(state.localhost + 'user/me/').then(response =>{
-                console.log(response);
-                // commit('changeACCESS_TOKEN', response.data[0].access_token)
-                // localStorage.setItem('ACCESS_TOKEN' ,response.data[0].access_token)
-                // commit('changeIsAuth', {isAuth: true, role: response.data[1].role, id: response.data[1].user_id})
-                // localStorage.setItem('isAuth', JSON.stringify(state.isAuth))
-                // router.push(`/${response.data[1].role}/response.data[1].user_id`)
-                // window.location.reload()
-                // console.log(response);
-            })
-        }
-        catch (e){
-            console.log(e);
-        }
-        finally{
-            store.commit('hideLoading')
+        if(!JSON.parse(localStorage.getItem('userData'))){
+            try{
+                let data
+                store.commit('showLoading')
+                await axios.get(store.state.AuthModule.localhost + 'user/me/', {
+                    headers: {
+                        'Authorization': 'Bearer ' + state.ACCESS_TOKEN
+                    }
+                }).then(response => {
+                    commit('changeUserData', response.data)
+                    localStorage.setItem('userData', JSON.stringify(response.data))
+                    data = response.data
+                })
+    
+                return data
+            }
+            catch (e){
+                console.log(e);
+                router.push({name: 'notFound'})
+            }
+            finally{
+                store.commit('hideLoading')
+            }
+        }else{
+            return state.userData
         }
     },
 

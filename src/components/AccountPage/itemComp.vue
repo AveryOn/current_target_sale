@@ -3,11 +3,22 @@
 <!-- ПРИНМАЕТ ДВА ПРОПСА: НАЗВАНИЕ ЭЛЕМЕНТА ДАННЫХ (titleItem) И ЗНАЧЕНИЕ (valueItem) -->
 <template>
     <li class="data-block__item">
-        <p class="data-block__item--title">{{ titleItem }}</p>
-        <p class="data-block__item--value">{{ valueItem }}</p>
+        <p 
+        class="data-block__item--title"
+        :style="(darkMode)? {color: 'rgb(255, 205, 138)'} : {color: ''}"
+        >
+            {{ titleItem }}
+        </p>
+        <p 
+        class="data-block__item--value"
+        :style="(valueItem === '' || valueItem === 'Нет')? {color: 'rgb(254, 137, 90)'} : {color: ''}"
+        >
+            {{ (valueItem !== '')? valueItem : 'Нет' }}
+        </p>
     </li>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
     name: 'account-info-item',
     props: {
@@ -20,7 +31,12 @@ export default {
             required: false,
             default: 'Нет',
         }
-    }
+    },
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        }),
+    },
 }
 </script>
 <style lang="scss" scoped>
