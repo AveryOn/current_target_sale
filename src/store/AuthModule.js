@@ -1,9 +1,11 @@
+// МОДУЛЬ ДЛЯ АВТОРИЗАЦИИ, РЕГИСТРАЦИИ, И ВЕРИФИКАЦИИ КЛИЕНТОВ (ПОЛЬЗОВАТЕЛЕЙ И СОТРУДНИКОВ)
 import axios from 'axios'
 import router from '@/router'
 import store from '@/store'
 
 export const AuthModule = {
     state: () => ({
+
         // Обьект для отображения уведомления об ошибке авторизации
         error: {isError: false, data: null},
 
@@ -18,6 +20,7 @@ export const AuthModule = {
         // Токен доступа
         ACCESS_TOKEN: (localStorage.getItem('ACCESS_TOKEN'))? localStorage.getItem('ACCESS_TOKEN') : null,
     }),
+
     mutations:{
         openRegBlock(state){
             state.isRegistration = true
@@ -38,6 +41,7 @@ export const AuthModule = {
             state.error = {isError: false, data: null}
         }
     },
+
     actions: {
         
         // РЕГИСТРАЦИЯ НОВОГО ПОЛЬЗОВАТЕЛЯ
@@ -123,7 +127,7 @@ export const AuthModule = {
             }
         },
 
-        // ВЕРИФИКАЦИЯ СОТРУДНИКОВ ПО ТОКЕНУ
+        // ВЕРИФИКАЦИЯ СОТРУДНИКА ПО ТОКЕНУ
         async verificateEmployByToken({state, commit}){
             const ACCESS_TOKEN = (localStorage.getItem('ACCESS_TOKEN'))
             if(ACCESS_TOKEN){
@@ -150,7 +154,7 @@ export const AuthModule = {
             }
         },
 
-        // АВТОРИЗАЦИЯ СОТРУДНИКОВ
+        // АВТОРИЗАЦИЯ СОТРУДНИКА
         async authEmploy({state, commit}, {formData}){
             // Если хотябы одно поле формы пустое, то появляется уведомление
             if(

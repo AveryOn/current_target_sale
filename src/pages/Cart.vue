@@ -118,7 +118,7 @@
                             <button-comp 
                             class="btn-optional" 
                             :disabled="isShowConfirmDelete"
-                            @click="(auth && auth.isAuth)? isShowRestoreCart = true: false"
+                            @click="(auth && auth.isAuth)? isShowRestoreCart = true : false"
                             >
                                 Недавно удаленный товар
                             </button-comp>
@@ -220,18 +220,27 @@
                     
                     <!-- Блок "Добавьте превые товары в корзину" -->
                     <!-- Открывает каталог товаров -->
-                    <div v-show="cartProducts.length <= 0" class="block-open-catalog">
-                        <h3 class="block-open-catalog--title">Добавьте свой первый товар!</h3>
+                    <div 
+                    class="block-open-catalog" 
+                    
+                    v-show="cartProducts.length <= 0" 
+                    >
+                        <h3 
+                        class="block-open-catalog--title" 
+                        :style="(darkMode)? {color: 'rgb(255, 208, 147)'} : {color: ''}"
+                        >
+                            Добавьте свой первый товар!
+                        </h3>
                         <div class="block-open-catalog--btns">
                             <button-comp 
                             class="open-catalog__btn"
-                            @click="(auth && auth.isAuth)? openCatalog : false"
+                            @click="(auth && auth.isAuth)? this.$router.push({name: 'sorted'}) : false"
                             >
                                 Открыть каталог
                             </button-comp>
                             <button-comp 
                             class="open-catalog__btn"
-                            @click="(auth && auth.isAuth)? goHome : false"
+                            @click="(auth && auth.isAuth)? this.$router.push({name: 'main'}) : false"
                             >
                                 Вернуться на главную
                             </button-comp>
@@ -480,15 +489,15 @@ export default {
             }
         },
 
-        // Метод перенаправляет пользователя на каталог всех товаров 
-        openCatalog(){
-            this.$router.push({name: 'sorted'})
-        },
+        // // Метод перенаправляет пользователя на каталог всех товаров 
+        // openCatalog(){
+        //     this.$router.push({name: 'sorted'})
+        // },
 
-        // Метод возвращает пользователя на главную страницу
-        goHome(){
-            this.$router.push({name: 'main'})
-        },
+        // // Метод возвращает пользователя на главную страницу
+        // goHome(){
+        //     this.$router.push({name: 'main'})
+        // },
 
         // Метод разворачивает корзину с товарами для просмотра всех товаров
         openListCartProduct(){

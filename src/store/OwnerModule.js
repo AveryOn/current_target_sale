@@ -1,4 +1,4 @@
-// ХРАНИЛИЩЕ ДЛЯ СТРАНИЦЫ ВЛАДЕЛЬЦА САЙТА
+// МОДУЛЬ ДЛЯ РАБОТЫ ВЛАДЕЛЬЦА САЙТА
 export const OwnerModule = {
     state: () => ({
         isCreatedProduct: false,

@@ -29,7 +29,7 @@
                 placeholder="Email or username..."/>
                 <p class="p">Enter your password</p>
                 <input-comp
-                v-model="password" 
+                v-model="password"
                 class="input" 
                 type="password"
                 placeholder="Password..."/>

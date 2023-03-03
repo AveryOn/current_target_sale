@@ -1,5 +1,6 @@
 // ГЛАВНОЕ ХРАНИЛИЩЕ
 import { createStore } from 'vuex'
+import { UserModule } from './UserModule'
 import { ManagerModule } from './ManagerModule'
 import { OwnerModule } from './OwnerModule'
 import { CatalogModule } from './CatalogModule'
@@ -376,6 +377,7 @@ export default createStore({
     
   },
   modules: {
+    UserModule,
     ManagerModule,
     OwnerModule,
     CatalogModule,
