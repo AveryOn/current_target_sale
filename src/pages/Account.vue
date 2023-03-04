@@ -3,6 +3,15 @@
 <template>
     <!-- ГЛАВНЫЙ БЛОК -->
     <div class="account-main" :class="{'dark': darkMode}">
+        <modal-comp :show="true">
+            <div 
+            class="account__menu-change-client-data" 
+            :class="{'dark': darkMode}" 
+            :style="(!darkMode)? {backgroundColor: 'white'} : {backgroundColor: ''}"
+            >
+            <change-data-item></change-data-item>
+            </div>
+        </modal-comp>
 
         <!-- ШАПКА СТРАНИЦЫ АККАУНТ -->
         <header class="account-main_header">
@@ -19,8 +28,18 @@
                 <div class="client-info__image-block">
                     <div class="client-info__image"></div>
                     <div class="client-info__image-btns">
-                        <button-comp class="image-btns__btn">Upload -></button-comp>
-                        <button-comp class="image-btns__btn">Delete x</button-comp>
+
+                        <button-comp 
+                        class="image-btns__btn"
+                        :style="(!imageComuted) ? {marginTop: 'auto'} : {marginTop: ''}"
+                        >
+                            {{ (imageComuted)? 'Обновить' : 'Загрузить' }}
+                        </button-comp>
+
+                        <button-comp v-show="imageComuted" class="image-btns__btn">
+                            Delete x
+                        </button-comp>
+
                     </div>
                 </div>
 
@@ -46,7 +65,7 @@
 
                 <!-- КНОПКИ ВЗАИМОДЕЙСТВИЯ С ДАННЫМИ КЛИЕНТА -->
                 <div class="client-info__btns-block">
-                    <button-comp>Редактровать</button-comp>
+                    <button-comp >Редактровать</button-comp>
                     <button-comp>Сохранить изменения</button-comp>
                 </div>
             </div>
@@ -56,13 +75,20 @@
 
                 <ul type="none">
                     <!-- Дата регистрации -->
-                    <itemComp :titleItem="'Дата регистрации'" :valueItem="creationTimeComuted"></itemComp>
+                    <itemComp 
+                    :title="creationTimeComutedDifference" 
+                    :titleItem="'Дата создания аккаунта'" 
+                    :valueItem="creationTimeComuted"
+                    >
+                    </itemComp>
 
                     <!-- Дата редактирования аккаунта -->
-                    <itemComp :titleItem="'Последнее изменение аккаунта'" :valueItem="editTimeComuted"></itemComp>
-
-                    <!-- TESTING -->
-                    <itemComp :titleItem="'Разница времени редактирования'" :valueItem="editTimeComutedDifference"></itemComp>
+                    <itemComp 
+                    :title="(editTimeComutedDifference !== this.accountWords.noneChange) ? editTimeComutedDifference : ''" 
+                    :titleItem="'Последнее изменение аккаунта'" 
+                    :valueItem="editTimeComuted"
+                    >
+                    </itemComp>
 
                     <!-- <itemComp :titleItem="'Имя'" :valueItem="'Vlad'"></itemComp> -->
                 </ul>
@@ -74,16 +100,17 @@
     </div>
 </template>
 <script>
+import changeDataItem from '@/components/AccountPage/changeDataItem.vue';
 import itemComp from '@/components/AccountPage/itemComp.vue';
 import { mapState } from 'vuex';
-
-import axios from 'axios'
+import moment from 'moment'
 
 export default {
     name: 'account',
 
     components: {
-        itemComp
+        itemComp,
+        changeDataItem,
     },
     
     data: () => ({
@@ -94,13 +121,14 @@ export default {
 
     methods: {
         log(){
-            console.log(this.userData);
+            console.log(this.imageComuted);
         },
     },
 
     computed: {
         ...mapState({
             darkMode: state => state.darkMode,
+            accountWords: state => state.accountWords,
 
             userDataStore: state => state.UserModule.userData,
         }),
@@ -113,180 +141,81 @@ export default {
         nameComuted(){
             let name = this.userData.name
             if(name) return name
-            else return ''
+            else return this.accountWords.noneData
         },
 
         // Вычисление ФАМИЛИИ клиента относительно полученных данных 
         lastnameComuted(){
             let lastname = this.userData.lastname
             if(lastname) return lastname
-            else return ''
+            else return this.accountWords.noneData
         },
 
         // Вычисление ПОЛА клиента относительно полученных данных 
         sexComuted(){
             let sex = this.userData.sex
             if(sex) return sex
-            else return ''
+            else return this.accountWords.noneData
         },
 
         // Вычисление НИКНЕЙМА клиента относительно полученных данных 
         usernameComuted(){
             let username = this.userData.username
             if(username) return username
-            else return ''
+            else return this.accountWords.noneData
         },
 
         // Вычисление ЭЛ.ПОЧТЫ клиента относительно полученных данных 
         emailComuted(){
             let email = this.userData.email
             if(email) return email
-            else return ''
+            else return this.accountWords.noneData
         },
+
+        // Вычисление АВАТАРКИ клиента относительно полученных данных 
+        imageComuted(){
+            if(this.userData.image){
+                return this.userData.image
+            }
+            else return false
+        },
+
 
 //####################################################  БЛОК СТАТИСТИКИ  #######################################################
 
 
-
-
         // Вычисление ВРЕМЕНИ СОЗДАНИЯ аккаунта клиента относительно полученных данных 
         creationTimeComuted(){
-            let creation_time = +this.userData.creation_time
-            if(creation_time){
-                let formatCreationTime
-                formatCreationTime = new Date(creation_time)
-                let year = formatCreationTime.getFullYear()
-                let month = formatCreationTime.getMonth()
-                let day = formatCreationTime.getDate()
-                return `${(day < 10)? '0'+day : day}.${(month < 10)? '0'+(month+1) : month+1}.${year}`
-            }
-            else return ''
+            if(this.userData?.creation_time?.length){
+                let creation_time = this.userData.creation_time
+                return moment(creation_time, 'x').format('DD.MM.YYYY')
+            }else return this.accountWords.undefinedData
         },
+
 
         // Вычисление ВРЕМЕНИ РЕДАКТИРОВАНИЯ аккаунта клиента относительно полученных данных 
         editTimeComuted(){
-            // let edit_time = JSON.parse(this.userDataComputed.edit_time)
-            let comp = JSON.stringify(1677846410413)
-            let edit_time = +comp
-            if(edit_time){
-                let formatEditTime
-                formatEditTime = new Date(edit_time)
-                let year = formatEditTime.getFullYear()
-                let month = formatEditTime.getMonth()
-                let day = formatEditTime.getDate()
-                return `${(day < 10)? '0'+day : day}.${(month < 10)? '0'+(month+1) : month+1}.${year}`
-            }
-            else return ''
+            if(this.userData?.edit_time?.length){
+                let editTime = this.userData.edit_time
+                return moment(editTime, 'x').format('DD.MM.YYYY')
+            }else return this.accountWords.noneChange
         },
 
-        // Вычисление ТЕКУЩЕГО ВРЕМЕНИ. Для вычисления времени последнего изменения аккаунта
-        nowTimeComuted(){
-            let time_now = Date.now()
-            let formatCreationTime
-            formatCreationTime = new Date(time_now)
-            let year = formatCreationTime.getFullYear()
-            let month = formatCreationTime.getMonth()
-            let day = formatCreationTime.getDate()
-            return `${(day < 10)? '0'+day : day}.${(month < 10)? '0'+(month+1) : month+1}.${year}`
-        },
 
         // Вычисление разницы во времени между ТЕКУЩИМ временем и последним редактированием аккаунта
         editTimeComutedDifference(){
-            // Переменные для сравнения и вычисления разницы времени между двумя массивами дат 
-            let nowTimeList__output = []
-            let editTimeList__output = []
+            if(this.userData?.edit_time?.length){
+                const editTime = this.userData.edit_time
+                return moment(editTime, "x").fromNow()
+            }else return this.accountWords.noneChange
+        },
 
-            // Обработка ТЕКУЩЕГО Времени. Конвертирование его составляющих со строк в числа
-            // И их заключение в массив для следующего стравнения
-            let nowTimeList = this.nowTimeComuted.split('.')
-            for(let itemTime of nowTimeList){
-                itemTime = itemTime.split('')
-                if(itemTime[0] == 0){
-                    itemTime.splice(0, 1)
-                }
-                itemTime = itemTime.join('')
-                itemTime = +itemTime
-                nowTimeList__output.push(itemTime)
-            }
-
-            // Обработка Времени РЕДАКТИРОВАНИЯ аккаунта. Конвертирование его составляющих со строк в числа
-            // И их заключение в массив для следующего стравнения
-            // let editTimeList = this.editTimeComuted.split('.')
-            let editTimeList = '30.02.2022'.split('.')
-            for(let itemTime of editTimeList){
-                itemTime = itemTime.split('')
-                if(itemTime[0] == 0){
-                    itemTime.splice(0, 1)
-                }
-                itemTime = itemTime.join('')
-                itemTime = +itemTime
-                editTimeList__output.push(itemTime)
-            }
-
-            // Вычисление разницы времени между двумя массивами дат. Пример: [1, 3, 2023] -> [3, 3, 2023]
-
-            // перменные для текущего времени
-            const nowDay = nowTimeList__output[0]
-            const nowMonth = nowTimeList__output[1]
-            const nowYear = nowTimeList__output[2]
-
-            // перменные для времени создания 
-            const editDay = editTimeList__output[0]
-            const editMonth = editTimeList__output[1]
-            const editYear = editTimeList__output[2]
-
-            // Переменные с результатом вычесления даты
-            let differenceDate
-            let differenceDateArray = []
-            
-            let differenceDay
-            let differenceMonth
-            let differenceYear
-
-            // Вычисление разницы ДНЯ
-            if(nowDay > editDay){
-                differenceDay = nowDay - editDay
-            }else{
-                
-            }
-            differenceMonth = nowMonth - editMonth
-            differenceYear = nowYear - editYear
-
-            // Форматирование ДНЯ
-            if(differenceDay !== 0){
-                if(differenceDay.toString()[differenceDay.toString().length - 1] == 1 || differenceDay <= 1){
-                    differenceDay = `${differenceDay} день.`
-                }
-                else if(differenceDay !== 1 && differenceDay <= 4){
-                    differenceDay = `${differenceDay} дня.`
-                }
-                else{
-                    differenceDay = `${differenceDay} дней.`
-                }
-            }else{
-                differenceDay = null
-            }
-
-            // Форматирование МЕСЯЦА
-            if(differenceMonth !== 0){
-                differenceMonth = `${differenceMonth} мес.`
-            }else{
-                differenceMonth = null
-            }
-
-            // Форматирование ГОДА
-            if(differenceYear !== 0){
-                if(differenceYear.toString()[differenceYear.toString().length - 1] == 1 || differenceYear <= 4){
-                    differenceYear = `${differenceYear} г.`
-                }else{
-                    differenceYear = `${differenceYear} л.`
-                }
-            }else{
-                differenceYear = null
-            }
-
-            console.log(differenceDay);
-            return differenceDay
+        // Вычисление разницы во времени между ТЕКУЩИМ временем и ВРЕМЕНЕМ СОЗДАНИЯ аккаунта
+        creationTimeComutedDifference(){
+            if(this.userData?.creation_time?.length){
+                const creationTime = this.userData.creation_time
+                return moment(creationTime, "x").fromNow()
+            }else return this.accountWords.noneChange
         }
 
     },
@@ -314,6 +243,12 @@ export default {
     border-radius: $radius;
     box-shadow: $shadow;
     background-color: white;
+    .account__menu-change-client-data{
+        padding: 10px;
+        border-radius: $radius;
+    }
+
+
     .account-main_header{
         display: flex;
         justify-content: flex-end;
@@ -371,6 +306,7 @@ export default {
             .image-btns__btn{
                 padding: 30px 20px;
             }
+
         }
         .client-info__data-block{
             display: flex;

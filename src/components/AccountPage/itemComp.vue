@@ -11,9 +11,9 @@
         </p>
         <p 
         class="data-block__item--value"
-        :style="(valueItem === '' || valueItem === 'Нет')? {color: 'rgb(254, 137, 90)'} : {color: ''}"
+        :style="(valueItem === this.accountWords.noneData)? {color: 'rgb(254, 137, 90)'} : {color: ''}"
         >
-            {{ (valueItem !== '')? valueItem : 'Нет' }}
+            {{ valueItem }}
         </p>
     </li>
 </template>
@@ -29,12 +29,12 @@ export default {
         valueItem: {
             type: [String, Number],
             required: false,
-            default: 'Нет',
         }
     },
     computed: {
         ...mapState({
             darkMode: state => state.darkMode,
+            accountWords: state => state.accountWords,
         }),
     },
 }

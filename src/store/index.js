@@ -11,6 +11,11 @@ import { AuthModule } from './AuthModule'
 
 export default createStore({
   state: () => ({
+    accountWords: {
+      noneData: 'Нет',
+      noneChange: 'Изменений не было',
+      undefinedData: 'Данные не получены'
+    },    
     isMiniChat: false,
     isButtonUp: false,
     isTagAll: 'Весь товар',

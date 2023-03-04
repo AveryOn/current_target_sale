@@ -6,6 +6,11 @@ import components from './components/UI';
 import directivies from './directivies'
 import './styles/normalize.scss'
 
+import moment from 'moment'
+
+// Установка ru. локали для работы с датами и временем
+moment.locale('ru')
+
 const app = createApp(App)
 
 components.forEach(component => {
