@@ -9,6 +9,9 @@ import arrowRight from './arrow-right-icon'
 import toUp from './toUp'
 import account from './account'
 import office from './office'
+import edit from './edit'
+import close from './close'
+import ok from './ok'
 export default [
     home,
     settings,
@@ -21,4 +24,7 @@ export default [
     toUp,
     account,
     office,
+    edit,
+    close,
+    ok,
 ]

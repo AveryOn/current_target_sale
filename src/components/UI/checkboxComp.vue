@@ -1,6 +1,6 @@
 <template>
     <label class="label-checkbox">
-        <input class="checkbox" type="checkbox" @change="e => $emit('update:modelValue', e.target.checked)" :checked="modelValue">
+        <input class="checkbox" type="checkbox" @change="checking" :checked="modelValue">
         <span class="check-style"></span>
         {{ name }}
     </label>
@@ -20,14 +20,17 @@ export default {
         }
     },
     methods: {
-
+        checking(e){
+            this.$emit('update:modelValue', e.target.checked)
+            console.log( e.target.checked);
+        }
     }
 }
 </script>
 <style lang="scss" scoped>
 .label-checkbox{
-    margin-bottom: 25px;
-    display: block;
+    display: flex;
+    align-items: center;
 }
 .checkbox{
     position: absolute;

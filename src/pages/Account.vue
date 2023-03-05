@@ -3,15 +3,37 @@
 <template>
     <!-- ГЛАВНЫЙ БЛОК -->
     <div class="account-main" :class="{'dark': darkMode}">
+
+        <!-- МОДАЛЬНОЕ ОКНО ДЛЯ РЕДАКТИРОВАНИЯ ДАННЫХ АККАУНТА -->
         <modal-comp :show="true">
             <div 
             class="account__menu-change-client-data" 
             :class="{'dark': darkMode}" 
             :style="(!darkMode)? {backgroundColor: 'white'} : {backgroundColor: ''}"
             >
-            <change-data-item></change-data-item>
+                <h2 class="menu-change-client-data__title">Редактирование профиля</h2>
+                <!-- Имя -->
+                <changeDataItem :titleItem="'Имя'" :valueItem="nameComuted" :typeItem="typeItemChangeData.string"></changeDataItem>
+
+                 <!-- Фамилия -->
+                 <changeDataItem :titleItem="'Фамилия'" :valueItem="lastnameComuted" :typeItem="typeItemChangeData.string"></changeDataItem>
+
+                  <!-- Пол -->
+                <changeDataItem :titleItem="'Пол'" :valueItem="sexComuted" :typeItem="typeItemChangeData.checkbox"></changeDataItem>
+
+                 <!-- Никнейм -->
+                 <changeDataItem :titleItem="'Никнейм'" :valueItem="usernameComuted" :typeItem="typeItemChangeData.string"></changeDataItem>
+
+                  <!-- Эл.Почта -->
+                <changeDataItem :titleItem="'Эл.Почта'" :valueItem="emailComuted" :typeItem="typeItemChangeData.string"></changeDataItem>
+
+                <div class="account__menu-change-client-data__btns">
+                    <button-comp>Сохранить изменения</button-comp>
+                    <button-comp>Сбросить изменения</button-comp>
+                </div>
+
             </div>
-        </modal-comp>
+        </modal-comp>''
 
         <!-- ШАПКА СТРАНИЦЫ АККАУНТ -->
         <header class="account-main_header">
@@ -131,6 +153,9 @@ export default {
             accountWords: state => state.accountWords,
 
             userDataStore: state => state.UserModule.userData,
+
+            // Допустимые типы элемента редактирования
+            typeItemChangeData: state => state.typeItemChangeData,
         }),
 
 
@@ -233,6 +258,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 @include h1-gradient;
+@include h2-gradient;
+
 .account-main{
     position: relative;
     display: flex;
@@ -244,8 +271,25 @@ export default {
     box-shadow: $shadow;
     background-color: white;
     .account__menu-change-client-data{
-        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        width: 80vh;
+        padding: 20px 10px 20px 10px;
+        border: $border;
         border-radius: $radius;
+        .menu-change-client-data__title{
+            align-self: center;
+            margin: 10px 0 30px 0;
+        }
+
+        .account__menu-change-client-data__btns{
+            width: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0 0 0 ;
+            align-self: center;
+        }
     }
 
 

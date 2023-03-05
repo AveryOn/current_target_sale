@@ -11,11 +11,18 @@ import { AuthModule } from './AuthModule'
 
 export default createStore({
   state: () => ({
+
+    // БЛОК ДАННЫХ ДЛЯ АККАУНТА КЛИЕНТА
     accountWords: {
       noneData: 'Нет',
       noneChange: 'Изменений не было',
       undefinedData: 'Данные не получены'
-    },    
+    }, 
+    typeItemChangeData: {
+      checkbox: 'checkbox',
+      string: 'string',
+    },
+    
     isMiniChat: false,
     isButtonUp: false,
     isTagAll: 'Весь товар',

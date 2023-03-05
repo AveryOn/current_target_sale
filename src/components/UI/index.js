@@ -16,6 +16,7 @@ import NotificationErrorComp from '@/components/UI/notificationErrorComp'
 import NotificationSuccessComp from '@/components/UI/notificationSuccessComp'
 import NotificationConfirmComp from '@/components/UI/notificationConfirmComp'
 import checkButton from '@/components/UI/checkButton'
+import radioButton from '@/components/UI/radioButton'
 import icons from './icons'
  
 export default [
@@ -36,5 +37,6 @@ export default [
     NotificationSuccessComp,
     NotificationConfirmComp,
     checkButton,
+    radioButton,
     ...icons,
 ]
