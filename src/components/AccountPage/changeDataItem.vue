@@ -29,29 +29,47 @@
             <!-- Если изменяемые данные являются обычной строкой, то для редактирования данных отрисовывается обычный input -->
             <input-comp 
             class="data-block__item--input"
+            v-model="changeData"
             v-show="isChangeMode && typeItem === typeItemChangeData.string"
             >
             </input-comp>
 
             <div 
-            class="data-block__item--checkbox" 
-            v-show="isChangeMode && typeItem === typeItemChangeData.checkbox"
+            class="data-block__item--radio" 
+            v-show="isChangeMode && typeItem === typeItemChangeData.radio"
             >   
 
                 <!-- МУЖСКОЙ ПОЛ -->
-                <div class="item--checkbox--label">
-                    <radio-button></radio-button>
-                </div>
+                <radio-button
+                class="change-item--radio-button"
+                :name="'sex'"
+                :value="'Муж'"
+                :radioData="radioButtonData"
+                v-model="radioButtonData"
+                >
+                </radio-button>
 
                 <!-- ЖЕНСКИЙ ПОЛ -->
-                <div class="item--checkbox--label">
-                    <input type="radio" class="change-item--checkbox" :name="'Другой'">
-                </div>
+                <radio-button
+                class="change-item--radio-button"
+                :name="'sex'"
+                :value="'Жен'"
+                :radioData="radioButtonData"
+                v-model="radioButtonData"
+                >
+
+                </radio-button>
 
                 <!-- Другой пол -->
-                <div class="item--checkbox--label">
-                    <input type="radio" class="change-item--checkbox" :name="'Другой'">
-                </div>
+                <radio-button
+                class="change-item--radio-button"
+                :name="'sex'"
+                :value="'Другой'"
+                :radioData="radioButtonData"
+                v-model="radioButtonData"
+                >
+
+                </radio-button>
 
             </div>
 
@@ -127,14 +145,10 @@ export default {
 
     data: () => ({
 
-        isChangeMode: true,
+        isChangeMode: false,
         changeData: '',
 
-        checkboxData: {
-            M: false,
-            W: false,
-            other: true,
-        }
+        radioButtonData: 'Муж',
 
     }),
 
@@ -142,7 +156,7 @@ export default {
 
         // Метод АКТИВИРУЕТ режим редактирования данных
         activateChangeMode(){
-            console.log(this.checkboxData);
+            // console.log(this.userData.sex === null);
             this.isChangeMode = true
         },
 
@@ -160,8 +174,11 @@ export default {
             // Допсутимые обозначения неопределенных данных
             accountWords: state => state.accountWords,
 
-            // Допустимые типы элемента редактирования
+            // Допустимые типы элемента редактирования,
             typeItemChangeData: state => state.typeItemChangeData,
+
+            // Данные текущего пользователя/сотрудника
+            userData: state => state.UserModule.userData,
         }),
     }
 }
@@ -258,21 +275,16 @@ export default {
         padding: 6px;
     }
 
-    .data-block__item--checkbox{
+    .data-block__item--radio{
         position: relative;
         left: -20px;
         display: flex;
         align-items: center;
         border: $border;
         border-radius: $radius;
-        .item--checkbox--label{
-            padding: 5px 20px;
-            margin: 5px 10px;
 
-        }
-
-        .change-item--checkbox{
-            margin-left: 10px;
+        .change-item--radio-button{
+            margin: 0 20px;
         }
     }
 }

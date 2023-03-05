@@ -19,17 +19,26 @@
             <!-- ФОРМА АУТЕНТИФИКАЦИИ -->
 
             <!-- Блок АВТОРИЗАЦИИ -->
-            <div v-show="!$store.state.AuthModule.isRegistration" class="auth-form">
+            <div 
+            @keyup.enter="this.$store.dispatch('AuthModule/authUser', {login: username, password: password})" 
+            v-show="!$store.state.AuthModule.isRegistration" 
+            class="auth-form"
+            >
+                <notification-caps-lock class="caps-lock-auth-form" :show="isCapsLock"></notification-caps-lock>
+                
                 <h2 class="summary-auth-form">Login</h2>
                 <p class="p">Enter your email or username</p>
                 <input-comp
-                v-model="username" 
+                :isAuthField="true"
+                v-model="username"
                 class="input" 
                 type="text"
-                placeholder="Email or username..."/>
+                placeholder="Email or username..."
+                />
                 <p class="p">Enter your password</p>
                 <input-comp
                 v-model="password"
+                :isAuthField="true"
                 class="input" 
                 type="password"
                 placeholder="Password..."/>
@@ -49,22 +58,30 @@
             </div>
 
             <!-- Блок РЕГИСТРАЦИИ -->
-            <div v-show="$store.state.AuthModule.isRegistration" class="auth-form__registration">
+            <div 
+            v-show="$store.state.AuthModule.isRegistration" 
+            @keyup.enter="this.$store.dispatch('AuthModule/registrationUser', {email: email, username: username, password: password})"
+            class="auth-form__registration"
+            >
+                <notification-caps-lock class="caps-lock-register-form" :show="isCapsLock"></notification-caps-lock>
                 <h2 class="summary-auth-form">Registration</h2>
                 <p class="p">Enter your Email</p>
-                <input-comp 
+                <input-comp
+                :isAuthField="true"
                 v-model="email" 
                 class="input" 
                 type="text"
                 placeholder="Email..."/>
                 <p class="p">Enter your Username</p>
                 <input-comp 
+                :isAuthField="true"
                 v-model="username" 
                 class="input" 
                 type="text"
                 placeholder="Email or username..."/>
                 <p class="p">Enter your Password</p>
                 <input-comp
+                :isAuthField="true"
                 v-model="password" 
                 class="input" 
                 type="password"
@@ -92,6 +109,7 @@ export default {
             password: '', 
         }
     },
+
     watch: {
         darkMode(newValue){
             // Смена темы для description
@@ -125,6 +143,9 @@ export default {
         ...mapState({
             darkMode: state => state.darkMode,
             isRegistration: state => state.isRegistration,
+
+            // Поле отслеживающее нажатие CapsLock
+            isCapsLock: state => state.AuthModule.isCapsLock
         }),
     },
 
@@ -200,6 +221,7 @@ export default {
         }
     }
     .auth-form{
+        position: relative;
         display: flex;
         flex-direction: column;
         width: 30%;
@@ -209,6 +231,11 @@ export default {
         padding: 30px;
         box-shadow: $shadow;
         background-color: white;
+        .caps-lock-auth-form{
+            right: 0;
+            left: 0;
+            bottom: -25px;
+        }
         .input{
             box-shadow: none;
             &:focus{
@@ -217,6 +244,7 @@ export default {
         }
     }
     .auth-form__registration{
+        position: relative;
         display: flex;
         flex-direction: column;
         width: 30%;
@@ -226,6 +254,11 @@ export default {
         padding: 30px;
         box-shadow: $shadow;
         background-color: white;
+        .caps-lock-register-form{
+            right: 0;
+            left: 0;
+            bottom: -25px;
+        }
         .input{
             box-shadow: none;
             &:focus{

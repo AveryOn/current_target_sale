@@ -1,81 +1,133 @@
 <template>
-
-    <label class="container">One
-        <input type="radio" checked="checked">
-        <span class="checkmark"></span>
+  <div class="radio-button-layout">
+    <label class="radio-button-title">{{ value }}
+  
+        <input 
+        type="radio" 
+        :disabled="disabled"
+        :name="name" 
+        :value="value"
+        @input="e => $emit('update:modelValue', e.target.value)" 
+        :checked="(radioData === value)? true : false"
+        >
+        <span class="radio-button"></span>
+        
     </label>
+  </div>
 
 </template>
 <script>
 export default {
-    name: 'radio-button',
-    
+  name: 'radio-button',
+  props: {
+
+    modelValue: {
+      type: String,
+      default: false,
+    },
+
+    name: {
+      type: String,
+      required: true,
+    },
+
+    value: {
+      type: String,
+      required: true
+    },
+    // Поле с которым сравнивается value инпута, и если они равны то checked === true
+    radioData: {
+      type: String,
+      required: true
+    },
+
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+
+  },
+  
 }
 </script>
 <style lang="scss" scoped>
+.radio-button-title{
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin: 2px;
+}
 /* Customize the label (the container) */
-.container {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 22px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+.radio-button-title {
+display: flex;
+position: relative;
+padding-left: 25px;
+// margin-bottom: 12px;
+cursor: pointer;
+font-size: 22px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
 }
 
 /* Hide the browser's default radio button */
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
+.radio-button-title input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+height: 0;
+width: 0;
 }
 
 /* Create a custom radio button */
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
-  border-radius: 50%;
+.radio-button {
+position: absolute;
+display: flex;
+align-items: center;
+justify-content: center;
+left: 0;
+height: 18px;
+width: 18px;
+background-color: #eee;
+border-radius: 50%;
 }
 
 /* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-  background-color: #ccc;
+.radio-button-title:hover input ~ .radio-button {
+background-color: #ccc;
 }
 
 /* When the radio button is checked, add a blue background */
-.container input:checked ~ .checkmark {
-  background-color: #2196F3;
+.radio-button-title input:checked ~ .radio-button {
+background-color: #faad27;
+}
+
+.radio-button-title input:disabled ~ .radio-button {
+background-color: #81858a97;
+border: #81858a97;
 }
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
+.radio-button:after {
+content: "";
+position: absolute;
+display: none;
 }
 
 /* Show the indicator (dot/circle) when checked */
-.container input:checked ~ .checkmark:after {
-  display: block;
+.radio-button-title input:checked ~ .radio-button:after {
+display: block;
 }
 
 /* Style the indicator (dot/circle) */
-.container .checkmark:after {
-  top: 9px;
-  left: 9px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: white;
+.radio-button-title .radio-button:after {
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: rgb(43, 43, 42);
 }
 </style>
+
+

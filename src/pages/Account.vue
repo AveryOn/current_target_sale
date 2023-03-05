@@ -19,7 +19,7 @@
                  <changeDataItem :titleItem="'Фамилия'" :valueItem="lastnameComuted" :typeItem="typeItemChangeData.string"></changeDataItem>
 
                   <!-- Пол -->
-                <changeDataItem :titleItem="'Пол'" :valueItem="sexComuted" :typeItem="typeItemChangeData.checkbox"></changeDataItem>
+                <changeDataItem :titleItem="'Пол'" :valueItem="sexComuted" :typeItem="typeItemChangeData.radio"></changeDataItem>
 
                  <!-- Никнейм -->
                  <changeDataItem :titleItem="'Никнейм'" :valueItem="usernameComuted" :typeItem="typeItemChangeData.string"></changeDataItem>

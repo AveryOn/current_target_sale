@@ -21,6 +21,7 @@ export default createStore({
     typeItemChangeData: {
       checkbox: 'checkbox',
       string: 'string',
+      radio: 'radio',
     },
     
     isMiniChat: false,

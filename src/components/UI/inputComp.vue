@@ -1,16 +1,37 @@
 <template>
+
     <input class="input" :class="{'dark-input': darkMode}" @input="updateInput" :value="modelValue">
+
 </template>
 <script>
 import { mapState } from 'vuex';
 export default {
     name: 'input-comp',
     props: {
-         modelValue: [String, Number]
+        modelValue: [String, Number],
+        isAuthField: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
     }, 
     methods: {
         updateInput(event){
             this.$emit("update:modelValue", event.target.value)
+            // Если клавиша CapsLock включена то в сторе в модуле AuthModule меняется перменная isCapsLock на true
+            // Для того чтобы вывести предупреждение о включенном CapsLock
+            if(this.isAuthField){
+                const input = document.querySelector(".input");
+                input.addEventListener("keyup", (event) => {
+        
+                    if (event.getModifierState("CapsLock")) {
+                        this.$store.commit('AuthModule/changeIsCapsLock_TRUE')
+                    } else {
+                        this.$store.commit('AuthModule/changeIsCapsLock_FALSE')
+                    }
+
+                });
+            }
         }
     },
     computed: {
@@ -21,6 +42,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
 .input{
     margin: 5px;
     padding: 10px;
