@@ -138,6 +138,17 @@
                         Никнейм успешно изменен!
                         </notification-mini-success>
                     </template>
+
+                    <!-- ОШИБКА, если изменяемые данные уже есть в базе данных -->
+                    <template v-slot:error>
+                        <notification-mini-error
+                        class="change-error" 
+                        @click="notifications.alreadyHas.username = false" 
+                        :show="notifications.alreadyHas.username"
+                        >
+                            Такой никнейм уже существует!
+                        </notification-mini-error>
+                    </template>
                 </changeDataItem>
 
 
@@ -169,6 +180,17 @@
                         >
                             Электронная почта успешно изменена!
                         </notification-mini-success>
+                    </template>
+
+                    <!-- ОШИБКА, если изменяемые данные уже есть в базе данных -->
+                    <template v-slot:error>
+                        <notification-mini-error
+                        class="change-error" 
+                        @click="notifications.alreadyHas.email = false" 
+                        :show="notifications.alreadyHas.email"
+                        >
+                            Такой email уже существует!
+                        </notification-mini-error>
                     </template>
                 </changeDataItem>
 
@@ -313,6 +335,11 @@ export default {
                 username: false,
                 email: false,
             },
+            // Всплытие ошиби о том что это уникальные данные и они уже присутствуют в БД
+            alreadyHas: {
+                username: false,
+                email: false,
+            }
 
         }
 
@@ -326,12 +353,19 @@ export default {
 
         // Метод заполняет поля данных изменения которые приходят с каждого элемента редактирования
         recordChangeData(data){
-            if(data.value === false && data.success === false){
+            if(data.success === false && data.alreadyHas){
+                this.notifications.alreadyHas[data.name] = true
+                setTimeout(() => {
+                    this.notifications.alreadyHas[data.name] = false
+                }, 3000);
+            }
+            else if(data.value === false && data.success === false){
                 this.notifications.warning[data.name] = true
                 setTimeout(() => {
                     this.notifications.warning[data.name] = false
                 }, 3000);
-            }else{
+            }
+            else{
                 this.changeUserData[data.name] = data.value
                 this.notifications.success[data.name] = true
                 setTimeout(() => {
@@ -473,6 +507,11 @@ export default {
     right: 0px;
 }
 .change-sucess{
+    position: absolute;
+    right: 20px;
+    left: 20px;
+}
+.change-error{
     position: absolute;
     right: 20px;
     left: 20px;

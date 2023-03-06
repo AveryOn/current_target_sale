@@ -21,5 +21,8 @@ export default {
     top: 0px;
     left: 0;
     fill: orange;
+    &:hover{
+        fill: rgb(255, 123, 0);
+    }
 }
 </style>

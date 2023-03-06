@@ -12,6 +12,7 @@ import office from './office'
 import edit from './edit'
 import close from './close'
 import ok from './ok'
+import reset from './reset'
 export default [
     home,
     settings,
@@ -27,4 +28,5 @@ export default [
     edit,
     close,
     ok,
+    reset,
 ]

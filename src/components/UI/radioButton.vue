@@ -91,6 +91,7 @@ left: 0;
 height: 18px;
 width: 18px;
 background-color: #eee;
+border: $border;
 border-radius: 50%;
 }
 

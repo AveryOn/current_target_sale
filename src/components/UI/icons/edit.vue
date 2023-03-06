@@ -17,10 +17,13 @@ export default {
 @include icon-size;
 .edit{
     position: relative;
-    width: 22px;
-    height: 22px;
+    width: 35px;
+    height: 35px;
     top: -1px;
     left: 0;
     fill: orange;
+    &:hover{
+        fill: rgb(255, 123, 0);
+    }
 }
 </style>

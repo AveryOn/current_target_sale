@@ -1,7 +1,7 @@
 <!-- МИНИ-УВЕДОМЛЕНИЕ-УСПЕХ -->
 <template>
 
-    <div v-show="show" class="notification-mini-success">
+    <div v-show="show" class="notification-mini-error">
         <slot></slot>
     </div>
 
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-name: 'notification-mini-success',
+name: 'notification-mini-error',
 props: {
     show: {
         type: Boolean,
@@ -19,19 +19,18 @@ props: {
     }
 },
 
-
 }
 </script>
 
 
 <style lang="scss" scoped>
-.notification-mini-success{
+.notification-mini-error{
 position: absolute;
 display: flex;
 justify-content: center;
 padding: 10px 20px;
 // background-color: rgb(236, 194, 68);
-background: linear-gradient(to right, #7fd311da, rgba(241, 253, 11, 0.822));
+background: linear-gradient(to right, #d31111da, rgba(253, 51, 11, 0.822));
 color: rgb(255, 255, 255);
 font-weight:600;
 border-radius: $radius;

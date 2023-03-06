@@ -89,6 +89,7 @@
             <!--  -->
             <slot name="warning"></slot>
             <slot name="success"></slot>
+            <slot name="error"></slot>
 
         </div>
 
@@ -106,31 +107,28 @@
         
         <!-- КНОПКИ ДЕЙСТВИЙ ПРИ АКТИВНОМ РЕЖИМЕ РЕДАКТИРОВАНИЯ ДАННЫХ -->
         <div 
-        v-show="isChangeMode" 
-        class="change-data-item__btns-active">
+        v-show="isChangeMode" class="change-data-item__btns-active">
 
-        
-        <!-- КНОПКА СБРОСА ЗНАЧЕНИЯ РЕДАКТИРОВАНИЯ -->
+        <!-- КНОПКА ПОДТВЕРЖДЕНИЯ РЕДАКТИРОВАНИЯ -->
         <div 
-        class="change-data-item__change-active-mode-btn--reset"
-        title="Сбросить"
-        v-show="this.typeItem === this.typeItemChangeData.string"
-        @click="resetChangeItem"
+        class="change-data-item__change-active-mode-btn--success"
+        title="Подтвердить"
+        @click="confirmChangeData"
         >
-            <i-close></i-close>
+            <i-ok></i-ok>
 
         </div>
-
         <!-- КНОПКИ КОТОРЫЕ НАХОДЯТСЯ СПРАВА ОТ КНОПКИ СБРОСА ИЗМЕНЕНИЙ -->
         <div class="change-data-item__btns-active-right">
-                <!-- КНОПКА ПОДТВЕРЖДЕНИЯ РЕДАКТИРОВАНИЯ -->
+                <!-- КНОПКА СБРОСА ЗНАЧЕНИЯ РЕДАКТИРОВАНИЯ -->
                 <div 
                 class="change-data-item__change-active-mode-btn"
-                title="Подтвердить"
-                @click="confirmChangeData"
+                title="Сбросить"
+                v-show="this.typeItem === this.typeItemChangeData.string"
+                @click="resetChangeItem"
                 >
-                    <i-ok></i-ok>
-    
+                    <i-reset></i-reset>
+
                 </div>
     
                 <!-- КНОПКА ОТМЕНЫ РЕДАКТИРОВАНИЯ -->
@@ -142,7 +140,8 @@
                     <i-close></i-close>
     
                 </div>
-            </div>
+        </div>
+
             
 
         </div>
@@ -194,7 +193,6 @@ export default {
 
         // Метод АКТИВИРУЕТ режим редактирования данных
         activateChangeMode(){
-            // console.log(this.userData.sex === null);
             this.isChangeMode = true
         },
 
@@ -205,7 +203,7 @@ export default {
             if(this.typeItem === this.typeItemChangeData.string) this.inputData = ''
         },
 
-        // Метод подтверждает редактирование данных элемента
+        // Метод подтверждает редактирование элемента данных
         // В зависимости от типа изменяемых данных (typeItem) будет эмитить только одно событие которое будет отправлять поле изм.данных 
         // Возваращает обьект в котором указывает ключ name и значение - поле с изменениями 
         confirmChangeData(){
@@ -225,11 +223,36 @@ export default {
             // если тип данных строка
             if (this.typeItem === this.typeItemChangeData.string){
 
-                if(this.valueItem === this.accountWords.noneData && this.inputData !== ''){
-                    console.log('IF');
+                // Если изменяемое поле является ЭЛ.ПОЧТОЙ то отправляется запрос на сервер где происходит проверка на то
+                // сущесвтует ли данный имэил если да то вернется ошибка о том что такой имэил уже существут 
+                if(this.inputData !== '' && this.nameItem === 'email'){
+                    this.$store.dispatch('UserModule/checkEmailUser', {email: this.inputData}).then(data => {
+                        if(data.status){
+                            this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
+                        }else{
+                            this.$emit('changeData', {name: this.nameItem, value: false, success: false, alreadyHas: true})
+                        }
+                    })
+                }
+
+                // Если изменяемое поле является НИКНЕЙМОМ то отправляется запрос на сервер где происходит проверка на то
+                // сущесвтует ли данный никнейм если да то вернется ошибка о том что такой никнейм уже существут 
+                else if(this.inputData !== '' && this.nameItem === 'username'){
+                    this.$store.dispatch('UserModule/checkUsernameUser', {username: this.inputData}).then(data => {
+                        if(data.status){
+                            this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
+                        }else{
+                            this.$emit('changeData', {name: this.nameItem, value: false, success: false, alreadyHas: true})
+                        }
+                    })
+                }
+
+                else if(this.valueItem === this.accountWords.noneData && this.inputData !== ''){
                     this.isChangeMode = false
                     this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
                     this.inputData = ''
+                    console.log('IF');
+ 
                 }
                 else if(this.inputData !== ''){
                     console.log('ELSE IF');
@@ -238,11 +261,10 @@ export default {
                     this.inputData = ''
 
                 }else{
-                    console.log('ELSE');
                     this.$emit('changeData', {name: this.nameItem, value: false, success: false})
                 }
             }
-
+            // console.log(this.nameItem);
         },
 
         resetChangeItem(){
@@ -311,8 +333,7 @@ export default {
         flex-grow: 1;
         width: 5%;
         margin: 0 0 0 10px;
-        // border: $border;
-        // border-radius: $radius;
+
         &:hover{
             cursor: default;
         }
@@ -330,11 +351,11 @@ export default {
         width: -moz-max-content;
         width: max-content;
         padding: 13px 9px;
-        border: 1px solid rgb(253, 148, 11);
+        // border: 1px solid rgb(253, 148, 11);
         border-radius: 20px;
         flex-grow: 1;
         &:hover{
-            border: 3px solid rgb(253, 148, 11);
+            // border: 3px solid rgb(253, 148, 11);
             cursor: pointer;
         }
     }
@@ -349,11 +370,11 @@ export default {
         border-radius: 50%;
         margin: 2px;
         &:hover{
-            border: 3px solid rgb(253, 148, 11);
+            border: 2px solid rgb(255, 123, 0);
             cursor: pointer;
         }
     }
-    .change-data-item__change-active-mode-btn--reset{
+    .change-data-item__change-active-mode-btn--success{
         position: relative;
         right: -3px;
         bottom: -1px;
@@ -367,7 +388,7 @@ export default {
         border-radius: 50%;
         margin: 2px;
         &:hover{
-            border: 3px solid rgb(253, 148, 11);
+            border: 2px solid rgb(255, 123, 0);
             cursor: pointer;
         }
     }

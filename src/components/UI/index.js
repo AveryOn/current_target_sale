@@ -17,6 +17,7 @@ import NotificationSuccessComp from '@/components/UI/notificationSuccessComp'
 import NotificationConfirmComp from '@/components/UI/notificationConfirmComp'
 import NotificationWarning from '@/components/UI/notificationWarning'
 import NotificationMiniSuccess from '@/components/UI/notificationMiniSuccess'
+import NotificationMiniError from '@/components/UI/notificationMiniError'
 import checkButton from '@/components/UI/checkButton'
 import radioButton from '@/components/UI/radioButton'
 import icons from './icons'
@@ -40,6 +41,7 @@ export default [
     NotificationConfirmComp,
     NotificationWarning,
     NotificationMiniSuccess,
+    NotificationMiniError,
     checkButton,
     radioButton,
     ...icons,
