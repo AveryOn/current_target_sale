@@ -5,31 +5,177 @@
     <div class="account-main" :class="{'dark': darkMode}">
 
         <!-- МОДАЛЬНОЕ ОКНО ДЛЯ РЕДАКТИРОВАНИЯ ДАННЫХ АККАУНТА -->
-        <modal-comp :show="true">
+        <modal-comp @click="log" :show="true">
             <div 
             class="account__menu-change-client-data" 
             :class="{'dark': darkMode}" 
             :style="(!darkMode)? {backgroundColor: 'white'} : {backgroundColor: ''}"
             >
                 <h2 class="menu-change-client-data__title">Редактирование профиля</h2>
-                <!-- Имя -->
-                <changeDataItem :titleItem="'Имя'" :valueItem="nameComuted" :typeItem="typeItemChangeData.string"></changeDataItem>
 
-                 <!-- Фамилия -->
-                 <changeDataItem :titleItem="'Фамилия'" :valueItem="lastnameComuted" :typeItem="typeItemChangeData.string"></changeDataItem>
+                <!-- Имя -->
+                <changeDataItem 
+                @changeData="recordChangeData" 
+                :titleItem="'Имя'" 
+                :valueItem="(changeUserData.name === null)? nameComuted : changeUserData.name" 
+                :typeItem="typeItemChangeData.string"
+                :nameItem="'name'"
+                >
+                    <!-- Предупреждение, что данное поле не изменено для того чтобы его сохранить -->
+                    <template v-slot:warning>
+                        <notification-warning 
+                        class="non-change-warning" 
+                        @click="notifications.warning.name = false" 
+                        :show="notifications.warning.name"
+                        >
+                            Вы не внесли изменения в это поле!
+                        </notification-warning>
+                    </template>
+
+                    <!-- Уведомление об успешном редактировании элемента данных -->
+                    <template v-slot:success>
+                        <notification-mini-success
+                        class="change-sucess" 
+                        @click="notifications.success.name = false" 
+                        :show="notifications.success.name"
+                        >
+                            Имя успешно изменено!
+                        </notification-mini-success>
+                    </template>
+                </changeDataItem>
+
+
+                <!-- Фамилия -->
+                <changeDataItem 
+                @changeData="recordChangeData" 
+                :titleItem="'Фамилия'" 
+                :valueItem="(changeUserData.lastname === null)? lastnameComuted : changeUserData.lastname" 
+                :typeItem="typeItemChangeData.string"
+                :nameItem="'lastname'"
+                >
+                    <!-- Предупреждение, что данное поле не изменено для того чтобы его сохранить -->
+                    <template v-slot:warning>
+                        <notification-warning 
+                        class="non-change-warning" 
+                        @click="notifications.warning.lastname = false" 
+                        :show="notifications.warning.lastname"
+                        >
+                            Вы не внесли изменения в это поле!
+                        </notification-warning>
+                    </template>
+
+                    <!-- Уведомление об успешном редактировании элемента данных -->
+                    <template v-slot:success>
+                        <notification-mini-success
+                        class="change-sucess" 
+                        @click="notifications.success.lastname = false" 
+                        :show="notifications.success.lastname"
+                        >
+                        Фамилия успешно изменена!
+                        </notification-mini-success>
+                    </template>
+                </changeDataItem>
+
 
                   <!-- Пол -->
-                <changeDataItem :titleItem="'Пол'" :valueItem="sexComuted" :typeItem="typeItemChangeData.radio"></changeDataItem>
+                <changeDataItem 
+                @changeData="recordChangeData" 
+                :titleItem="'Пол'" 
+                :valueItem="(changeUserData.sex === null)? sexComuted : changeUserData.sex" 
+                :typeItem="typeItemChangeData.radio"
+                :nameItem="'sex'"
+                >
+                    <!-- Предупреждение, что данное поле не изменено для того чтобы его сохранить -->
+                    <template v-slot:warning>
+                        <notification-warning 
+                        class="non-change-warning" 
+                        @click="notifications.warning.sex = false" 
+                        :show="notifications.warning.sex"
+                        >
+                            Вы не внесли изменения в это поле!
+                        </notification-warning>
+                    </template>
 
-                 <!-- Никнейм -->
-                 <changeDataItem :titleItem="'Никнейм'" :valueItem="usernameComuted" :typeItem="typeItemChangeData.string"></changeDataItem>
+                    <!-- Уведомление об успешном редактировании элемента данных -->
+                    <template v-slot:success>
+                        <notification-mini-success
+                        class="change-sucess" 
+                        @click="notifications.success.sex = false" 
+                        :show="notifications.success.sex"
+                        >
+                        Пол успешно изменен!
+                        </notification-mini-success>
+                    </template>
+                </changeDataItem>
+
+
+                <!-- Никнейм -->
+                <changeDataItem 
+                @changeData="recordChangeData" 
+                :titleItem="'Никнейм'" 
+                :valueItem="(changeUserData.username === null)? usernameComuted : changeUserData.username" 
+                :typeItem="typeItemChangeData.string"
+                :nameItem="'username'"
+                >
+                    <!-- Предупреждение, что данное поле не изменено для того чтобы его сохранить -->
+                    <template v-slot:warning>
+                        <notification-warning 
+                        class="non-change-warning" 
+                        @click="notifications.warning.username = false" 
+                        :show="notifications.warning.username"
+                        >
+                            Вы не внесли изменения в это поле!
+                        </notification-warning>
+                    </template>
+
+                    <!-- Уведомление об успешном редактировании элемента данных -->
+                    <template v-slot:success>
+                        <notification-mini-success
+                        class="change-sucess" 
+                        @click="notifications.success.username = false" 
+                        :show="notifications.success.username"
+                        >
+                        Никнейм успешно изменен!
+                        </notification-mini-success>
+                    </template>
+                </changeDataItem>
+
 
                   <!-- Эл.Почта -->
-                <changeDataItem :titleItem="'Эл.Почта'" :valueItem="emailComuted" :typeItem="typeItemChangeData.string"></changeDataItem>
+                <changeDataItem 
+                @changeData="recordChangeData" 
+                :titleItem="'Эл.Почта'" 
+                :valueItem="(changeUserData.email === null)? emailComuted : changeUserData.email" 
+                :typeItem="typeItemChangeData.string"
+                :nameItem="'email'"
+                >
+                    <!-- Предупреждение, что данное поле не изменено для того чтобы его сохранить -->
+                    <template v-slot:warning>
+                        <notification-warning 
+                        class="non-change-warning" 
+                        @click="notifications.warning.email = false" 
+                        :show="notifications.warning.email"
+                        >
+                            Вы не внесли изменения в это поле!
+                        </notification-warning>
+                    </template>
 
+                    <!-- Уведомление об успешном редактировании элемента данных -->
+                    <template v-slot:success>
+                        <notification-mini-success
+                        class="change-sucess" 
+                        @click="notifications.success.email = false" 
+                        :show="notifications.success.email"
+                        >
+                            Электронная почта успешно изменена!
+                        </notification-mini-success>
+                    </template>
+                </changeDataItem>
+
+                <!-- КНОПКИ -->
                 <div class="account__menu-change-client-data__btns">
                     <button-comp>Сохранить изменения</button-comp>
-                    <button-comp>Сбросить изменения</button-comp>
+                    <button-comp @click="clearChangeUserData">Сбросить изменения</button-comp>
                 </div>
 
             </div>
@@ -69,7 +215,7 @@
                 <div class="client-info__data-block">
                     <ul type="none">
                         <!-- Имя -->
-                        <itemComp @click="log" :titleItem="'Имя'" :valueItem="nameComuted"></itemComp>
+                        <itemComp :titleItem="'Имя'" :valueItem="nameComuted"></itemComp>
 
                         <!-- Фамилия -->
                         <itemComp :titleItem="'Фамилия'" :valueItem="lastnameComuted"></itemComp>
@@ -112,7 +258,6 @@
                     >
                     </itemComp>
 
-                    <!-- <itemComp :titleItem="'Имя'" :valueItem="'Vlad'"></itemComp> -->
                 </ul>
 
             </div>
@@ -137,21 +282,84 @@ export default {
     
     data: () => ({
 
+        // Поле в которое записываются данные клиента пришедшие с сервера
         userData: {},
+
+        // Поле в которое записываются данные редактирования аккаунта
+        changeUserData: {
+            name: null,
+            lastname: null,
+            sex: null,
+            username: null,
+            email: null,
+            image: null,
+        },
+
+        // Всплытие уведомлений
+        notifications: {
+            // Всплытие предупреждения
+            warning: {
+                name: false,
+                lastname: false,
+                sex: false,
+                username: false,
+                email: false,
+            },
+            // Всплытие успеха
+            success: {
+                name: false,
+                lastname: false,
+                sex: false,
+                username: false,
+                email: false,
+            },
+
+        }
+
     
     }),
 
     methods: {
         log(){
-            console.log(this.imageComuted);
+            console.log(this.changeUserData);
+        },
+
+        // Метод заполняет поля данных изменения которые приходят с каждого элемента редактирования
+        recordChangeData(data){
+            if(data.value === false && data.success === false){
+                this.notifications.warning[data.name] = true
+                setTimeout(() => {
+                    this.notifications.warning[data.name] = false
+                }, 3000);
+            }else{
+                this.changeUserData[data.name] = data.value
+                this.notifications.success[data.name] = true
+                setTimeout(() => {
+                    this.notifications.success[data.name] = false
+                }, 3000);
+                console.log(data);
+            }
+            return false
+        },
+
+        // Метод сбрасывает все измененения данных
+        clearChangeUserData(){
+            this.changeUserData.name = null
+            this.changeUserData.lastname = null
+            this.changeUserData.sex = null
+            this.changeUserData.username = null
+            this.changeUserData.email = null
         },
     },
 
     computed: {
         ...mapState({
             darkMode: state => state.darkMode,
+
+            // Допсутимые обозначения неопределенных данных
             accountWords: state => state.accountWords,
 
+            // Поле в которое записываются данные клиента пришедшие с сервера
             userDataStore: state => state.UserModule.userData,
 
             // Допустимые типы элемента редактирования
@@ -164,9 +372,9 @@ export default {
 
         // Вычисление ИМЕНИ клиента относительно полученных данных 
         nameComuted(){
-            let name = this.userData.name
-            if(name) return name
-            else return this.accountWords.noneData
+                let name = this.userData.name
+                if(name) return name
+                else return this.accountWords.noneData
         },
 
         // Вычисление ФАМИЛИИ клиента относительно полученных данных 
@@ -259,7 +467,16 @@ export default {
 <style lang="scss" scoped>
 @include h1-gradient;
 @include h2-gradient;
-
+.non-change-warning{
+    position: absolute;
+    top: 50px;
+    right: 0px;
+}
+.change-sucess{
+    position: absolute;
+    right: 20px;
+    left: 20px;
+}
 .account-main{
     position: relative;
     display: flex;
@@ -271,6 +488,7 @@ export default {
     box-shadow: $shadow;
     background-color: white;
     .account__menu-change-client-data{
+        position: relative;
         display: flex;
         flex-direction: column;
         width: 80vh;

@@ -15,7 +15,8 @@ import RangeInput from '@/components/UI/rangeInput'
 import NotificationErrorComp from '@/components/UI/notificationErrorComp'
 import NotificationSuccessComp from '@/components/UI/notificationSuccessComp'
 import NotificationConfirmComp from '@/components/UI/notificationConfirmComp'
-import NotificationCapsLockComp from '@/components/UI/notificationCapsLockComp'
+import NotificationWarning from '@/components/UI/notificationWarning'
+import NotificationMiniSuccess from '@/components/UI/notificationMiniSuccess'
 import checkButton from '@/components/UI/checkButton'
 import radioButton from '@/components/UI/radioButton'
 import icons from './icons'
@@ -37,7 +38,8 @@ export default [
     NotificationErrorComp,
     NotificationSuccessComp,
     NotificationConfirmComp,
-    NotificationCapsLockComp,
+    NotificationWarning,
+    NotificationMiniSuccess,
     checkButton,
     radioButton,
     ...icons,

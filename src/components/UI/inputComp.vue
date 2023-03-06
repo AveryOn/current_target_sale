@@ -1,6 +1,11 @@
 <template>
 
-    <input class="input" :class="{'dark-input': darkMode}" @input="updateInput" :value="modelValue">
+    <input 
+    class="input" 
+    :class="{'dark-input': darkMode}" 
+    @input="updateInput" 
+    :value="modelValue"
+    >
 
 </template>
 <script>
@@ -18,16 +23,17 @@ export default {
     methods: {
         updateInput(event){
             this.$emit("update:modelValue", event.target.value)
-            // Если клавиша CapsLock включена то в сторе в модуле AuthModule меняется перменная isCapsLock на true
+
+            // Если клавиша CapsLock включена то в сторе в модуле AuthModule меняется перменная isWarning на true
             // Для того чтобы вывести предупреждение о включенном CapsLock
             if(this.isAuthField){
                 const input = document.querySelector(".input");
                 input.addEventListener("keyup", (event) => {
         
                     if (event.getModifierState("CapsLock")) {
-                        this.$store.commit('AuthModule/changeIsCapsLock_TRUE')
+                        this.$store.commit('AuthModule/changeIsWarning_TRUE')
                     } else {
-                        this.$store.commit('AuthModule/changeIsCapsLock_FALSE')
+                        this.$store.commit('AuthModule/changeIsWarning_FALSE')
                     }
 
                 });

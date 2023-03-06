@@ -24,7 +24,7 @@
             v-show="!$store.state.AuthModule.isRegistration" 
             class="auth-form"
             >
-                <notification-caps-lock class="caps-lock-auth-form" :show="isCapsLock"></notification-caps-lock>
+                <notification-warning class="caps-lock-auth-form" :show="isWarning">Включена клавиша CapsLock!</notification-warning>
                 
                 <h2 class="summary-auth-form">Login</h2>
                 <p class="p">Enter your email or username</p>
@@ -63,7 +63,7 @@
             @keyup.enter="this.$store.dispatch('AuthModule/registrationUser', {email: email, username: username, password: password})"
             class="auth-form__registration"
             >
-                <notification-caps-lock class="caps-lock-register-form" :show="isCapsLock"></notification-caps-lock>
+                <notification-warning class="caps-lock-register-form" :show="isWarning">Включена клавиша CapsLock!</notification-warning>
                 <h2 class="summary-auth-form">Registration</h2>
                 <p class="p">Enter your Email</p>
                 <input-comp
@@ -145,7 +145,7 @@ export default {
             isRegistration: state => state.isRegistration,
 
             // Поле отслеживающее нажатие CapsLock
-            isCapsLock: state => state.AuthModule.isCapsLock
+            isWarning: state => state.AuthModule.isWarning
         }),
     },
 

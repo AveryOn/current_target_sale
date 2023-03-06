@@ -15,8 +15,8 @@ export const AuthModule = {
         // Модель для отображения окна РЕГИСТРАЦИИ на странице 'Auth'
         isRegistration: false,
 
-        // Если клавиша CapsLock включена, то модель указывает формам авторизации об этом
-        isCapsLock: false,
+        // Поле показывающее предупреждение
+        isWarning: false,
 
         // Хост-Сервер
         localhost: 'http://127.0.0.1:8000/',
@@ -44,11 +44,11 @@ export const AuthModule = {
         errorFalse(state){
             state.error = {isError: false, data: null}
         },
-        changeIsCapsLock_TRUE(state){
-            state.isCapsLock = true
+        changeIsWarning_TRUE(state){
+            state.isWarning = true
         },
-        changeIsCapsLock_FALSE(state){
-            state.isCapsLock = false
+        changeIsWarning_FALSE(state){
+            state.isWarning = false
         }
     },
 

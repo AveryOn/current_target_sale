@@ -7,17 +7,21 @@
 
     <div class="change-data-item">
         
+        <!-- Классическое обьявление элемента данных -->
         <div 
         class="data-block__item"
         :style="(isChangeMode)? {border: '1px solid rgb(186, 35, 35)'} : {border: ''}"
         >
 
+            <!-- Наименование эл. ред. -->
             <p 
             class="data-block__item--title"
             :style="(darkMode)? {color: 'rgb(255, 205, 138)'} : {color: ''}"
             >
                 {{ titleItem }}
             </p>
+
+            <!-- Значение эл. ред. -->
             <p 
             class="data-block__item--value"
             :style="(valueItem === this.accountWords.noneData)? {color: 'rgb(254, 137, 90)'} : {color: ''}"
@@ -26,14 +30,23 @@
                 {{ valueItem }}
             </p>
 
+            <!-- hit-input - это подсказка при редактировании данных, Указывает наглядно какие данные сейчас актуальны
+                Чтобы пользователь что он изменяет
+            -->
             <!-- Если изменяемые данные являются обычной строкой, то для редактирования данных отрисовывается обычный input -->
-            <input-comp 
-            class="data-block__item--input"
-            v-model="changeData"
-            v-show="isChangeMode && typeItem === typeItemChangeData.string"
+            <div 
+            class="hit-input" v-show="isChangeMode && typeItem === typeItemChangeData.string"
+            :style="(valueItem !== accountWords.noneData)? {paddingTop: '15px'} : {paddingTop: '0px'}"
             >
-            </input-comp>
+                <p>{{ (valueItem !== accountWords.noneData)? valueItem : undefined }}</p>
+                <input-comp 
+                class="data-block__item--input"
+                v-model="inputData"
+                >
+                </input-comp>
+            </div>
 
+            <!-- Радио кнопки, используются если тип элемента редактирования - radio (this.$store.state.typeItemChangeData.radio) -->
             <div 
             class="data-block__item--radio" 
             v-show="isChangeMode && typeItem === typeItemChangeData.radio"
@@ -44,7 +57,7 @@
                 class="change-item--radio-button"
                 :name="'sex'"
                 :value="'Муж'"
-                :radioData="radioButtonData"
+                :radioData="(valueItem !== accountWords.noneData || valueItem !== null)? valueItem : radioButtonData"
                 v-model="radioButtonData"
                 >
                 </radio-button>
@@ -54,7 +67,7 @@
                 class="change-item--radio-button"
                 :name="'sex'"
                 :value="'Жен'"
-                :radioData="radioButtonData"
+                :radioData="(valueItem !== accountWords.noneData || valueItem !== null)? valueItem : radioButtonData"
                 v-model="radioButtonData"
                 >
 
@@ -65,13 +78,17 @@
                 class="change-item--radio-button"
                 :name="'sex'"
                 :value="'Другой'"
-                :radioData="radioButtonData"
+                :radioData="(valueItem !== accountWords.noneData || valueItem !== null)? valueItem : radioButtonData"
                 v-model="radioButtonData"
                 >
 
                 </radio-button>
 
             </div>
+
+            <!--  -->
+            <slot name="warning"></slot>
+            <slot name="success"></slot>
 
         </div>
 
@@ -86,31 +103,47 @@
     
             </div>
         </div>
-
+        
         <!-- КНОПКИ ДЕЙСТВИЙ ПРИ АКТИВНОМ РЕЖИМЕ РЕДАКТИРОВАНИЯ ДАННЫХ -->
         <div 
         v-show="isChangeMode" 
-        class="change-data-item__btns">
+        class="change-data-item__btns-active">
 
-            <!-- КНОПКА ПОДТВЕРЖДЕНИЯ РЕДАКТИРОВАНИЯ -->
-            <div 
-            class="change-data-item__change-active-mode-btn"
-            title="Подтвердить"
-            @click="activateChangeMode"
-            >
-                <i-ok></i-ok>
+        
+        <!-- КНОПКА СБРОСА ЗНАЧЕНИЯ РЕДАКТИРОВАНИЯ -->
+        <div 
+        class="change-data-item__change-active-mode-btn--reset"
+        title="Сбросить"
+        v-show="this.typeItem === this.typeItemChangeData.string"
+        @click="resetChangeItem"
+        >
+            <i-close></i-close>
 
+        </div>
+
+        <!-- КНОПКИ КОТОРЫЕ НАХОДЯТСЯ СПРАВА ОТ КНОПКИ СБРОСА ИЗМЕНЕНИЙ -->
+        <div class="change-data-item__btns-active-right">
+                <!-- КНОПКА ПОДТВЕРЖДЕНИЯ РЕДАКТИРОВАНИЯ -->
+                <div 
+                class="change-data-item__change-active-mode-btn"
+                title="Подтвердить"
+                @click="confirmChangeData"
+                >
+                    <i-ok></i-ok>
+    
+                </div>
+    
+                <!-- КНОПКА ОТМЕНЫ РЕДАКТИРОВАНИЯ -->
+                <div 
+                class="change-data-item__change-active-mode-btn"
+                title="Отмена"
+                @click="deactivateChangeMode"
+                >
+                    <i-close></i-close>
+    
+                </div>
             </div>
-
-            <!-- КНОПКА ОТМЕНЫ РЕДАКТИРОВАНИЯ -->
-            <div 
-            class="change-data-item__change-active-mode-btn"
-            title="Отмена"
-            @click="deactivateChangeMode"
-            >
-                <i-close></i-close>
-
-            </div>
+            
 
         </div>
 
@@ -133,12 +166,18 @@ export default {
             required: true,
         },
         valueItem: {
-            type: [String, Number],
+            type: [String, Number, Boolean],
             required: false,
         },
         // Тип элемента, может быть строкой, чекбоксом и т.п
         typeItem: {
             type: [String],
+            required: true,
+        },
+        // Имя используется как ключ для создания обьекта на пару ключ-значение где ключ это название ключа элемента данных который приходит с 
+        // сервера, а значение это измененные данные inputData или radioButtonData
+        nameItem: {
+            type: String,
             required: true,
         }
     },
@@ -146,9 +185,8 @@ export default {
     data: () => ({
 
         isChangeMode: false,
-        changeData: '',
-
-        radioButtonData: 'Муж',
+        inputData: '',
+        radioButtonData: '',
 
     }),
 
@@ -163,7 +201,56 @@ export default {
         // Метод ДЕАКТИВИРУЕТ режим редактирования данных
         deactivateChangeMode(){
             this.isChangeMode = false
+            if(this.typeItem === this.typeItemChangeData.radio) this.radioButtonData = ''
+            if(this.typeItem === this.typeItemChangeData.string) this.inputData = ''
+        },
+
+        // Метод подтверждает редактирование данных элемента
+        // В зависимости от типа изменяемых данных (typeItem) будет эмитить только одно событие которое будет отправлять поле изм.данных 
+        // Возваращает обьект в котором указывает ключ name и значение - поле с изменениями 
+        confirmChangeData(){
+
+            // если тип данных radio
+            if (this.typeItem === this.typeItemChangeData.radio){
+
+                if(this.valueItem === this.accountWords.noneData && this.radioButtonData !== ''){
+                    this.isChangeMode = false
+                    this.$emit('changeData', {name: this.nameItem, value: this.radioButtonData, success: true})
+                    this.radioButtonData = ''
+                }else{
+                    this.$emit('changeData', {name: this.nameItem, value: false, success: false})
+                }
+            }
+
+            // если тип данных строка
+            if (this.typeItem === this.typeItemChangeData.string){
+
+                if(this.valueItem === this.accountWords.noneData && this.inputData !== ''){
+                    console.log('IF');
+                    this.isChangeMode = false
+                    this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
+                    this.inputData = ''
+                }
+                else if(this.inputData !== ''){
+                    console.log('ELSE IF');
+                    this.isChangeMode = false
+                    this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
+                    this.inputData = ''
+
+                }else{
+                    console.log('ELSE');
+                    this.$emit('changeData', {name: this.nameItem, value: false, success: false})
+                }
+            }
+
+        },
+
+        resetChangeItem(){
+            if(this.typeItem === this.typeItemChangeData.string){
+                this.inputData = ''
+            }
         }
+        
     },
 
     computed: {
@@ -179,13 +266,18 @@ export default {
 
             // Данные текущего пользователя/сотрудника
             userData: state => state.UserModule.userData,
+
+            // Поле показывающее предупреждение
+            isWarning: state => state.AuthModule.isWarning,
         }),
-    }
+    },
+
 }
 </script>
 
 
 <style lang="scss" scoped>
+
 .change-data-item{
     display: flex;
     justify-content: space-between;
@@ -210,6 +302,24 @@ export default {
         &:hover{
             cursor: default;
         }
+    }
+    .change-data-item__btns-active{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+        flex-grow: 1;
+        width: 5%;
+        margin: 0 0 0 10px;
+        // border: $border;
+        // border-radius: $radius;
+        &:hover{
+            cursor: default;
+        }
+    }
+    .change-data-item__btns-active-right{
+        display: flex;
+        flex-direction: column;
     }
     .change-data-item__change-btn{
         display: flex;
@@ -243,10 +353,29 @@ export default {
             cursor: pointer;
         }
     }
+    .change-data-item__change-active-mode-btn--reset{
+        position: relative;
+        right: -3px;
+        bottom: -1px;
+        display: flex;
+        height: max-content;
+        justify-content: center;
+        align-self: center;
+        width: max-content;
+        padding: 7px;
+        border: 1px solid rgb(253, 148, 11);
+        border-radius: 50%;
+        margin: 2px;
+        &:hover{
+            border: 3px solid rgb(253, 148, 11);
+            cursor: pointer;
+        }
+    }
 
 }
 
 .data-block__item{
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -270,7 +399,18 @@ export default {
         color: $or-wh-txt;
         font-weight: bolder;
         margin: 10px 20px;
-    } 
+    }
+    .hit-input{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: max-content;
+        & p{
+            position: absolute;
+            top: 0;
+            right: 15px;
+        }
+    }
     .data-block__item--input{
         padding: 6px;
     }
