@@ -102,6 +102,35 @@ export const UserModule = {
             }
         },
 
+        // ОБНОВЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ
+        async updateUserData({state, commit}, {changeUserData}){
+            if(state.userData){
+                let data = {status: null, detail: null}
+                try{
+
+                    store.commit('showLoading')
+
+                    await axios.put(store.state.AuthModule.localhost + `user/${state.userData.id}/user-update/`, {
+                        ...changeUserData,
+                        edit_time: JSON.stringify(Date.now()),
+                    }).then(response => {
+                        console.log(response)
+                        // data = {status: true, detail: 'successful'}
+                    })
+                    // return data
+                }
+                catch (e){
+                    // if(e?.response){
+                    //     data = {status: false, detail: e.response.data.detail}
+                    //     return data
+                    // }
+                    console.log(e);
+                }
+                finally{
+                    store.commit('hideLoading')
+                }
+            }
+        }
     },
 
     namespaced: true,

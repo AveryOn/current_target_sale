@@ -109,38 +109,38 @@
         <div 
         v-show="isChangeMode" class="change-data-item__btns-active">
 
-        <!-- КНОПКА ПОДТВЕРЖДЕНИЯ РЕДАКТИРОВАНИЯ -->
-        <div 
-        class="change-data-item__change-active-mode-btn--success"
-        title="Подтвердить"
-        @click="confirmChangeData"
-        >
-            <i-ok></i-ok>
+            <!-- КНОПКА ПОДТВЕРЖДЕНИЯ РЕДАКТИРОВАНИЯ -->
+            <div 
+            class="change-data-item__change-active-mode-btn--success"
+            title="Подтвердить"
+            @click="confirmChangeData"
+            >
+                <i-ok></i-ok>
 
-        </div>
-        <!-- КНОПКИ КОТОРЫЕ НАХОДЯТСЯ СПРАВА ОТ КНОПКИ СБРОСА ИЗМЕНЕНИЙ -->
-        <div class="change-data-item__btns-active-right">
-                <!-- КНОПКА СБРОСА ЗНАЧЕНИЯ РЕДАКТИРОВАНИЯ -->
-                <div 
-                class="change-data-item__change-active-mode-btn"
-                title="Сбросить"
-                v-show="this.typeItem === this.typeItemChangeData.string"
-                @click="resetChangeItem"
-                >
-                    <i-reset></i-reset>
+            </div>
+            <!-- КНОПКИ КОТОРЫЕ НАХОДЯТСЯ СПРАВА ОТ КНОПКИ СБРОСА ИЗМЕНЕНИЙ -->
+            <div class="change-data-item__btns-active-right">
+                    <!-- КНОПКА СБРОСА ЗНАЧЕНИЯ РЕДАКТИРОВАНИЯ -->
+                    <div 
+                    class="change-data-item__change-active-mode-btn"
+                    title="Сбросить"
+                    v-show="this.typeItem === this.typeItemChangeData.string"
+                    @click="resetChangeItem"
+                    >
+                        <i-reset></i-reset>
 
-                </div>
-    
-                <!-- КНОПКА ОТМЕНЫ РЕДАКТИРОВАНИЯ -->
-                <div 
-                class="change-data-item__change-active-mode-btn"
-                title="Отмена"
-                @click="deactivateChangeMode"
-                >
-                    <i-close></i-close>
-    
-                </div>
-        </div>
+                    </div>
+        
+                    <!-- КНОПКА ОТМЕНЫ РЕДАКТИРОВАНИЯ -->
+                    <div 
+                    class="change-data-item__change-active-mode-btn"
+                    title="Отмена"
+                    @click="deactivateChangeMode"
+                    >
+                        <i-close></i-close>
+        
+                    </div>
+            </div>
 
             
 
@@ -228,7 +228,9 @@ export default {
                 if(this.inputData !== '' && this.nameItem === 'email'){
                     this.$store.dispatch('UserModule/checkEmailUser', {email: this.inputData}).then(data => {
                         if(data.status){
+                            this.isChangeMode = false
                             this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
+                            this.inputData = ''
                         }else{
                             this.$emit('changeData', {name: this.nameItem, value: false, success: false, alreadyHas: true})
                         }
@@ -240,7 +242,9 @@ export default {
                 else if(this.inputData !== '' && this.nameItem === 'username'){
                     this.$store.dispatch('UserModule/checkUsernameUser', {username: this.inputData}).then(data => {
                         if(data.status){
+                            this.isChangeMode = false
                             this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
+                            this.inputData = ''
                         }else{
                             this.$emit('changeData', {name: this.nameItem, value: false, success: false, alreadyHas: true})
                         }
@@ -377,7 +381,7 @@ export default {
     .change-data-item__change-active-mode-btn--success{
         position: relative;
         right: -3px;
-        bottom: -1px;
+        bottom: 0;
         display: flex;
         height: max-content;
         justify-content: center;

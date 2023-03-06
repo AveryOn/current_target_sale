@@ -194,14 +194,14 @@
                     </template>
                 </changeDataItem>
 
-                <!-- КНОПКИ -->
+                <!-- КНОПКИ КОМПОНЕНТА РЕДАКТИРОВАНИЯ -->
                 <div class="account__menu-change-client-data__btns">
-                    <button-comp>Сохранить изменения</button-comp>
+                    <button-comp @click="commitChangeData">Сохранить изменения</button-comp>
                     <button-comp @click="clearChangeUserData">Сбросить изменения</button-comp>
                 </div>
 
             </div>
-        </modal-comp>''
+        </modal-comp>
 
         <!-- ШАПКА СТРАНИЦЫ АККАУНТ -->
         <header class="account-main_header">
@@ -351,7 +351,7 @@ export default {
             console.log(this.changeUserData);
         },
 
-        // Метод заполняет поля данных изменения которые приходят с каждого элемента редактирования
+        // Метод ЗАПОЛНЯЕТ поля данных изменения которые приходят с каждого элемента редактирования
         recordChangeData(data){
             if(data.success === false && data.alreadyHas){
                 this.notifications.alreadyHas[data.name] = true
@@ -374,6 +374,11 @@ export default {
                 console.log(data);
             }
             return false
+        },
+
+        // Метод СОХРАНЯЕТ на сервере изменные данные клиента
+        commitChangeData(){
+            this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.changeUserData})
         },
 
         // Метод сбрасывает все измененения данных
@@ -441,9 +446,7 @@ export default {
 
         // Вычисление АВАТАРКИ клиента относительно полученных данных 
         imageComuted(){
-            if(this.userData.image){
-                return this.userData.image
-            }
+            if(this.userData.image) return this.userData.image
             else return false
         },
 
@@ -508,8 +511,8 @@ export default {
 }
 .change-sucess{
     position: absolute;
-    right: 20px;
-    left: 20px;
+    right: 40px;
+    left: 40px;
 }
 .change-error{
     position: absolute;
