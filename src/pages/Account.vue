@@ -5,13 +5,14 @@
     <div class="account-main" :class="{'dark': darkMode}">
 
         <!-- МОДАЛЬНОЕ ОКНО ДЛЯ РЕДАКТИРОВАНИЯ ДАННЫХ АККАУНТА -->
-        <modal-comp @click="log" :show="true">
+        <modal-comp  @click="editDataMode = false" :show="editDataMode">
             <div 
             class="account__menu-change-client-data" 
             :class="{'dark': darkMode}" 
             :style="(!darkMode)? {backgroundColor: 'white'} : {backgroundColor: ''}"
             >
                 <h2 class="menu-change-client-data__title">Редактирование профиля</h2>
+                <i-close @click="editDataMode = false" class="menu-change-client-data__close-btn"></i-close>
 
                 <!-- Имя -->
                 <changeDataItem 
@@ -42,6 +43,7 @@
                             Имя успешно изменено!
                         </notification-mini-success>
                     </template>
+
                 </changeDataItem>
 
 
@@ -255,7 +257,7 @@
 
                 <!-- КНОПКИ ВЗАИМОДЕЙСТВИЯ С ДАННЫМИ КЛИЕНТА -->
                 <div class="client-info__btns-block">
-                    <button-comp >Редактровать</button-comp>
+                    <button-comp @click="editDataMode = true">Редактровать</button-comp>
                     <button-comp>Сохранить изменения</button-comp>
                 </div>
             </div>
@@ -303,6 +305,9 @@ export default {
     },
     
     data: () => ({
+
+        // Открытие окна редактирования профиля
+        editDataMode: false,
 
         // Поле в которое записываются данные клиента пришедшие с сервера
         userData: {},
@@ -540,6 +545,14 @@ export default {
         .menu-change-client-data__title{
             align-self: center;
             margin: 10px 0 30px 0;
+        }
+        .menu-change-client-data__close-btn{
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            left: 93%;
+            top: 20px;
+            cursor: pointer;
         }
 
         .account__menu-change-client-data__btns{

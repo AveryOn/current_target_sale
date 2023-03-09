@@ -137,7 +137,7 @@
                     title="Отмена"
                     @click="deactivateChangeMode"
                     >
-                        <i-close></i-close>
+                        <i-close class="change-active-mode--close"></i-close>
         
                     </div>
             </div>
@@ -227,7 +227,7 @@ export default {
                 // сущесвтует ли данный имэил если да то вернется ошибка о том что такой имэил уже существут 
                 if(this.inputData !== '' && this.nameItem === 'email'){
                     this.$store.dispatch('UserModule/checkEmailUser', {email: this.inputData}).then(data => {
-                        if(data.status){
+                        if(data?.status){
                             this.isChangeMode = false
                             this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
                             this.inputData = ''
@@ -241,7 +241,7 @@ export default {
                 // сущесвтует ли данный никнейм если да то вернется ошибка о том что такой никнейм уже существут 
                 else if(this.inputData !== '' && this.nameItem === 'username'){
                     this.$store.dispatch('UserModule/checkUsernameUser', {username: this.inputData}).then(data => {
-                        if(data.status){
+                        if(data?.status){
                             this.isChangeMode = false
                             this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
                             this.inputData = ''
@@ -252,19 +252,36 @@ export default {
                 }
 
                 else if(this.valueItem === this.accountWords.noneData && this.inputData !== ''){
-                    this.isChangeMode = false
-                    this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
-                    this.inputData = ''
                     console.log('IF');
+                    if (this.inputData.toLowerCase() !== this.valueItem.toLowerCase()){
+                        this.isChangeMode = false
+                        this.inputData = this.inputData[0].toUpperCase() + this.inputData.slice(1)
+                        this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
+                        this.inputData = ''
+                    }else{
+                        this.isChangeMode = false
+                        this.$emit('changeData', {name: this.nameItem, value: false, success: false})
+                        this.inputData = ''
+                    }
  
                 }
                 else if(this.inputData !== ''){
                     console.log('ELSE IF');
-                    this.isChangeMode = false
-                    this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
-                    this.inputData = ''
+                    if (this.inputData.toLowerCase() !== this.valueItem.toLowerCase()){
+                        this.isChangeMode = false
+                        this.inputData = this.inputData[0].toUpperCase() + this.inputData.slice(1)
+                        this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
+                        this.inputData = ''
+                    }else{
+                        this.isChangeMode = false
+                        this.$emit('changeData', {name: this.nameItem, value: false, success: false})
+                        this.inputData = ''
+                    }
 
                 }else{
+                    if (this.inputData === this.valueItem){
+                        this.$emit('changeData', {name: this.nameItem, value: false, success: false})
+                    }
                     this.$emit('changeData', {name: this.nameItem, value: false, success: false})
                 }
             }
@@ -377,6 +394,11 @@ export default {
             border: 2px solid rgb(255, 123, 0);
             cursor: pointer;
         }
+    }
+    .change-active-mode--close{
+        position: relative;
+        top: 0;
+        left: 0;
     }
     .change-data-item__change-active-mode-btn--success{
         position: relative;

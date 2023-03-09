@@ -15,11 +15,8 @@ export default {
 <style lang="scss" scoped>
 @include icon-size;
 .close{
-    position: relative;
     width: 13px;
     height: 13px;
-    top: 0px;
-    left: 0;
     fill: orange;
     &:hover{
         fill: rgb(255, 123, 0);

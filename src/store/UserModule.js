@@ -52,22 +52,24 @@ export const UserModule = {
             }
         },
 
-        // ПРОВЕРКА СУЩЕСТВУЮЩИЙ EMAIL ПОЛЬЗОВАТЕЛЯ
+        // ПРОВЕРКА EMAIL ПОЛЬЗОВАТЕЛЯ
         async checkEmailUser({state}, {email}){
             if(state.userData){
                 let data = {status: null, detail: null}
                 try{
                     store.commit('showLoading')
-                    await axios.post(store.state.AuthModule.localhost + `user/${state.userData.id}/check-email/`, {
+                    await axios.post(store.state.AuthModule.localhost + `user/check-email/`, {
                         email: email
                     }).then(response => {
                         data = {status: true, detail: 'successful'}
+                        console.log(response);
                     })
                     return data
                 }
                 catch (e){
                     if(e?.response?.data){
                         data = {status: false, detail: e.response.data.detail}
+                        console.log(e);
                         return data
                     }
                 }
@@ -77,13 +79,13 @@ export const UserModule = {
             }
         },
 
-        // ПРОВЕРКА СУЩЕСТВУЮЩИЙ EMAIL ПОЛЬЗОВАТЕЛЯ
+        // ПРОВЕРКА USERNAME ПОЛЬЗОВАТЕЛЯ
         async checkUsernameUser({state}, {username}){
             if(state.userData){
                 let data = {status: null, detail: null}
                 try{
                     store.commit('showLoading')
-                    await axios.post(store.state.AuthModule.localhost + `user/${state.userData.id}/check-username/`, {
+                    await axios.post(store.state.AuthModule.localhost + `user/check-username/`, {
                         username: username
                     }).then(response => {
                         data = {status: true, detail: 'successful'}
