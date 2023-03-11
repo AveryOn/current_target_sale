@@ -5,7 +5,7 @@
 -->
 <template>
 
-    <div class="change-data-item">
+    <div class="change-data-item" @click.self="log">
 
         <!-- Классическое обьявление элемента данных -->
         <div 
@@ -51,7 +51,6 @@
             class="data-block__item--radio" 
             v-show="isChangeMode && typeItem === typeItemChangeData.radio"
             >   
-
                 <!-- МУЖСКОЙ ПОЛ -->
                 <radio-button
                 class="change-item--radio-button"
@@ -70,7 +69,6 @@
                 :radioData="(valueItem !== accountWords.noneData || valueItem !== null)? valueItem : radioButtonData"
                 v-model="radioButtonData"
                 >
-
                 </radio-button>
 
                 <!-- Другой пол -->
@@ -81,12 +79,11 @@
                 :radioData="(valueItem !== accountWords.noneData || valueItem !== null)? valueItem : radioButtonData"
                 v-model="radioButtonData"
                 >
-
                 </radio-button>
 
             </div>
 
-            <!--  -->
+            <!-- Сюда встраиваются уведомления о действиях -->
             <slot name="warning"></slot>
             <slot name="success"></slot>
             <slot name="error"></slot>
@@ -109,6 +106,7 @@
             <div 
             class="change-data-item__change-btn"
             title="Очистить"
+            v-show="nameItem !== 'username' && nameItem !== 'email'"
             @click="removeDataItem"
             >
                 <i-delete></i-delete>
@@ -169,7 +167,7 @@ export default {
     },
     props: {
         titleItem: {
-            type: [String],
+            type: String,
             required: true,
         },
         valueItem: {
@@ -178,7 +176,7 @@ export default {
         },
         // Тип элемента, может быть строкой, чекбоксом и т.п
         typeItem: {
-            type: [String],
+            type: String,
             required: true,
         },
         // Имя используется как ключ для создания обьекта на пару ключ-значение где ключ это название ключа элемента данных который приходит с 
@@ -186,6 +184,12 @@ export default {
         nameItem: {
             type: String,
             required: true,
+        },
+        // Сюда приходит базовое значение элемента данных до редактирования и удаления, для того чтобы сверять
+        // его с измененными данными и избегать повторения данных и бесполезной отправки на сервер
+        basicValueItem: {
+            type: String,
+            required: false,
         }
     },
 
@@ -198,6 +202,9 @@ export default {
     }),
 
     methods: {
+        log(){
+            console.log(this.radioButtonData);
+        },
 
         // Метод АКТИВИРУЕТ режим редактирования данных
         activateChangeMode(){
@@ -223,7 +230,17 @@ export default {
                     this.isChangeMode = false
                     this.$emit('changeData', {name: this.nameItem, value: this.radioButtonData, success: true})
                     this.radioButtonData = ''
+                }
+                else if(
+                    this.valueItem !== this.accountWords.noneData && 
+                    this.radioButtonData !== '' &&
+                    this.radioButtonData !== this.basicValueItem 
+                    ){
+                    this.isChangeMode = false
+                    this.$emit('changeData', {name: this.nameItem, value: this.radioButtonData, success: true})
+                    this.radioButtonData = ''
                 }else{
+                    this.radioButtonData = this.basicValueItem 
                     this.$emit('changeData', {name: this.nameItem, value: false, success: false})
                 }
             }
@@ -295,9 +312,9 @@ export default {
                     this.$emit('changeData', {name: this.nameItem, value: false, success: false})
                 }
             }
-            // console.log(this.nameItem);
         },
 
+        // Метод чистит поле ввода изменений
         resetChangeItem(){
             if(this.typeItem === this.typeItemChangeData.string){
                 this.inputData = ''

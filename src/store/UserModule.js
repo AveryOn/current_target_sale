@@ -57,8 +57,8 @@ export const UserModule = {
             if(state.userData){
                 let data = {status: null, detail: null}
                 try{
-                    store.commit('showLoading')
-                    await axios.post(store.state.AuthModule.localhost + `user/check-email/`, {
+                    // store.commit('showLoading')
+                    await axios.post(store.state.AuthModule.localhost + `user/${state.userData.id}/check-email/`, {
                         email: email
                     }).then(response => {
                         data = {status: true, detail: 'successful'}
@@ -74,7 +74,7 @@ export const UserModule = {
                     }
                 }
                 finally{
-                    store.commit('hideLoading')
+                    // store.commit('hideLoading')
                 }
             }
         },
@@ -84,8 +84,8 @@ export const UserModule = {
             if(state.userData){
                 let data = {status: null, detail: null}
                 try{
-                    store.commit('showLoading')
-                    await axios.post(store.state.AuthModule.localhost + `user/check-username/`, {
+                    // store.commit('showLoading')
+                    await axios.post(store.state.AuthModule.localhost + `user/${state.userData.id}/check-username/`, {
                         username: username
                     }).then(response => {
                         data = {status: true, detail: 'successful'}
@@ -99,7 +99,7 @@ export const UserModule = {
                     }
                 }
                 finally{
-                    store.commit('hideLoading')
+                    // store.commit('hideLoading')
                 }
             }
         },

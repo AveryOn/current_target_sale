@@ -7,7 +7,7 @@
         :disabled="disabled"
         :name="name" 
         :value="value"
-        @input="e => $emit('update:modelValue', e.target.value)" 
+        @input="log" 
         :checked="(radioData === value)? true : false"
         >
         <span class="radio-button"></span>
@@ -48,6 +48,13 @@ export default {
     },
 
   },
+  methods: {
+    log(e){
+      this.$emit('update:modelValue', e.target.value)
+      console.log(e.target.value);
+    },
+    // e => $emit('update:modelValue', e.target.value)
+  }
   
 }
 </script>

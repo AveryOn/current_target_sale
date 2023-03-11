@@ -12,12 +12,19 @@
             :class="{'dark': darkMode}" 
             :style="(!darkMode)? {backgroundColor: 'white'} : {backgroundColor: ''}"
             >
+                <notification-warning 
+                class="menu-change__nothing-change-warn" 
+                @click="isNothingChangeWarn = false"
+                :show="isNothingChangeWarn"
+                >
+                    Вы не внесли никаких изменений
+                </notification-warning>
+
                 <!-- ПОДТВЕРЖДЕНИЕ ОЧИЩЕНИЯ ЭЛЕМЕНТА ДАННЫХ -->
                 <div 
                 class="menu-change-client-data__confirm-block"
                 v-show="confirmRemoveDataItem"
                 >
-                    <!-- <div class="menu-change-client-data__confirm-message"></div> -->
                     <notification-confirm
                     class="menu-change-client-data__confirm-message"
                     :show="confirmRemoveDataItem"
@@ -101,8 +108,10 @@
                   <!-- Пол -->
                 <changeDataItem 
                 @changeData="recordChangeData"
+                @reqRemoveDataItem="reqRemoveDataItem"
                 :titleItem="'Пол'" 
-                :valueItem="(changeUserData.sex === null)? sexComuted : changeUserData.sex" 
+                :valueItem="(changeUserData.sex === null)? sexComuted : changeUserData.sex"
+                :basicValueItem="sexComuted"
                 :typeItem="typeItemChangeData.radio"
                 :nameItem="'sex'"
                 >
@@ -392,6 +401,9 @@ export default {
         confirmRemoveDataItem: false,
         removingItemData: {name: null, value: null},
 
+        // Уведомление о том что изменений не было, сохранение данных не будет произведено
+        isNothingChangeWarn: false,
+
         // Поле в которое записываются данные клиента пришедшие с сервера
         userData: {},
 
@@ -409,6 +421,7 @@ export default {
         removeUserData: {
             name: null,
             lastname: null,
+            sex: null,
         },
 
         // Всплытие уведомлений
@@ -467,7 +480,7 @@ export default {
 
     methods: {
         log(){
-            console.log(this.changeUserData);
+            console.log(this.removeUserData);
         },
 
         // Метод разлогинавет пользователя
@@ -505,23 +518,41 @@ export default {
 
         // Метод СОХРАНЯЕТ на сервере изменные данные клиента
         commitChangeData(){
-            try{
-                if(this.removeUserData.name !== null || this.removeUserData.lastname !== null){
-                    console.log('Сервер -> удаление данных');
-                }
-                if(
-                    this.changeUserData.name !== null ||
-                    this.changeUserData.lastname !== null ||
-                    this.changeUserData.sex !== null || 
-                    this.changeUserData.username !== null ||
-                    this.changeUserData.email !== null
-
-                ){
-                    // this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.changeUserData})
-                    // window.location.reload()
-                    console.log('Сервер -> обновление данных');
-                }
-            } catch (e) {}            
+            if(
+                this.changeUserData.name !== null ||
+                this.changeUserData.lastname !== null ||
+                this.changeUserData.sex !== null || 
+                this.changeUserData.username !== null ||
+                this.changeUserData.email !== null && 
+                this.removeUserData.name !== null ||
+                this.removeUserData.lastname !== null ||
+                this.removeUserData.sex !== null
+            ){
+                console.log('Есть изменения!');
+                try{
+                    if(this.removeUserData.name !== null || this.removeUserData.lastname !== null){
+                        console.log('Сервер -> удаление данных');
+                    }
+                    if(
+                        this.changeUserData.name !== null ||
+                        this.changeUserData.lastname !== null ||
+                        this.changeUserData.sex !== null || 
+                        this.changeUserData.username !== null ||
+                        this.changeUserData.email !== null
+    
+                    ){
+                        // this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.changeUserData})
+                        // window.location.reload()
+                        console.log('Сервер -> обновление данных');
+                    }
+                } catch (e) {}            
+            }else{
+                console.log('Изменений НЕТ!');
+                this.isNothingChangeWarn = true
+                setTimeout(() => {
+                    this.isNothingChangeWarn = false
+                }, 2000)
+            }
         },
 
         // Метод сбрасывает все измененения данных
@@ -535,6 +566,8 @@ export default {
             // Очищение полей удаления
             this.removeUserData.name = null
             this.removeUserData.lastname = null
+            this.removeUserData.sex = null
+            this.userData = {...this.userDataStore}
         },
 
         // Метод добавляет загруженную картинку пользователем в обьект данных для редактирования 
@@ -673,6 +706,7 @@ export default {
         removeItemData(){
             try{
                 this.removeUserData[this.removingItemData.name] = this.removingItemData.value
+                this.userData[this.removingItemData.name] = null
                 console.log(this.removeUserData);
             }catch(e){
 
@@ -726,7 +760,7 @@ export default {
         // Вычисление ПОЛА клиента относительно полученных данных 
         sexComuted(){
             let sex = this.userData.sex
-            if(sex) return sex
+            if(sex && sex !== null) return sex
             else return this.accountWords.noneData
         },
 
@@ -876,6 +910,12 @@ export default {
         padding: 20px 10px 20px 10px;
         border: $border;
         border-radius: $radius;
+        .menu-change__nothing-change-warn{
+            position: fixed;
+            top: 80px;
+            right: 10px;
+            cursor: default;
+        }
         .menu-change-client-data__title{
             align-self: center;
             margin: 10px 0 30px 0;
