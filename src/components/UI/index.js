@@ -10,6 +10,7 @@ import ProductItem from '@/components/UI/ProductItem'
 import TagComp from '@/components/UI/TagComp'
 import ButtonUp from '@/components/UI/buttonUp'
 import ButtonCloseMini from '@/components/UI/buttonCloseMini'
+import ButtonIconComp from '@/components/UI/buttonIconComp'
 import CheckboxComp from '@/components/UI/checkboxComp'
 import RangeInput from '@/components/UI/rangeInput'
 import NotificationErrorComp from '@/components/UI/notificationErrorComp'
@@ -35,6 +36,7 @@ export default [
     TagComp,
     ButtonUp,
     ButtonCloseMini,
+    ButtonIconComp,
     CheckboxComp,
     RangeInput,
     NotificationErrorComp,

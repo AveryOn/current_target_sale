@@ -2,11 +2,11 @@
 <!-- АККАУНТ КЛИЕНТА (ПОЛЬЗОВАТЕЛЯ ИЛИ СОТРУДНИКА) -->
 <template>
     <!-- ГЛАВНЫЙ БЛОК -->
-    <div class="account-main" :class="{'dark': darkMode}">
+    <div class="account-main" :class="{'dark': darkMode}" @click="log">
 
 
         <!-- МОДАЛЬНОЕ ОКНО ДЛЯ РЕДАКТИРОВАНИЯ ДАННЫХ АККАУНТА -->
-        <modal-comp @click="log" :show="editDataMode">
+        <modal-comp @click="editDataMode = false" :show="editDataMode">
             <div 
             class="account__menu-change-client-data" 
             :class="{'dark': darkMode}" 
@@ -263,7 +263,7 @@
 
                 <div class="select-miniature__btns">
                     <button-comp class="select-miniature__btn" @click="commitImage">Сохранить</button-comp>
-                    <button-comp class="select-miniature__btn" @click="selectMiniature = false">Отмена</button-comp>
+                    <button-comp class="select-miniature__btn" @click="cancelSelectMiniature">Отмена</button-comp>
                 </div>
 
             </div>
@@ -283,7 +283,18 @@
                 <!-- БЛОК ВЗАИМОДЕЙСТВИЯ С АВАТАРКОЙ КЛИЕНТА -->
                 <div class="client-info__image-block">
 
+                    <!-- Миниатюра аватарки -->
                     <div class="crop">
+
+                        <!-- Блок загрузки аватарки -->
+                        <div 
+                        class="crop-loading" 
+                        v-show="isAvatarLoading"
+                        :class="{'dark': darkMode}"
+                        :style="(!darkMode)? {backgroundColor: 'white'} : {backgroundColor: ''}"
+                        >
+                            <p class="crop-loading__text">Загрузка...</p>
+                        </div>
                         <img 
                         v-show="userData?.image !== null"
                         id="avatar" 
@@ -299,21 +310,22 @@
 
                     <div class="client-info__image-btns">
 
-                        <input-file @uploadImage="uploadImage" id="inputFile">
+                        <input-file 
+                        :title="(!imageComuted && changeUserData.image === null)? 'Загрузить' : 'Изменить'" 
+                        @uploadImage="uploadImage" 
+                        id="inputFile"
+                        >
                             <i-upload v-if="!imageComuted && changeUserData.image === null"></i-upload>
-                            <i-edit v-if="imageComuted && changeUserData.image === null"></i-edit>
-                            <i-ok class="save-image-btn" v-if="changeUserData.image !== null"></i-ok>
+                            <i-edit v-else></i-edit>
                         </input-file>
 
-                        
-
-                        <button-comp 
+                        <button-icon-comp
+                        title="Удалить"
                         v-show="imageComuted" 
-                        class="image-btns__btn" 
                         @click="deleteImage"
                         >
-                            Delete x
-                        </button-comp>
+                            <i-delete ></i-delete>
+                        </button-icon-comp>
 
                     </div>
                 </div>
@@ -340,8 +352,11 @@
 
                 <!-- КНОПКИ ВЗАИМОДЕЙСТВИЯ С ДАННЫМИ КЛИЕНТА -->
                 <div class="client-info__btns-block">
-                    <button-comp @click="editDataMode = true">Редактровать профиль</button-comp>
-                    <button-comp @click="logout">Выйти <i-login v-show="false"></i-login></button-comp>
+                    <button-comp @click="editDataMode = true">
+                        Редактровать
+                        <i-edit class="btns-block__edit-profile"></i-edit>
+                    </button-comp>
+                    <button-comp @click="logout">Выйти <i-login></i-login></button-comp>
                 </div>
             </div>
 
@@ -392,10 +407,13 @@ export default {
     data: () => ({
 
         // Открытие окна редактирования профиля
-        editDataMode: true,
+        editDataMode: false,
 
         // Открытие окна выбра миниатюры для аватарки
         selectMiniature: false,
+
+        // Загрузка аватарки, показывает блок загрузки в окне аватарки когда она редактируется
+        isAvatarLoading: false,
 
         // Подтверждение очищения элемента данных
         confirmRemoveDataItem: false,
@@ -480,7 +498,7 @@ export default {
 
     methods: {
         log(){
-            console.log(this.removeUserData);
+            console.log(this.changeUserData);
         },
 
         // Метод разлогинавет пользователя
@@ -541,8 +559,10 @@ export default {
                         this.changeUserData.email !== null
     
                     ){
-                        // this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.changeUserData})
-                        // window.location.reload()
+                        this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.changeUserData}).then(() => {
+                            this.editDataMode = false
+                            window.location.reload()
+                        })
                         console.log('Сервер -> обновление данных');
                     }
                 } catch (e) {}            
@@ -676,20 +696,29 @@ export default {
                 left = Math.round(circleLeft / 2)
                 this.recordPosition(top, left)
             }
-            localStorage.setItem('positionAvatar', JSON.stringify(
-                {
-                    top: -this.resultPosition.top,
-                    left: -this.resultPosition.left,
-                }
-            ))
-            this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.changeUserData})
+            this.isAvatarLoading = true
+            this.selectMiniature = false
+            this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.changeUserData}).then(() => {
+                localStorage.setItem('positionAvatar', JSON.stringify(
+                    {
+                        top: -this.resultPosition.top,
+                        left: -this.resultPosition.left,
+                    }
+                ))
+                window.location.reload()
+            })
             console.log(this.resultPosition)
+        },
+
+        // Метод отменяет выбор миниатюры
+        cancelSelectMiniature(){
+            this.selectMiniature = false
+            this.changeUserData.image = null
         },
 
         deleteImage(){
             if(this.userData && this.userData.image !== null){
-                this.userData.image = null
-                this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.userData})
+                console.log('Аватарка удалена');
             }else{
                 console.log('!this.userData || this.userData.image === null)');
             }
@@ -829,11 +858,6 @@ export default {
         })
     },
     mounted(){
-		// const avatar = document.getElementById('avatar')
-        // if(avatar){
-        //     avatar.style.top = this.positionImage.top + 'px'
-        //     avatar.style.left = this.positionImage.left + 'px'
-        // }
 
         const image = document.getElementById('divImg')
         const imageHeight =  Math.round(image.getBoundingClientRect().height)
@@ -991,9 +1015,6 @@ export default {
                 // border-radius: $radius;
                 margin-left: 20px;
             }
-            .image-btns__btn{
-                padding: 30px 20px;
-            }
             .save-image-btn{
                 width: 35px;
                 height: 35px;
@@ -1015,6 +1036,11 @@ export default {
             // border: $border;
             // border-radius: $radius;
             margin-bottom: 10px;
+            .btns-block__edit-profile{
+                width: 21px;
+                height: 21px;
+                margin-left: 3px;
+            }
         }
     }
     .account-main_body__client-statistics{
@@ -1076,14 +1102,29 @@ export default {
 
 // Аватарка
 .crop{
+	position:relative; /* this is important too */
 	float:left;
 	margin:.5em 10px .5em 0;
 	overflow:hidden; /* this is important */
-	position:relative; /* this is important too */
-	border:1px solid #ccc;
+	border:$border;
 	width:200px;
 	height:200px;
     border-radius: 50%;
+        .crop-loading{
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            z-index: 10;
+        }
+        .crop-loading__text{
+            color: rgb(64, 131, 148);
+            font-size: 20px;
+        }
 	}
 .crop img{
 	position:absolute;
