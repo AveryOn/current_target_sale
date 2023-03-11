@@ -4,19 +4,37 @@
     <!-- ГЛАВНЫЙ БЛОК -->
     <div class="account-main" :class="{'dark': darkMode}">
 
+
         <!-- МОДАЛЬНОЕ ОКНО ДЛЯ РЕДАКТИРОВАНИЯ ДАННЫХ АККАУНТА -->
-        <modal-comp  @click="editDataMode = false" :show="editDataMode">
+        <modal-comp @click="log" :show="editDataMode">
             <div 
             class="account__menu-change-client-data" 
             :class="{'dark': darkMode}" 
             :style="(!darkMode)? {backgroundColor: 'white'} : {backgroundColor: ''}"
             >
+                <!-- ПОДТВЕРЖДЕНИЕ ОЧИЩЕНИЯ ЭЛЕМЕНТА ДАННЫХ -->
+                <div 
+                class="menu-change-client-data__confirm-block"
+                v-show="confirmRemoveDataItem"
+                >
+                    <!-- <div class="menu-change-client-data__confirm-message"></div> -->
+                    <notification-confirm
+                    class="menu-change-client-data__confirm-message"
+                    :show="confirmRemoveDataItem"
+                    @eventYes="removeItemData"
+                    @eventNo="cancelRemoveItemData"
+                    >
+                        Вы уверены, что хотите очистить это поле?
+                    </notification-confirm>
+                </div>
+
                 <h2 class="menu-change-client-data__title">Редактирование профиля</h2>
                 <i-close @click="editDataMode = false" class="menu-change-client-data__close-btn"></i-close>
 
                 <!-- Имя -->
                 <changeDataItem 
                 @changeData="recordChangeData" 
+                @reqRemoveDataItem="reqRemoveDataItem"
                 :titleItem="'Имя'" 
                 :valueItem="(changeUserData.name === null)? nameComuted : changeUserData.name" 
                 :typeItem="typeItemChangeData.string"
@@ -50,6 +68,7 @@
                 <!-- Фамилия -->
                 <changeDataItem 
                 @changeData="recordChangeData" 
+                @reqRemoveDataItem="reqRemoveDataItem"
                 :titleItem="'Фамилия'" 
                 :valueItem="(changeUserData.lastname === null)? lastnameComuted : changeUserData.lastname" 
                 :typeItem="typeItemChangeData.string"
@@ -81,7 +100,7 @@
 
                   <!-- Пол -->
                 <changeDataItem 
-                @changeData="recordChangeData" 
+                @changeData="recordChangeData"
                 :titleItem="'Пол'" 
                 :valueItem="(changeUserData.sex === null)? sexComuted : changeUserData.sex" 
                 :typeItem="typeItemChangeData.radio"
@@ -204,6 +223,42 @@
 
             </div>
         </modal-comp>
+        <!-- @click="editDataMode = false" -->
+
+        <!-- МОДАЛЬНОЕ ОКНО ДЛЯ ВЫБОРА МИНИАТЮРЫ АВАТАРКИ -->
+        <modal-comp @click="log" :show="selectMiniature">
+            <div 
+            class="select-miniature"
+            :class="{'dark': darkMode}"
+            :style="(!darkMode)? {backgroundColor: 'white'} : {backgroundColor: ''}"
+            >
+                <h1 class="select-miniature__title">Выберите миниатюру</h1> 
+                <div class="select-miniature__body">
+                    <div class="divImg" id="divImg">
+    
+                        <movedElement
+                        @updatePositionMove="updatePositionMove" 
+                        >
+                        
+                        </movedElement>
+    
+                        <img 
+                        v-show="changeUserData.image !== null && changeUserData.image.length" 
+                        id="img" 
+                        class="img" 
+                        :src="changeUserData.image" 
+                        alt="books_dark"
+                        >
+                    </div>
+                </div>
+
+                <div class="select-miniature__btns">
+                    <button-comp class="select-miniature__btn" @click="commitImage">Сохранить</button-comp>
+                    <button-comp class="select-miniature__btn" @click="selectMiniature = false">Отмена</button-comp>
+                </div>
+
+            </div>
+        </modal-comp>
 
         <!-- ШАПКА СТРАНИЦЫ АККАУНТ -->
         <header class="account-main_header">
@@ -218,17 +273,36 @@
 
                 <!-- БЛОК ВЗАИМОДЕЙСТВИЯ С АВАТАРКОЙ КЛИЕНТА -->
                 <div class="client-info__image-block">
-                    <div class="client-info__image"></div>
+
+                    <div class="crop">
+                        <img 
+                        v-show="userData?.image !== null"
+                        id="avatar" 
+                        :src="(userData?.image !== null)? userData?.image : ''" 
+                        alt="profileImage"
+                        :style="{
+                            top: resultPosition.top + 'px',
+                            left: resultPosition.left + 'px',
+                            width: '300px'
+                            }"
+                        >
+                    </div>
+
                     <div class="client-info__image-btns">
 
-                        <button-comp 
-                        class="image-btns__btn"
-                        :style="(!imageComuted) ? {marginTop: 'auto'} : {marginTop: ''}"
-                        >
-                            {{ (imageComuted)? 'Обновить' : 'Загрузить' }}
-                        </button-comp>
+                        <input-file @uploadImage="uploadImage" id="inputFile">
+                            <i-upload v-if="!imageComuted && changeUserData.image === null"></i-upload>
+                            <i-edit v-if="imageComuted && changeUserData.image === null"></i-edit>
+                            <i-ok class="save-image-btn" v-if="changeUserData.image !== null"></i-ok>
+                        </input-file>
 
-                        <button-comp v-show="imageComuted" class="image-btns__btn">
+                        
+
+                        <button-comp 
+                        v-show="imageComuted" 
+                        class="image-btns__btn" 
+                        @click="deleteImage"
+                        >
                             Delete x
                         </button-comp>
 
@@ -257,8 +331,8 @@
 
                 <!-- КНОПКИ ВЗАИМОДЕЙСТВИЯ С ДАННЫМИ КЛИЕНТА -->
                 <div class="client-info__btns-block">
-                    <button-comp @click="editDataMode = true">Редактровать</button-comp>
-                    <button-comp>Сохранить изменения</button-comp>
+                    <button-comp @click="editDataMode = true">Редактровать профиль</button-comp>
+                    <button-comp @click="logout">Выйти <i-login v-show="false"></i-login></button-comp>
                 </div>
             </div>
 
@@ -293,6 +367,7 @@
 <script>
 import changeDataItem from '@/components/AccountPage/changeDataItem.vue';
 import itemComp from '@/components/AccountPage/itemComp.vue';
+import movedElement from '@/components/AccountPage/movedElement.vue'
 import { mapState } from 'vuex';
 import moment from 'moment'
 
@@ -302,12 +377,20 @@ export default {
     components: {
         itemComp,
         changeDataItem,
+        movedElement,
     },
     
     data: () => ({
 
         // Открытие окна редактирования профиля
-        editDataMode: false,
+        editDataMode: true,
+
+        // Открытие окна выбра миниатюры для аватарки
+        selectMiniature: false,
+
+        // Подтверждение очищения элемента данных
+        confirmRemoveDataItem: false,
+        removingItemData: {name: null, value: null},
 
         // Поле в которое записываются данные клиента пришедшие с сервера
         userData: {},
@@ -320,6 +403,12 @@ export default {
             username: null,
             email: null,
             image: null,
+        },
+
+        // Поле в которое записываются данные для очищения
+        removeUserData: {
+            name: null,
+            lastname: null,
         },
 
         // Всплытие уведомлений
@@ -346,14 +435,47 @@ export default {
                 email: false,
             }
 
+        },
+
+        // ###################### ПОЛЯ ДЛЯ РАБОТЫ С ВЫБОРОМ МИНИАТЮРЫ АВАТАРКИ #################
+
+        movingData: {
+            width: null, 
+            height: null,
+        },
+
+        sizeImage: {
+            width: null,
+            height: null,
+        },
+        circlePosiotion: {
+            top: 0,
+            left: 0,
+        },
+
+        // Размеры круга, который выбирает область аватарки
+        sizeCircle: {
+            width: null,
+            height: null, 
+        },
+        resultPosition: {
+            top: (JSON.parse(localStorage.getItem('positionAvatar')))? JSON.parse(localStorage.getItem('positionAvatar')).top : 0,
+            left: (JSON.parse(localStorage.getItem('positionAvatar')))? JSON.parse(localStorage.getItem('positionAvatar')).left : 0,
         }
 
-    
     }),
 
     methods: {
         log(){
             console.log(this.changeUserData);
+        },
+
+        // Метод разлогинавет пользователя
+        logout(){
+            this.$store.commit('AuthModule/changeIsAuth', {isAuth: false, role: null, id: null})
+            localStorage.removeItem('isAuth')
+            localStorage.removeItem('ACCESS_TOKEN')
+            window.location.reload()
         },
 
         // Метод ЗАПОЛНЯЕТ поля данных изменения которые приходят с каждого элемента редактирования
@@ -383,17 +505,189 @@ export default {
 
         // Метод СОХРАНЯЕТ на сервере изменные данные клиента
         commitChangeData(){
-            this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.changeUserData})
+            try{
+                if(this.removeUserData.name !== null || this.removeUserData.lastname !== null){
+                    console.log('Сервер -> удаление данных');
+                }
+                if(
+                    this.changeUserData.name !== null ||
+                    this.changeUserData.lastname !== null ||
+                    this.changeUserData.sex !== null || 
+                    this.changeUserData.username !== null ||
+                    this.changeUserData.email !== null
+
+                ){
+                    // this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.changeUserData})
+                    // window.location.reload()
+                    console.log('Сервер -> обновление данных');
+                }
+            } catch (e) {}            
         },
 
         // Метод сбрасывает все измененения данных
         clearChangeUserData(){
+            // Очищение полей редактирования
             this.changeUserData.name = null
             this.changeUserData.lastname = null
             this.changeUserData.sex = null
             this.changeUserData.username = null
             this.changeUserData.email = null
+            // Очищение полей удаления
+            this.removeUserData.name = null
+            this.removeUserData.lastname = null
         },
+
+        // Метод добавляет загруженную картинку пользователем в обьект данных для редактирования 
+        uploadImage(image){
+            this.changeUserData.image = image
+            this.selectMiniature = true
+        },
+
+
+        // ######################    МЕТОДЫ ДЛЯ ВЫБОРА МИНИАТЮРЫ АВАТАРКИ #######################
+
+
+        updatePositionMove(position){
+            this.circlePosiotion.top = position.top
+            this.circlePosiotion.left = position.left
+            this.sizeCircle = {...position.sizeCircle}
+        },
+
+        recordPosition(top, left){
+            this.resultPosition.top = top
+            this.resultPosition.left = left
+        },
+
+        commitImage(){
+            // Блок обрамляющий картинку, нужен для получения точного размера картинки
+            const image = document.getElementById('divImg')
+            // высота картинки
+            const imageHeight =  Math.round(image.getBoundingClientRect().height)
+            const imageWidth =  Math.round(image.getBoundingClientRect().width)
+            // Занчения ширины и высоты перетаскиваемого круга
+            const circleHeight = this.sizeCircle.height
+            const circleWidth = this.sizeCircle.width
+            const circleLeft = this.circlePosiotion.left
+            const circleTop = this.circlePosiotion.top
+
+            const circleBottom = (imageHeight - (circleTop + circleHeight)) - 5
+            const circleRight = imageWidth - (circleLeft + circleWidth)
+            // результирующие значения координат для перетаскиваемого блока 
+            let top = 0, left = 0
+
+            // Если какая-либо сторона картины будет пересечена
+            if(circleLeft <= 0 || circleTop <= 0 || circleBottom <= 0 || circleRight <= 0){
+                
+                // Верхний Левый Угол
+                if(circleLeft <= 0 && circleTop <= 0){
+                    console.log('Верхний Левый Угол <= 0!');
+                    top = 0
+                    left = 0
+                    this.recordPosition(top, left)
+                }
+                // Верхний Правый Угол
+                else if(circleRight <= 0 && circleTop <= 0){
+                    console.log('Верхний Правый Угол <= 0!');
+                    top = 0
+                    left = Math.round((imageWidth - circleWidth) / 2)
+                    this.recordPosition(top, left)
+                }
+                // Нижний Правый Угол
+                else if(circleRight <= 0 && circleBottom <= 0){
+                    console.log('Нижний Правый Угол <= 0!');
+                    top = Math.round((imageHeight - circleHeight) / 2)
+                    left = Math.round((imageWidth - circleWidth) / 2)
+                    this.recordPosition(top, left)
+                }
+                // Нижний Левый Угол
+                else if(circleLeft <= 0 && circleBottom <= 0){
+                    console.log('Нижний Левый Угол <= 0!');
+                    top = Math.round((imageHeight - circleHeight) / 2)
+                    left = 0
+                    this.recordPosition(top, left)
+                }
+                // 
+                else{
+                    // Правая сторона
+                    if(circleRight <= 0){
+                        top = Math.round(circleTop / 2)
+                        left = Math.round((imageWidth - circleWidth) / 2)
+                        this.recordPosition(top, left)
+                    }
+                    // Нижняя сторона
+                    else if(circleBottom <= 0){
+                        console.log('Нижняя <= 0');
+                        top = Math.round((imageHeight - circleWidth) / 2)
+                        left = Math.round(circleLeft / 2)
+                        this.recordPosition(top, left)
+                    }
+                    // Верхняя сторона
+                    else if(circleTop <= 0){
+                        console.log('Верхняя <= 0');
+                        top = 0
+                        left = Math.round(circleLeft / 2)
+                        this.recordPosition(top, left)
+                    }
+                    // Левая сторона
+                    else if(circleLeft <= 0){
+                        console.log('Левая <= 0');
+                        top = Math.round(circleTop / 2)
+                        left = 0
+                        this.recordPosition(top, left)
+                    }
+                }
+            // Если ни одна сторона не пересечена
+            }else if(circleLeft > 0 && circleTop > 0 && circleBottom > 0 && circleRight > 0){
+                console.log('Ни одна сторона не персечена!');
+                top = Math.round(circleTop / 2)
+                left = Math.round(circleLeft / 2)
+                this.recordPosition(top, left)
+            }
+            localStorage.setItem('positionAvatar', JSON.stringify(
+                {
+                    top: -this.resultPosition.top,
+                    left: -this.resultPosition.left,
+                }
+            ))
+            this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.changeUserData})
+            console.log(this.resultPosition)
+        },
+
+        deleteImage(){
+            if(this.userData && this.userData.image !== null){
+                this.userData.image = null
+                this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.userData})
+            }else{
+                console.log('!this.userData || this.userData.image === null)');
+            }
+            
+        },
+
+        // Метод запрашивает подтверждение на очищение элемента данных
+        reqRemoveDataItem(item){
+            this.confirmRemoveDataItem = true
+            this.removingItemData = {...item}
+        },
+
+        // Метод подтверждает очищение поля элемента данных
+        removeItemData(){
+            try{
+                this.removeUserData[this.removingItemData.name] = this.removingItemData.value
+                console.log(this.removeUserData);
+            }catch(e){
+
+            }finally{
+                this.confirmRemoveDataItem = false
+            }
+        },
+
+        // Метод отменяет очищение элемента данных
+        cancelRemoveItemData(){
+            console.log('No');
+            this.confirmRemoveDataItem = false
+            return false
+        },
+
     },
 
     computed: {
@@ -408,6 +702,7 @@ export default {
 
             // Допустимые типы элемента редактирования
             typeItemChangeData: state => state.typeItemChangeData,
+
         }),
 
 
@@ -476,7 +771,6 @@ export default {
             }else return this.accountWords.noneChange
         },
 
-
         // Вычисление разницы во времени между ТЕКУЩИМ временем и последним редактированием аккаунта
         editTimeComutedDifference(){
             if(this.userData?.edit_time?.length){
@@ -500,9 +794,30 @@ export default {
             this.userData = {...data}
         })
     },
-    
     mounted(){
-    }
+		// const avatar = document.getElementById('avatar')
+        // if(avatar){
+        //     avatar.style.top = this.positionImage.top + 'px'
+        //     avatar.style.left = this.positionImage.left + 'px'
+        // }
+
+        const image = document.getElementById('divImg')
+        const imageHeight =  Math.round(image.getBoundingClientRect().height)
+        const imageWidth =  Math.round(image.getBoundingClientRect().width)
+        this.sizeImage.width = imageWidth
+        this.sizeImage.height = imageHeight
+
+        setTimeout(() => {
+            const img = document.getElementById('img')
+            const { width, height } = img.getBoundingClientRect()
+            this.movingData = {
+                width: Math.round(width), 
+                height: Math.round(height),
+            }
+        }, 100)
+
+    },
+    
 
 }
 </script>
@@ -534,6 +849,25 @@ export default {
     border-radius: $radius;
     box-shadow: $shadow;
     background-color: white;
+    .menu-change-client-data__confirm-block{
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, .5);
+        border-radius: $radius;
+        z-index: 10000;
+    }
+    .menu-change-client-data__confirm-message{
+        position: relative;
+        top: 0;
+        right: -10px;
+        margin: 0 auto;
+    }
     .account__menu-change-client-data{
         position: relative;
         display: flex;
@@ -605,10 +939,7 @@ export default {
             
             .client-info__image{
                 width: 200px;
-                height: 200px;
-                border: $border;
-                border-radius: 50%;
-                box-shadow: $shadow;
+                height: auto;
             }
             .client-info__image-btns{
                 display: flex;
@@ -622,6 +953,10 @@ export default {
             }
             .image-btns__btn{
                 padding: 30px 20px;
+            }
+            .save-image-btn{
+                width: 35px;
+                height: 35px;
             }
 
         }
@@ -651,6 +986,70 @@ export default {
         padding: 5px 10px;
         box-shadow: $shadow;
     }
-} 
+}
+
+
+.select-miniature{
+    position:relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 90vh;
+    border: $border;
+    border-radius: $radius;
+    padding: 10px 15px 0 15px;
+    box-shadow: $shadow;
+}
+.select-miniature__title{
+    margin-top: 10px;
+}
+.select-miniature__body{
+    position:relative;
+    height: max-content;
+    max-height: 80%;
+    border-top: $border;
+    border-bottom: $border;
+    overflow: hidden;
+    overflow-y: auto;
+    margin: 20px 0;
+}
+.divImg{
+    position:relative;
+    width: 600px;
+    min-height: 500px;
+    height: max-content;
+}
+.img{
+	width:100%;
+    
+}
+.select-miniature__btns{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .select-miniature__btn{
+        font-size: 18px;
+    }
+}
+
+// Аватарка
+.crop{
+	float:left;
+	margin:.5em 10px .5em 0;
+	overflow:hidden; /* this is important */
+	position:relative; /* this is important too */
+	border:1px solid #ccc;
+	width:200px;
+	height:200px;
+    border-radius: 50%;
+	}
+.crop img{
+	position:absolute;
+	width: 200px;
+	top: 0;
+	left: 0;
+}
 @include darkMode_with_font;
 </style>

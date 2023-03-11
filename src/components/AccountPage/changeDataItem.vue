@@ -6,7 +6,7 @@
 <template>
 
     <div class="change-data-item">
-        
+
         <!-- Классическое обьявление элемента данных -->
         <div 
         class="data-block__item"
@@ -93,14 +93,25 @@
 
         </div>
 
-        <!-- КНОПКА РЕДАКТИРОВАНИЯ -->
+        <!-- КНОПКИ ПРИ НЕ АКТИВНОМ РЕЖИМЕ РЕДАКТИРОВАНИЯ -->
         <div v-show="!isChangeMode" class="change-data-item__btns">
+            <!-- КНОПКА РЕДАКТИРОВАНИЯ -->
             <div 
             class="change-data-item__change-btn"
             :title="(valueItem === accountWords.noneData)? 'Добавить' : 'Изменить'"
             @click="activateChangeMode"
             >
                 <i-edit></i-edit>
+    
+            </div>
+            <!-- КНОПКА ОЧИЩЕНИЯ ЭЛЕМЕНТА ДАННЫХ -->
+
+            <div 
+            class="change-data-item__change-btn"
+            title="Очистить"
+            @click="removeDataItem"
+            >
+                <i-delete></i-delete>
     
             </div>
         </div>
@@ -141,9 +152,6 @@
         
                     </div>
             </div>
-
-            
-
         </div>
 
     </div>
@@ -255,6 +263,7 @@ export default {
                     console.log('IF');
                     if (this.inputData.toLowerCase() !== this.valueItem.toLowerCase()){
                         this.isChangeMode = false
+                        // форматирование введенной строки чтобы поднять первый символ в верхний регистр
                         this.inputData = this.inputData[0].toUpperCase() + this.inputData.slice(1)
                         this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
                         this.inputData = ''
@@ -269,6 +278,7 @@ export default {
                     console.log('ELSE IF');
                     if (this.inputData.toLowerCase() !== this.valueItem.toLowerCase()){
                         this.isChangeMode = false
+                        // форматирование введенной строки чтобы поднять первый символ в верхний регистр
                         this.inputData = this.inputData[0].toUpperCase() + this.inputData.slice(1)
                         this.$emit('changeData', {name: this.nameItem, value: this.inputData, success: true})
                         this.inputData = ''
@@ -292,6 +302,11 @@ export default {
             if(this.typeItem === this.typeItemChangeData.string){
                 this.inputData = ''
             }
+        },
+
+        // Метод отсылает запрос на очищение элемента данных
+        removeDataItem(){
+            this.$emit('reqRemoveDataItem', {name: this.nameItem, value: this.valueItem})
         }
         
     },
@@ -371,7 +386,7 @@ export default {
         align-self: center;
         width: -moz-max-content;
         width: max-content;
-        padding: 13px 9px;
+        padding: 5px 9px;
         // border: 1px solid rgb(253, 148, 11);
         border-radius: 20px;
         flex-grow: 1;

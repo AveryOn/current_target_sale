@@ -20,6 +20,7 @@ import NotificationMiniSuccess from '@/components/UI/notificationMiniSuccess'
 import NotificationMiniError from '@/components/UI/notificationMiniError'
 import checkButton from '@/components/UI/checkButton'
 import radioButton from '@/components/UI/radioButton'
+import inputFile from '@/components/UI/inputFile'
 import icons from './icons'
  
 export default [
@@ -44,5 +45,6 @@ export default [
     NotificationMiniError,
     checkButton,
     radioButton,
+    inputFile,
     ...icons,
 ]

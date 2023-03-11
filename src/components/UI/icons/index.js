@@ -13,6 +13,8 @@ import edit from './edit'
 import close from './close'
 import ok from './ok'
 import reset from './reset'
+import upload from './upload'
+import deleteIcon from './delete'
 export default [
     home,
     settings,
@@ -29,4 +31,6 @@ export default [
     close,
     ok,
     reset,
+    upload,
+    deleteIcon,
 ]

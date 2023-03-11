@@ -15,7 +15,7 @@ export const UserModule = {
     mutations: {
         changeUserData(state, newValue){
             state.userData = {...newValue}
-        }
+        },
     },
 
     getters: {},
@@ -107,7 +107,6 @@ export const UserModule = {
         // ОБНОВЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ
         async updateUserData({state, commit}, {changeUserData}){
             if(state.userData){
-                let data = {status: null, detail: null}
                 try{
 
                     store.commit('showLoading')
@@ -117,15 +116,36 @@ export const UserModule = {
                         edit_time: JSON.stringify(Date.now()),
                     }).then(response => {
                         console.log(response)
-                        // data = {status: true, detail: 'successful'}
+                        localStorage.setItem('userData', JSON.stringify(response.data))
+                        commit('changeUserData', response.data)
                     })
-                    // return data
                 }
                 catch (e){
-                    // if(e?.response){
-                    //     data = {status: false, detail: e.response.data.detail}
-                    //     return data
-                    // }
+                    console.log(e);
+                }
+                finally{
+                    store.commit('hideLoading')
+                }
+            }
+        },
+
+        // УДАЛЕНИЕ НЕКОТОРЫХ ДАННЫХ ПОЛЬЗОВАТЕЛЯ
+        async deleteUserData({state, commit}, {deleteUserData}){
+            if(state.userData){
+                try{
+
+                    store.commit('showLoading')
+
+                    await axios.put(store.state.AuthModule.localhost + `user/${state.userData.id}/user-delete-data/`, {
+                        ...deleteUserData,
+                        edit_time: JSON.stringify(Date.now()),
+                    }).then(response => {
+                        console.log(response)
+                        // localStorage.setItem('userData', JSON.stringify(response.data))
+                        // commit('deleteUserData', response.data)
+                    })
+                }
+                catch (e){
                     console.log(e);
                 }
                 finally{
