@@ -435,11 +435,12 @@ export default {
             image: null,
         },
 
-        // Поле в которое записываются данные для очищения
+        // Поле в которое записываются данные для удаления
         removeUserData: {
             name: null,
             lastname: null,
             sex: null,
+            image: null,
         },
 
         // Всплытие уведомлений
@@ -498,7 +499,7 @@ export default {
 
     methods: {
         log(){
-            console.log(this.changeUserData);
+            console.log(this.removeUserData);
         },
 
         // Метод разлогинавет пользователя
@@ -536,36 +537,34 @@ export default {
 
         // Метод СОХРАНЯЕТ на сервере изменные данные клиента
         commitChangeData(){
-            if(
-                this.changeUserData.name !== null ||
-                this.changeUserData.lastname !== null ||
-                this.changeUserData.sex !== null || 
-                this.changeUserData.username !== null ||
-                this.changeUserData.email !== null && 
-                this.removeUserData.name !== null ||
-                this.removeUserData.lastname !== null ||
-                this.removeUserData.sex !== null
-            ){
-                console.log('Есть изменения!');
-                try{
-                    if(this.removeUserData.name !== null || this.removeUserData.lastname !== null){
-                        console.log('Сервер -> удаление данных');
-                    }
-                    if(
-                        this.changeUserData.name !== null ||
-                        this.changeUserData.lastname !== null ||
-                        this.changeUserData.sex !== null || 
-                        this.changeUserData.username !== null ||
-                        this.changeUserData.email !== null
-    
-                    ){
-                        this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.changeUserData}).then(() => {
-                            this.editDataMode = false
-                            window.location.reload()
-                        })
-                        console.log('Сервер -> обновление данных');
-                    }
-                } catch (e) {}            
+
+            // Если были внесены и УДАЛЕНИЯ и ИЗМЕНЕНИЯ данных
+            if(this.isChangeUserData && this.isRemoveUserData){
+                this.$store.dispatch('UserModule/delUserData', {deleteUserData: this.removeUserData}).then(()=>{
+                    this.editDataMode = false
+                })
+                this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.changeUserData}).then(() => {
+                    this.editDataMode = false
+                    window.location.reload()
+                })
+
+            }
+
+            // Если были внесены только ИЗМЕНЕНИЯ но не удаления данных, то выполняется запрос только о изменении данных
+            else if(this.isChangeUserData){
+                this.$store.dispatch('UserModule/updateUserData', {changeUserData: this.changeUserData}).then(() => {
+                    this.editDataMode = false
+                    window.location.reload()
+                })
+            }
+
+            // Если были внесены только УДАЛЕНИЯ но не изменения
+            else if(this.isRemoveUserData){
+                this.$store.dispatch('UserModule/delUserData', {deleteUserData: this.removeUserData}).then(()=>{
+                    this.editDataMode = false
+                    window.location.reload()
+                })
+
             }else{
                 console.log('Изменений НЕТ!');
                 this.isNothingChangeWarn = true
@@ -573,6 +572,7 @@ export default {
                     this.isNothingChangeWarn = false
                 }, 2000)
             }
+            
         },
 
         // Метод сбрасывает все измененения данных
@@ -718,7 +718,15 @@ export default {
 
         deleteImage(){
             if(this.userData && this.userData.image !== null){
-                console.log('Аватарка удалена');
+                try{
+                    this.removeUserData.image = this.userData.image
+                    this.$store.dispatch('UserModule/delUserData', {deleteUserData: this.removeUserData}).then(()=>{
+                        window.location.reload()
+                    })
+                }catch(e){}
+                finally{
+
+                }
             }else{
                 console.log('!this.userData || this.userData.image === null)');
             }
@@ -813,6 +821,36 @@ export default {
             else return false
         },
 
+        // Вычисление были ли внесены изменения в this.changeUserData
+        isChangeUserData(){
+            const valuesChangeData = Object.values(this.changeUserData)
+            let output = []
+            for(let value of valuesChangeData){
+                if(value !== null){
+                    output.push(value)
+                }else{
+                    continue
+                }
+            }
+            if(output.length) return true
+            else return false
+        },
+
+        // Вычисление были ли внесены изменения в this.removeUserData
+        isRemoveUserData(){
+            const valuesRemoveData = Object.values(this.removeUserData)
+            let output = []
+            for(let value of valuesRemoveData){
+                if(value !== null){
+                    output.push(value)
+                }else{
+                    continue
+                }
+            }
+            if(output.length) return true
+            else return false
+        },
+
 
 //####################################################  БЛОК СТАТИСТИКИ  #######################################################
 
@@ -858,7 +896,6 @@ export default {
         })
     },
     mounted(){
-
         const image = document.getElementById('divImg')
         const imageHeight =  Math.round(image.getBoundingClientRect().height)
         const imageWidth =  Math.round(image.getBoundingClientRect().width)

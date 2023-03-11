@@ -108,9 +108,7 @@ export const UserModule = {
         async updateUserData({state, commit}, {changeUserData}){
             if(state.userData){
                 try{
-
                     store.commit('showLoading')
-
                     await axios.put(store.state.AuthModule.localhost + `user/${state.userData.id}/user-update/`, {
                         ...changeUserData,
                         edit_time: JSON.stringify(Date.now()),
@@ -130,10 +128,9 @@ export const UserModule = {
         },
 
         // УДАЛЕНИЕ НЕКОТОРЫХ ДАННЫХ ПОЛЬЗОВАТЕЛЯ
-        async deleteUserData({state, commit}, {deleteUserData}){
+        async delUserData({state, commit}, {deleteUserData}){
             if(state.userData){
                 try{
-
                     store.commit('showLoading')
 
                     await axios.put(store.state.AuthModule.localhost + `user/${state.userData.id}/user-delete-data/`, {
@@ -141,8 +138,8 @@ export const UserModule = {
                         edit_time: JSON.stringify(Date.now()),
                     }).then(response => {
                         console.log(response)
-                        // localStorage.setItem('userData', JSON.stringify(response.data))
-                        // commit('deleteUserData', response.data)
+                        localStorage.setItem('userData', JSON.stringify(response.data))
+                        commit('deleteUserData', response.data)
                     })
                 }
                 catch (e){
