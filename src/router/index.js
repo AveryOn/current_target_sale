@@ -144,28 +144,28 @@ store.commit('changeRoutes', routes)
 
 // Роутер защита от перенаправления на страницу Модератора и Владельца 
 // Также от перенаправления на аккаунт пользователя/сотрудника
-router.beforeEach(async(to, from) => {
-    const employ = to.matched.some(record => record.meta.employ)
-    const requireAuth = to.matched.some(record => record.meta.auth)
-    if(requireAuth){
-        const auth = JSON.parse(localStorage.getItem('isAuth'))
-        if(employ){
-             // если маршрут имеет мета-свойство auth=true  и  мета-свойство employ = true
-            if(!auth){
-                return {name: 'notFound'}
-            }
-            if(auth && auth.isAuth && localStorage.getItem('ACCESS_TOKEN')){
-                return true
-            }
-        }
-        // если маршрут имеет мета-свойство auth=true
-        if(!auth){
-            return {name: 'notFound'}
-        }
-        if(auth && auth.isAuth && localStorage.getItem('ACCESS_TOKEN')){
-            return true
-        }
-    }
-})
+// router.beforeEach(async(to, from) => {
+//     const employ = to.matched.some(record => record.meta.employ)
+//     const requireAuth = to.matched.some(record => record.meta.auth)
+//     if(requireAuth){
+//         const auth = JSON.parse(localStorage.getItem('isAuth'))
+//         if(employ){
+//              // если маршрут имеет мета-свойство auth=true  и  мета-свойство employ = true
+//             if(!auth){
+//                 return {name: 'notFound'}
+//             }
+//             if(auth && auth.isAuth && localStorage.getItem('ACCESS_TOKEN')){
+//                 return true
+//             }
+//         }
+//         // если маршрут имеет мета-свойство auth=true
+//         if(!auth){
+//             return {name: 'notFound'}
+//         }
+//         if(auth && auth.isAuth && localStorage.getItem('ACCESS_TOKEN')){
+//             return true
+//         }
+//     }
+// })
 
 export default router

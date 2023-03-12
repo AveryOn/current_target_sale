@@ -20,16 +20,16 @@
         v-show="!isOpenTextDescription"
         >
         Развернуть описание...
+        </div>
+        <!-- КНОПКА СКРЫТЬ ОПИСАНИЕ -->
+        <button-comp 
+        class="hidden-text-description"
+            @click="hiddenTextDescription"
+            v-show="isOpenTextDescription"
+            >
+            Скрыть описание
+        </button-comp>
     </div>
-    <!-- КНОПКА СКРЫТЬ ОПИСАНИЕ -->
-    <button-comp 
-    class="hidden-text-description"
-        @click="hiddenTextDescription"
-        v-show="isOpenTextDescription"
-        >
-        Скрыть описание
-    </button-comp>
-</div>
 </template>
 <script>
 import { mapState } from 'vuex';

@@ -1,7 +1,7 @@
 // ХРАНИИЩЕ ДЛЯ ДЕЙСТВИЙ ПО МОДЕРАЦИИ МАГАЗИНА
 export const ManagerModule = {
     state: () => ({
-        isCreatedProduct: true,
+        isCreatedProduct: false,
         isCreatedGroup: false,
         isEditorProduct: false,
         isPromotion: false,
@@ -10,7 +10,7 @@ export const ManagerModule = {
         selectToolName: '',
     }),
     mutations: {
-        // Функция закрытия открытых инструментов
+        // Мутация для закрытия открытых инструментов
         closeAllTools(state){
             state.isCreatedProduct = true
             state.isCreatedGroup = false

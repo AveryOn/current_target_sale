@@ -2,12 +2,16 @@
     СОДЕРЖИМОЕ ЭТОГО КОМПОНЕНТА ВЛИЯЕТ НА ЦЕЛЬ ИСПОЛЬЗОВАНИЯ ЭТОГО КОМП.
     ЭТО ПРОСТО КОНТЕЙНЕР ДЛЯ БЛОКОВ ИМЕЮЩИХ СВОЙ ФУНКЦИОНАЛ -->
 <template>
-    <div class="manager-product">
+    <div 
+    class="manager-product"
+    :class="{'dark': darkMode}"
+    :style="(!darkMode)? {backgroundColor: 'white'} : {backgroundColor: ''}"
+    >
         <div class="manager-navbar">
             <h1 class="h1-manager">Workbench</h1>
             <!-- Данные используемого инструмента -->
             <div class="tool-data">
-                <!-- Выводит название используемого инструмена -->
+                <!-- Выводит название используемого инструмента -->
                 <h1 class="h1-tool-name">{{ nameTool }}</h1>
                 <!-- Закрывает выбранный инструмент -->
                 <button-comp 
@@ -20,6 +24,7 @@
             </div>
         </div>
         <div class="manager-body">
+            <h2 class="manager-product__nothing-open" v-show="!nameTool && !nameTool">Выберите в меню справа инструмент для работы</h2>
             <slot></slot>
         </div>
     </div>
@@ -67,28 +72,20 @@ export default {
             }
         },
         nameTool(){
-            if (this.$store.state.ManagerModule.selectToolName){
+            if (this.$store.state.ManagerModule.selectToolName.length){
                 return this.$store.state.ManagerModule.selectToolName
             }
-            else if (this.$store.state.OwnerModule.selectToolName){
+            else if (this.$store.state.OwnerModule.selectToolName.length){
                 return this.$store.state.OwnerModule.selectToolName
             }
         }
     },
     mounted(){
-        // Смена темы для managerProduct
-        const managerProduct = document.querySelector('.manager-product')
-        if(this.darkMode){
-            managerProduct.style.backgroundColor = 'rgba(36, 33, 33, 0.9)'
-            managerProduct.style.color = 'rgb(255, 205, 138)'
-        }else{
-            managerProduct.style.backgroundColor = ''
-            managerProduct.style.color = ''
-        }
     },
 }
 </script>
 <style lang="scss" scoped>
+@include h2-gradient;
 .manager-product{
     display: flex;
     flex-direction: column;
@@ -100,6 +97,7 @@ export default {
     border-radius: $radius;
     background-color: white;
     box-shadow: $shadow;
+
 }
 .manager-navbar{
     display: flex;
@@ -134,6 +132,15 @@ export default {
     }
 }
 .manager-body{
+    display: flex;
+    justify-content: center;
     margin: 10px 30px 0 30px;
+    .manager-product__nothing-open{
+        position: relative;
+        top: 50px;
+        font-size: 1.8em;
+    }
 }
+
+@include darkMode_with_font;
 </style>

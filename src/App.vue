@@ -75,65 +75,65 @@ export default {
             }
         }
     },
-    created(){
-//          лучше не трогай этот кусок кода, ну его науй :)  ¯\_(ツ)_/¯
+//     created(){
+// //          лучше не трогай этот кусок кода, ну его науй :)  ¯\_(ツ)_/¯
         
 
-        if(this.auth){
-            if(this.auth.role === 'manager' || this.auth.role === 'owner'){
-                // Проверка на авторизованность СОТРУДНИКА. Если СОТРУДНИК авторизован, то в URL
-                // путь подставляются роль и UUID СОТРУДНИКА 
-                this.$store.dispatch('AuthModule/verificateEmployByToken')
-                if(this.auth.isAuth){
-                    this.$router.afterEach((to, from) => {
-                        if(to.name === undefined){
-                            this.$router.push(`/${this.auth.role}/${this.auth.id}`)
-                        }
-                    })
-                }
-            }
-            if(this.auth.role === 'user'){
-                // Проверка на авторизованность пользователя. Если пользователь авторизован, то в URL
-                // путь подставляются роль и ID пользователя 
-                this.$store.dispatch('AuthModule/verificateUserByToken')
-                if(this.auth.isAuth){
-                    this.$router.afterEach((to, from) => {
-                        if(to.name === undefined){
-                            this.$router.push(`/${this.auth.role}/${this.auth.id}`)
-                        }
-                    })
-                }
-            }
-        }
-        else if(!this.auth && !this.token){
-            this.$router.afterEach((to, from) => {
-                if(from.name === undefined){
-                    if(to.meta.auth || to.meta.employ){
-                        this.$router.push({name: 'main'})
-                    }else{
-                        this.$store.dispatch('handlerPath', to.path).then(path => {
-                            if(
-                                path === '/owner-tools' ||
-                                path === '/owner-tools/chat' ||
-                                path === '/manager-tools' ||
-                                path === '/manager-tools/chat' ||
-                                path === '/me'
-                            ){
-                                this.$router.push({name: 'main'})
-                            }else{
-                                this.$router.push(path)
-                            }
-                        })
-                    }
-                }
+//         if(this.auth){
+//             if(this.auth.role === 'manager' || this.auth.role === 'owner'){
+//                 // Проверка на авторизованность СОТРУДНИКА. Если СОТРУДНИК авторизован, то в URL
+//                 // путь подставляются роль и UUID СОТРУДНИКА 
+//                 this.$store.dispatch('AuthModule/verificateEmployByToken')
+//                 if(this.auth.isAuth){
+//                     this.$router.afterEach((to, from) => {
+//                         if(to.name === undefined){
+//                             this.$router.push(`/${this.auth.role}/${this.auth.id}`)
+//                         }
+//                     })
+//                 }
+//             }
+//             if(this.auth.role === 'user'){
+//                 // Проверка на авторизованность пользователя. Если пользователь авторизован, то в URL
+//                 // путь подставляются роль и ID пользователя 
+//                 this.$store.dispatch('AuthModule/verificateUserByToken')
+//                 if(this.auth.isAuth){
+//                     this.$router.afterEach((to, from) => {
+//                         if(to.name === undefined){
+//                             this.$router.push(`/${this.auth.role}/${this.auth.id}`)
+//                         }
+//                     })
+//                 }
+//             }
+//         }
+//         else if(!this.auth && !this.token){
+//             this.$router.afterEach((to, from) => {
+//                 if(from.name === undefined){
+//                     if(to.meta.auth || to.meta.employ){
+//                         this.$router.push({name: 'main'})
+//                     }else{
+//                         this.$store.dispatch('handlerPath', to.path).then(path => {
+//                             if(
+//                                 path === '/owner-tools' ||
+//                                 path === '/owner-tools/chat' ||
+//                                 path === '/manager-tools' ||
+//                                 path === '/manager-tools/chat' ||
+//                                 path === '/me'
+//                             ){
+//                                 this.$router.push({name: 'main'})
+//                             }else{
+//                                 this.$router.push(path)
+//                             }
+//                         })
+//                     }
+//                 }
 
-            })
-        }
+//             })
+//         }
 
-    },
+//     },
     mounted(){
 
-        this.$store.dispatch('computedRouterPath')
+        // this.$store.dispatch('computedRouterPath')
 
 
         // Появление кнопки "Наверх" если произошел большой скролл вниз
