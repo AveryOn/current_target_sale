@@ -36,5 +36,6 @@ color: rgb(255, 255, 255);
 font-weight:600;
 border-radius: $radius;
 text-shadow: 0 0 20px black;
+cursor: default;
 }
 </style>

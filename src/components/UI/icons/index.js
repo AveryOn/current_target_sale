@@ -15,6 +15,7 @@ import ok from './ok'
 import reset from './reset'
 import upload from './upload'
 import deleteIcon from './delete'
+import pencil from './pencil'
 export default [
     home,
     settings,
@@ -33,4 +34,5 @@ export default [
     reset,
     upload,
     deleteIcon,
+    pencil,
 ]

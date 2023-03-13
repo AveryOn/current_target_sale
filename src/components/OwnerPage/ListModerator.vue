@@ -41,7 +41,7 @@ export default {
     min-height: 50vh;
     border: $border;
     border-radius: $radius;
-    margin-top: 20px;
+    margin: 20px 0;
     background-color: white;
     box-shadow: $shadow;
 }

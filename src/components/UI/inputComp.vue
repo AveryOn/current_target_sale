@@ -5,6 +5,7 @@
     :class="{'dark-input': darkMode}" 
     @input="updateInput" 
     :value="modelValue"
+    :type="inputType"
     >
 
 </template>
@@ -19,6 +20,11 @@ export default {
             required: false,
             default: false,
         },
+        inputType: {
+            type: String,
+            required: false,
+            default: 'text',
+        }
     }, 
     methods: {
         updateInput(event){
@@ -66,6 +72,9 @@ export default {
     &:hover{
         border-left: 1px solid red;
         border-right: 1px solid red;
+    }
+    &::-moz-list-number{
+        display: none;
     }
 }
 @include darkMode_input;

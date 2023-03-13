@@ -38,7 +38,7 @@ export default {
     // Поле с которым сравнивается value инпута, и если они равны то checked === true
     radioData: {
       type: String,
-      required: true
+      required: false,
     },
 
     disabled: {

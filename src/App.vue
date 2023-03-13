@@ -31,7 +31,6 @@ import MiniChatButton from '@/components/MiniChat/MiniChatButton.vue'
 import SettingsComp from '@/components/SettingsComp/SettingsComp.vue'
 
 import { mapState } from 'vuex';
-import axios from 'axios'
 export default {
     components: {
         MainAppRendering,

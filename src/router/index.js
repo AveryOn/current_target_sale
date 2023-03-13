@@ -138,8 +138,8 @@ const router = createRouter({
     routes
 })
 
-store.commit('changeRoutes', routes)
 
+// store.commit('changeRoutes', routes)
 
 
 // Роутер защита от перенаправления на страницу Модератора и Владельца 

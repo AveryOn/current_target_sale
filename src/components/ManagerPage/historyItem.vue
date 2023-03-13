@@ -1,7 +1,7 @@
 <!-- КОМПОНЕНТ ПРИМЕНЯЕТСЯ ДЛЯ ОТОБРАЖЕНИЯ ЭЛЕМЕНТА ИСТОРИИ РАБОТЫ -->
 <template>
 
-    <div 
+    <div
     class="history-item"
     :class="{'dark': darkMode}"
     >
