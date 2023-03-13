@@ -10,6 +10,7 @@
         <div class="creator-product__body">
             <form class="creator-product__form" @submit.prevent>
 
+
                 <!-- Ввод АРТИКУЛА Товара -->
                     <label class="for_input" for="article">Укажите артикул товара (Число)</label>
                     <div class="creator-product__item">
@@ -22,6 +23,7 @@
                         <button-comp>Подтвердить</button-comp>
                     </div>
                 
+
                 <!-- Ввод НАИМЕНОВАНИЯ товара -->
                 <label class="for_input" for="name">Укажите наименование товара</label>
                     <div class="creator-product__item">
@@ -35,6 +37,7 @@
                         <button-comp>Подтвердить</button-comp>
                     </div>
 
+
                 <!-- Ввод ЦЕНЫ товара -->
                     <label class="for_input" for="price">Укажите цену товара</label>
                     <div class="creator-product__item">
@@ -46,6 +49,7 @@
                         ></input-comp>
                         <button-comp>Подтвердить</button-comp>
                     </div>
+
 
                 <!-- Ввод наименования ГРУППЫ товара -->
                 <label class="for_radio-select" for="group_name">К какой группе товара будет относиться данный товар</label>
@@ -64,6 +68,7 @@
                     <button-comp>Подтвердить</button-comp>
                 </div>
 
+
                 <!-- Ввод наименования КАТЕГОРИИ товара -->
                 <label class="for_radio-select" for="category_name">К какой категории товара будет относиться данный товар</label>
                 <div class="creator-product__item">
@@ -81,10 +86,20 @@
                     <button-comp>Подтвердить</button-comp>
                 </div>
 
+
                 <!-- Ввод ТЕГОВ товара -->
                 <label class="for_input" for="tags">Добавьте теги, которые помогут в поиске и сортировке этого товара</label>
                 <!-- Компонент для отрисовки добавленных тегов -->
                 <span class="tags_array">
+
+                <!-- Уведомление о том что цвет был уже выбран -->
+                    <notification-mini-error 
+                    :show="isTagAlreadyHas"
+                    class="error-select-tag"
+                    >
+                        Вы уже добавили этот тег
+                    </notification-mini-error>
+
                     <!-- Подсказка -->
                     <p v-show="!addedTags.length" class="tags_array__hint">Чтобы добавить теги нажмите на кнопку справа</p>
                     <!-- тег компонент -->
@@ -108,6 +123,7 @@
                     <!-- Кнопка подтверждает добавление тега и отправляет его в массив addedTags -->
                     <button-comp @click="addTag">Подтвердить</button-comp>
                 </div>
+
 
                 <!-- Ввод СКИДКИ на товар -->
                 <label class="for_input" for="">Укажите скидку для этого товара</label>
@@ -165,6 +181,126 @@
                     </div>
                     
                 </div>
+                
+                
+                <!-- Ввод ЦВЕТА товара -->
+                <label class="for_input" for="colors">Добавьте цвет товара (можно несколько)</label>
+
+                <!-- Компонент для отрисовки добавленных цветовых тегов -->
+                <span class="tags_array">
+
+                    <!-- Уведомление о том что цвет был уже выбран -->
+                    <notification-mini-error 
+                    :show="isColorAlreadyHas"
+                    class="error-select-tag"
+                    >
+                        Вы уже добавили этот цвет
+                    </notification-mini-error>
+
+                    <!-- Подсказка -->
+                    <p v-show="!colors.length" class="tags_array__hint">
+                        {{ 
+                            (isAddColor)? 
+                            'Сюда будут встраиваться теги цветов которые вы добавляете' : 
+                            'Чтобы добавить цвета нажмите на кнопку справа' 
+                        }}
+                    </p>
+                    <!-- тег компонент цвета -->
+                    <tag-comp class="tags_array__tag" v-for="color in colors">{{ color }}</tag-comp>
+                    <!-- Кнопка добавления тега -->
+                    <span class="append-tag-btn" v-show="!isAddColor" @click="isAddColor = true">
+                        <i-upload></i-upload>
+                    </span>
+                </span>
+                <!-- Поле для ввода цвета товара -->
+                <div v-show="isAddColor" class="creator-product__item">
+                    <input-comp 
+                    class="creator-product__input" 
+                    id="colors" 
+                    placeholder="Цвет (Пример: Красный)"
+                    @keyup.enter="addColor" 
+                    :inputType="'text'"
+                    v-model="color_input"
+                    >
+                    </input-comp>
+                    <!-- Кнопка подтверждает добавление цвета и отправляет его в массив colors -->
+                    <button-comp @click="addColor">Подтвердить</button-comp>
+                </div>
+
+
+                <!-- Ввод МАТЕРИАЛОВ для товара -->
+                <label class="for_input" for="materials">Добавьте материал, входящий в состав товара (можно несколько)</label>
+
+                <!-- Компонент для отрисовки добавленных тегов материала -->
+                <span class="tags_array">
+
+                    <!-- Уведомление о том что материал был уже выбран -->
+                    <notification-mini-error 
+                    :show="isMaterialAlreadyHas"
+                    class="error-select-tag"
+                    >
+                        Вы уже добавили этот материал
+                    </notification-mini-error>
+
+                    <!-- Подсказка -->
+                    <p v-show="!materials.length" class="tags_array__hint">
+                        {{ 
+                            (isAddMaterial)? 
+                            'Сюда будут встраиваться теги материалов которые вы добавляете' : 
+                            'Чтобы добавить материалы нажмите на кнопку справа' 
+                        }}
+                    </p>
+                    <!-- тег компонент матриала -->
+                    <tag-comp class="tags_array__tag" v-for="material in materials">{{ material }}</tag-comp>
+                    <!-- Кнопка добавления материала -->
+                    <span class="append-tag-btn" v-show="!isAddMaterial" @click="isAddMaterial = true">
+                        <i-upload></i-upload>
+                    </span>
+                </span>
+                <!-- Поле для ввода материалов товара -->
+                <div v-show="isAddMaterial" class="creator-product__item">
+                    <input-comp 
+                    class="creator-product__input" 
+                    id="materials" 
+                    placeholder="Материал (Пример: Полиэстер)"
+                    @keyup.enter="addMaterial" 
+                    :inputType="'text'"
+                    v-model="material_input"
+                    >
+                    </input-comp>
+                    <!-- Кнопка подтверждает добавление цвета и отправляет его в массив colors -->
+                    <button-comp @click="addMaterial">Подтвердить</button-comp>
+                </div>
+
+
+                <!-- Ввод СТРАНЫ ПРОИЗВОДСТВА товара -->
+                <label class="for_input" for="country_origin">Укажите страну-производителя товара</label>
+                <div class="creator-product__item">
+                    <input-comp 
+                    class="creator-product__input" 
+                    id="country_origin" 
+                    placeholder="Страна производства"
+                    :inputType="'text'"
+                    >
+                    </input-comp>
+                    <button-comp>Подтвердить</button-comp>
+                </div>
+
+
+                <!-- Ввод ОПИСАНИЯ для товара -->
+                <label class="for_input" for="materials" @click="log">Добавьте описание к товару (макс 1000 символов)</label>
+                <div class="creator-product__item">
+                    <textarea 
+                    class="description-area"
+                    :style="(darkMode)? 
+                    {backgroundColor: 'rgb(33, 33, 33)', color: 'rgb(255, 205, 138)'} :
+                    {backgroundColor: '', color: ''}"
+                    placeholder="Введите описание товара"
+                    v-model="description"
+
+                    >
+                    </textarea>
+                </div>
 
             </form>
         </div>
@@ -175,6 +311,7 @@
 
 <script>
 import ShowTemplate from '@/mixins/ShowTemplate';
+import { mapState } from 'vuex';
 export default {
     mixins: [ShowTemplate],
     props: {
@@ -183,14 +320,35 @@ export default {
         }
     },
     data: () => ({
+        // Теги
         isAddTag: false,
         // addedTags: [ "шерстяные изделия", "что-то ещё", "шапки",  "шерстяные изделия", "что-то ещё",],
         addedTags: [],
         tag_input: '',
+        isTagAlreadyHas: false,
 
+        // Скидка
         discount: 0,
         isEditDiscount: false,
         isSuccessConfirmDiscount: false,
+
+        // Цвета
+        colors: [],
+        isAddColor: false,
+        color_input: '',
+        isColorAlreadyHas: false,
+        
+        // Материалы
+        materials: [],
+        isAddMaterial: false,
+        material_input: '',
+        isMaterialAlreadyHas: false,
+
+        // Страна производства
+        country_origin: '',
+
+        // Описание товара
+        description: 'хуй бля',
 
         group_name: '',
         category_name: '',
@@ -205,12 +363,46 @@ export default {
     }),
     methods: {
         log(){
-            console.log(this.discount.length);
+            console.log(this.description);
         },
+        // Метод добавляет теги в массив addedTags
         addTag(){
-            this.addedTags.push(this.tag_input.toLowerCase())
-            this.tag_input = ''
-            this.isAddTag = false
+            if(!this.addedTags.includes(this.tag_input.toLowerCase())){
+                this.addedTags.push(this.tag_input.toLowerCase())
+                this.tag_input = ''
+                this.isAddTag = false
+            }else{
+                this.isTagAlreadyHas = true
+                setTimeout(() => {
+                    this.isTagAlreadyHas = false
+                }, 1500)
+            }
+        },
+        // Метод добавляет цвета в массив colors
+        addColor(){
+            if(!this.colors.includes(this.color_input.toLowerCase())){
+                this.colors.push(this.color_input.toLowerCase())
+                this.color_input = ''
+                this.isAddColor = false
+            }else{
+                this.isColorAlreadyHas = true
+                setTimeout(() => {
+                    this.isColorAlreadyHas = false
+                }, 1500)
+            }
+        },
+        // Метод добавляет материалы в массив materials
+        addMaterial(){
+            if(!this.materials.includes(this.material_input.toLowerCase())){
+                this.materials.push(this.material_input.toLowerCase())
+                this.material_input = ''
+                this.isAddMaterial = false
+            }else{
+                this.isMaterialAlreadyHas = true
+                setTimeout(() => {
+                    this.isMaterialAlreadyHas = false
+                }, 1500)
+            }
         },
         // Метод скрывает поле кастомного ввода скидки
         closeInputDiscount(){
@@ -229,7 +421,19 @@ export default {
             setTimeout(() => {
                 this.isSuccessConfirmDiscount = false
             }, 1500)
+        },
+        // Метод обновляет поле description, все что вводит клиент в text-area попадает в description
+        updateDescription(value){
+            let descr_words = this.description.split('')
+            descr_words.push(value)
+            this.description = descr_words.join('')
         }
+    },
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        }),
+
     }
   
 }
@@ -237,6 +441,10 @@ export default {
 <style lang="scss" scoped>
 @include h1-gradient;
 @include h2-gradient;
+.error-select-tag{
+    right: 0;
+    bottom: -30px;
+}
 .creator-product{
     display: flex;
     flex-direction: column;
@@ -279,7 +487,8 @@ export default {
             height: max-content;
             border-radius: $radius;
             box-shadow: $shadow;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+
         }
         .tags_array{
             position: relative;
@@ -308,6 +517,7 @@ export default {
                 padding: 2px;
                 cursor: pointer;
             }
+
         }
         .select-discount-block{
             position: relative;
@@ -321,7 +531,7 @@ export default {
             border: 1px solid rgb(253, 148, 11);
             border-radius: 15px;
             box-shadow: 2px 8px 15px rgb(0 0 0 / 29%);
-            margin: 5px 0 5px 0;
+            margin: 5px 0 30px 0;
             .discount-value{
                 font-size: 2.5em;
                 border-bottom: $border;     
@@ -336,6 +546,7 @@ export default {
             .select-discount-block__input{
                 width: 80px;
             }
+
             .select-discount-block__input-btn{
                 position: relative;
                 width: 20%;
@@ -344,6 +555,9 @@ export default {
                 border: none;
                 height: max-content;
                 cursor: pointer;
+            }
+            .description-area{
+                border-radius: 20px;
             }
             .select-discount-block__increment-btns{
                 display: flex;

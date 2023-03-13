@@ -25,15 +25,16 @@ props: {
 
 <style lang="scss" scoped>
 .notification-mini-error{
-position: absolute;
-display: flex;
-justify-content: center;
-padding: 10px 20px;
-// background-color: rgb(236, 194, 68);
-background: linear-gradient(to right, #d31111da, rgba(253, 51, 11, 0.822));
-color: rgb(255, 255, 255);
-font-weight:600;
-border-radius: $radius;
-text-shadow: 0 0 20px black;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    padding: 10px 20px;
+    // background-color: rgb(236, 194, 68);
+    background: linear-gradient(to right, #d31111da, rgba(253, 51, 11, 0.822));
+    color: rgb(255, 255, 255);
+    font-weight:600;
+    border-radius: $radius;
+    text-shadow: 0 0 20px black;
+    cursor: pointer;
 }
 </style>
