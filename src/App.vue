@@ -179,8 +179,8 @@ export default {
     box-sizing: border-box;
 }
 ::-webkit-scrollbar{
-        width: 12px;
-        height: 12px;
+    width: 12px;
+    height: 12px;
 }
 ::-webkit-scrollbar-track{
     background: rgba(128, 128, 128, 0.2);

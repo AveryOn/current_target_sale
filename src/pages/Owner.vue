@@ -13,7 +13,7 @@
                 <modal-comp @click="closeModal" :show="isShowManagerToolModal">
 
                     <!-- Обязательно байндить show -->
-                    <manager-tools-block >
+                    <manager-tools-block class="manager-tools-block-owner">
 
                         <!-- Блок создания нового товара -->
                         <creator-product :show="isCreatedProduct"></creator-product>
@@ -114,6 +114,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 @include h1-gradient;
+.manager-tools-block-owner{
+    margin-bottom: 0;
+}
 hr{
     display: flex;
     width: 95%;

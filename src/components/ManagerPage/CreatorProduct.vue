@@ -8,8 +8,10 @@
         </div>
 
         <div class="creator-product__body">
-            <form class="creator-product__form" @submit.prevent>
-
+            <form v-show="false" class="creator-product__form" @submit.prevent>
+                <div class="blockX"></div>
+            </form>
+            <form v-show="true" class="creator-product__form" @submit.prevent>
 
                 <!-- Ввод АРТИКУЛА Товара -->
                     <label class="for_input" for="article">Укажите артикул товара (Число)</label>
@@ -290,16 +292,33 @@
                 <!-- Ввод ОПИСАНИЯ для товара -->
                 <label class="for_input" for="materials" @click="log">Добавьте описание к товару (макс 1000 символов)</label>
                 <div class="creator-product__item">
+
+                    <div
+                    class="description-ready-text"
+                    v-show="isConfirmDescription"
+                    >
+                        {{ description }}
+                    </div>
+
                     <textarea 
                     class="description-area"
                     :style="(darkMode)? 
                     {backgroundColor: 'rgb(33, 33, 33)', color: 'rgb(255, 205, 138)'} :
                     {backgroundColor: '', color: ''}"
                     placeholder="Введите описание товара"
+                    v-show="!isConfirmDescription"
                     v-model="description"
-
+                    maxlength="1000"
                     >
                     </textarea>
+                    <button 
+                    class="description-area__btn"
+                    title="Подтвердить" 
+                    v-show="!isConfirmDescription"
+                    @click="confirmDescription"
+                    >
+                        <i-ok class="description-area__btn-ok"></i-ok>
+                    </button>
                 </div>
 
             </form>
@@ -320,6 +339,10 @@ export default {
         }
     },
     data: () => ({
+
+        // Артикул
+        article: null,
+
         // Теги
         isAddTag: false,
         // addedTags: [ "шерстяные изделия", "что-то ещё", "шапки",  "шерстяные изделия", "что-то ещё",],
@@ -348,7 +371,9 @@ export default {
         country_origin: '',
 
         // Описание товара
-        description: 'хуй бля',
+        description: '',
+        isConfirmDescription: false,
+
 
         group_name: '',
         category_name: '',
@@ -365,6 +390,7 @@ export default {
         log(){
             console.log(this.description);
         },
+
         // Метод добавляет теги в массив addedTags
         addTag(){
             if(!this.addedTags.includes(this.tag_input.toLowerCase())){
@@ -378,6 +404,7 @@ export default {
                 }, 1500)
             }
         },
+
         // Метод добавляет цвета в массив colors
         addColor(){
             if(!this.colors.includes(this.color_input.toLowerCase())){
@@ -391,6 +418,7 @@ export default {
                 }, 1500)
             }
         },
+
         // Метод добавляет материалы в массив materials
         addMaterial(){
             if(!this.materials.includes(this.material_input.toLowerCase())){
@@ -404,6 +432,7 @@ export default {
                 }, 1500)
             }
         },
+
         // Метод скрывает поле кастомного ввода скидки
         closeInputDiscount(){
             if(this.discount <= 100 && this.discount >= 0){
@@ -413,20 +442,28 @@ export default {
                 this.discount = 0
             }
         },
+
         editDiscount(){
             this.isEditDiscount = true
         },
+
         confirmDiscount(){
             this.isSuccessConfirmDiscount = true
             setTimeout(() => {
                 this.isSuccessConfirmDiscount = false
             }, 1500)
         },
+
         // Метод обновляет поле description, все что вводит клиент в text-area попадает в description
         updateDescription(value){
             let descr_words = this.description.split('')
             descr_words.push(value)
             this.description = descr_words.join('')
+        },
+
+        // Метод, 
+        confirmDescription(){
+            this.isConfirmDescription = true
         }
     },
     computed: {
@@ -441,6 +478,12 @@ export default {
 <style lang="scss" scoped>
 @include h1-gradient;
 @include h2-gradient;
+.blockX{
+    height: 600px;
+    width: 100%;
+    border: $border;
+    border-radius: $radius;
+}
 .error-select-tag{
     right: 0;
     bottom: -30px;
@@ -469,17 +512,21 @@ export default {
         max-height: 70vh;
         overflow-y: auto;
         height: max-content;
-        // border: $border;
-        // padding: 10px 0;
         margin-bottom: 20px;
+        &::-webkit-scrollbar{
+            width: 10px;
+        }
     }
     .creator-product__form{
         position: relative;
         width: 100%;
+        height: max-content;
         display: flex;
         flex-direction: column;
         align-items: center;
+
         .creator-product__item{
+            position: relative;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -488,7 +535,50 @@ export default {
             border-radius: $radius;
             box-shadow: $shadow;
             margin-bottom: 40px;
-
+            .description-ready-text{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: $border;
+                border-radius: 10px;
+                padding: 10px;
+                margin-top: 7px;
+            }
+            .description-area {
+                resize: none;
+                width: 100%;
+                height: 200px;
+                padding: 10px;
+                margin: 10px;
+                border-radius: 10px;
+                outline: 1px solid rgba(0, 0, 0, 0);
+                font-size: 18px;
+                border: $border;
+                &::-webkit-scrollbar{
+                    width: 7px;
+                    height: 7px;
+                }
+            }
+            .description-area__btn{
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                right: 25px;
+                bottom: 25px;
+                border: 1px solid rgba(253, 148, 11, .9);
+                background: rgba(33, 33, 33, 0.76);
+                padding: 5px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                box-shadow: $shadow;
+                cursor: pointer;
+            }
+            .description-area__btn-ok{
+                width: 18px;
+                height: 18px;
+            }
         }
         .tags_array{
             position: relative;
@@ -556,9 +646,7 @@ export default {
                 height: max-content;
                 cursor: pointer;
             }
-            .description-area{
-                border-radius: 20px;
-            }
+
             .select-discount-block__increment-btns{
                 display: flex;
                 justify-content: space-around;
