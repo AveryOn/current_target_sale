@@ -8,6 +8,8 @@ export const ManagerModule = {
         isEvent: false,
         // Сюда будет вставляться название выбранного блока инструментов
         selectToolName: '',
+
+        isLoadingImagesPreview: false,
     }),
     mutations: {
         // Мутация для закрытия открытых инструментов
@@ -73,7 +75,17 @@ export const ManagerModule = {
             state.isEvent = false
             state.selectToolName = ''
             console.log('Event: ', state.isEvent)
-        }
+        },
+
+        // Запускает спиннер при заугрзке превью-картинок при создании нового товара
+        isLoadingImagesPreviewTrue(state, newValue){
+            state.isLoadingImagesPreview = true
+        },
+        // откл. спиннер
+        isLoadingImagesPreviewFalse(state, newValue){
+            state.isLoadingImagesPreview = false
+        },
+
     },
     namespaced: true,
 }

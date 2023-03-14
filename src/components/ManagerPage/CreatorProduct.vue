@@ -290,18 +290,38 @@
 
 
                 <!-- Ввод ОПИСАНИЯ для товара -->
-                <label class="for_input" for="materials" @click="log">Добавьте описание к товару (макс 1000 символов)</label>
+                <label class="for_input" for="description" @click="log">Добавьте описание к товару (макс 1000 символов)</label>
                 <div class="creator-product__item">
 
+                    <!-- Уведомление о том что поле ввода пустое -->
+                    <notification-mini-error 
+                    class="error-description-empty"
+                    :show="isDescriptionEmpty"
+                    @click="isDescriptionEmpty = false"
+                    >
+                        Поле ввода пустое!
+                    </notification-mini-error>
+
+                    <!-- Блок показывает написанное описание товара -->
                     <div
                     class="description-ready-text"
                     v-show="isConfirmDescription"
                     >
                         {{ description }}
+
+                        <button 
+                        title="Изменить" 
+                        class="description-ready-text__edit-btn"
+                        @click="editDescription"
+                        >
+                            <i-pencil class="description-ready-text__edit-btn--pencil"></i-pencil>
+                        </button>
+                        
                     </div>
 
                     <textarea 
                     class="description-area"
+                    id="description"
                     :style="(darkMode)? 
                     {backgroundColor: 'rgb(33, 33, 33)', color: 'rgb(255, 205, 138)'} :
                     {backgroundColor: '', color: ''}"
@@ -321,6 +341,47 @@
                     </button>
                 </div>
 
+
+                <!-- Добавление КАРТИНОК товара -->
+                <label class="for_input" for="images" @click="log">Добавьте картинки для товара</label>
+                <div 
+                class="preview-images"
+                :style="(!images.length)? {height: '200px'} : {height: ''}"
+                >
+                    <p 
+                    class="preview-images__hint" 
+                    v-show="!images.length"
+                    >
+                        Здесь будут отображаться изображения товара, которые вы добавляете
+                    </p>
+                    <!-- Превью-блок который отображает превью-картинку и кнопку ее удаления -->
+                    <div 
+                    class="image-preview-item-container"
+                    v-show="images.length" 
+                    v-for="image in images"
+                    >
+                        <!-- Превью картинка -->
+                        <img 
+                        class="image-preview-item"
+                        :src="image" 
+                        alt="preview" 
+                        >
+                        <!-- Кнопка удаления картинки из превью-блока -->
+                        <button 
+                        class="del-image-btn"
+                        title="Убрать"
+                        @click="removeImage(image)" 
+                        >
+                            <i-close class="del-image-btn--cross"></i-close>
+                        </button>
+                    </div>
+                </div>
+                
+                <inputImages class="input-images"  @getImages="appendImages">Добавить</inputImages>
+                <!-- <div class="creator-product__item">
+                </div> -->
+                
+
             </form>
         </div>
 
@@ -330,8 +391,13 @@
 
 <script>
 import ShowTemplate from '@/mixins/ShowTemplate';
+import inputImages from '@/components/ManagerPage/inputImages.vue'
 import { mapState } from 'vuex';
+import _ from 'lodash'
 export default {
+    components: {
+        inputImages,
+    },
     mixins: [ShowTemplate],
     props: {
         show:{
@@ -373,7 +439,10 @@ export default {
         // Описание товара
         description: '',
         isConfirmDescription: false,
+        isDescriptionEmpty: false,
 
+        // Изображения товара
+        images: [],
 
         group_name: '',
         category_name: '',
@@ -388,7 +457,7 @@ export default {
     }),
     methods: {
         log(){
-            console.log(this.description);
+            console.log(this.images);
         },
 
         // Метод добавляет теги в массив addedTags
@@ -461,17 +530,42 @@ export default {
             this.description = descr_words.join('')
         },
 
-        // Метод, 
+        // Метод подтверждает ввод ОПИСАНИЯ товара и включает блок в который встраивается текст описания
         confirmDescription(){
-            this.isConfirmDescription = true
+            if(this.description.length && _.trim(this.description) !== ''){
+                this.isConfirmDescription = true
+            }else{
+                this.isDescriptionEmpty = true
+                setTimeout(() => {
+                    this.isDescriptionEmpty = false
+                }, 1500)
+            }
+        },
+
+        // Метод включает редактирование ОПИСАНИЯ товара
+        editDescription(){
+            this.isConfirmDescription = false
+        },
+
+        // Метод добавляет в массив картинки пришедшие из формы ввода файлов
+        appendImages(images){
+            this.images = images
+        },
+
+        // Метод удаляет картинку из блока превью (массив images) 
+        removeImage(image){
+            this.images = this.images.filter(i => i !== image)
         }
+
     },
     computed: {
         ...mapState({
             darkMode: state => state.darkMode,
         }),
 
-    }
+    },
+    mounted(){
+    },
   
 }
 </script>
@@ -484,9 +578,68 @@ export default {
     border: $border;
     border-radius: $radius;
 }
+.error-description-empty{
+    right: 25px;
+    top: 25px;
+}
 .error-select-tag{
     right: 0;
     bottom: -30px;
+}
+.preview-images{
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+    height: max-content;
+    max-height: 310px;
+    width: 95%;
+    overflow-x: auto;
+    border-radius: $radius;
+    border: $border;
+    box-shadow: $shadow;
+    &::-webkit-scrollbar{
+        height: 7px;
+    }
+}
+.preview-images__hint{
+    font-size: 18px;
+    margin: 0 auto;
+}
+.input-images {
+    margin-left: auto;
+    margin-right: 25px;
+}
+.image-preview-item-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    margin: 0 5px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px rgb(0, 0, 0, .6);
+}
+.image-preview-item{
+    position: relative;
+    width: 150px;
+    border: $border;
+    border-radius: 15px;
+    margin: 0 5px;
+}
+.del-image-btn{
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    padding: 2px 4px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: rgba(33, 33, 33, .8);
+    .del-image-btn--cross{
+        width: 18px;
+        height: 18px;
+        top: 2px;
+        left: 0;
+    }
 }
 .creator-product{
     display: flex;
@@ -525,6 +678,7 @@ export default {
         flex-direction: column;
         align-items: center;
 
+
         .creator-product__item{
             position: relative;
             display: flex;
@@ -535,14 +689,32 @@ export default {
             border-radius: $radius;
             box-shadow: $shadow;
             margin-bottom: 40px;
+
             .description-ready-text{
                 display: flex;
+                width: 100%;
+                height: max-content;
                 align-items: center;
-                justify-content: center;
+                justify-content: flex-start;
                 border: $border;
                 border-radius: 10px;
-                padding: 10px;
+                padding: 15px 10px;
                 margin-top: 7px;
+                .description-ready-text__edit-btn{
+                    position: absolute;
+                    box-shadow: 2px 8px 15px rgb(0 0 0 / 29%);
+                    bottom: 5px;
+                    right: 10px;
+                    padding: 8px;
+                    border-radius: 20px;
+                    background-color: rgba(0, 0, 0, 0);
+                    border: none;
+                    cursor: pointer;
+                }
+                .description-ready-text__edit-btn--pencil{
+                    top: 0;
+                    left: 0;
+                }
             }
             .description-area {
                 resize: none;
@@ -553,7 +725,7 @@ export default {
                 border-radius: 10px;
                 outline: 1px solid rgba(0, 0, 0, 0);
                 font-size: 18px;
-                border: $border;
+                border: 1px solid rgb(38, 93, 128);
                 &::-webkit-scrollbar{
                     width: 7px;
                     height: 7px;
@@ -579,6 +751,7 @@ export default {
                 width: 18px;
                 height: 18px;
             }
+
         }
         .tags_array{
             position: relative;
