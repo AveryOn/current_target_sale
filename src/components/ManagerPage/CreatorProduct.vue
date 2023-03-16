@@ -11,49 +11,192 @@
 
             <form v-show="true" class="creator-product__form" @submit.prevent>
 
+
+                <!-- Ввод КЛЮЧА ДОСТУПА сотрудника -->
+                <label 
+                class="for_input" for="keyAccess"
+                :style="(sendProductData.MODERATOR_KEY !== null)? {color: '#15ea15'} : {color: ''}"
+                >
+                    <i-ok class="ready-icon-success" v-show="(sendProductData.MODERATOR_KEY !== null)"></i-ok> 
+                    Укажите Ключ Доступа сотрудника 
+                </label>
+                <div class="creator-product__item">
+
+                    <!-- Уведомление о незаполненном поле -->
+                    <notification-mini-error 
+                    :show="MODERATOR_KEY_isEmpty"
+                    class="error-input"
+                    @click="MODERATOR_KEY_isEmpty = false"
+                    >
+                        Это поле пустое!
+                    </notification-mini-error>
+
+                    <notification-mini-success 
+                    class="success-input" 
+                    :show="MODERATOR_KEY_success"
+                    @click="MODERATOR_KEY_success = false"
+                    >
+                        Ключ доступа сохранен!
+                    </notification-mini-success>
+
+                    <input-comp 
+                    class="creator-product__input" 
+                    id="keyAccess" 
+                    placeholder="Ключ доступа"
+                    v-model="MODERATOR_KEY"
+                    ></input-comp>
+                    <button-comp @click="confirmKeyAccess">Подтвердить</button-comp>
+                </div>
+
+
                 <!-- Ввод АРТИКУЛА Товара -->
-                    <label class="for_input" for="article">Укажите артикул товара (Число)</label>
-                    <div class="creator-product__item">
-                        <input-comp 
-                        class="creator-product__input" 
-                        id="article" 
-                        placeholder="Артикул"
-                        :inputType="'number'"
-                        ></input-comp>
-                        <button-comp>Подтвердить</button-comp>
-                    </div>
-                
+                <label 
+                class="for_input" 
+                for="article"
+                :style="(sendProductData.article !== null)? {color: '#15ea15'} : {color: ''}"
+                >
+                    <i-ok class="ready-icon-success" v-show="(sendProductData.article !== null)"></i-ok>
+                    Укажите артикул товара
+                </label>
+                <div class="creator-product__item">
+
+                    <!-- Уведомление о незаполненном поле -->
+                    <notification-mini-error 
+                    :show="articleIsEmpty"
+                    class="error-input"
+                    @click="articleIsEmpty = false"
+                    >
+                        Это поле пустое!
+                    </notification-mini-error>
+
+                    <notification-mini-success 
+                    class="success-input" 
+                    :show="articleSuccess"
+                    @click="articleSuccess = false"
+                    >
+                        Артикул сохранен!
+                    </notification-mini-success>
+
+
+                    <input-comp 
+                    class="creator-product__input" 
+                    id="article" 
+                    placeholder="Артикул"
+                    :inputType="'number'"
+                    v-model="article"
+                    ></input-comp>
+                    <button-comp @click="confirmArticle">Подтвердить</button-comp>
+                </div>
+            
 
                 <!-- Ввод НАИМЕНОВАНИЯ товара -->
-                <label class="for_input" for="name">Укажите наименование товара</label>
-                    <div class="creator-product__item">
-                        <input-comp 
-                        class="creator-product__input" 
-                        id="name" 
-                        placeholder="Наименование"
-                        :inputType="'text'"
-                        >
-                        </input-comp>
-                        <button-comp>Подтвердить</button-comp>
-                    </div>
+                <label 
+                class="for_input" 
+                for="name"
+                :style="(sendProductData.name !== null)? {color: '#15ea15'} : {color: ''}"
+                >
+                    <i-ok class="ready-icon-success" v-show="(sendProductData.name !== null)"></i-ok> 
+                    Укажите наименование товара
+                </label>
+                <div class="creator-product__item">
+
+                    <!-- Уведомление о незаполненном поле -->
+                    <notification-mini-error 
+                    :show="nameIsEmpty"
+                    class="error-input"
+                    @click="nameIsEmpty = false"
+                    >
+                        Это поле пустое!
+                    </notification-mini-error>
+
+                    <notification-mini-success 
+                    class="success-input" 
+                    :show="nameSuccess"
+                    @click="nameSuccess = false"
+                    >
+                        Наименование товара сохранено!
+                    </notification-mini-success>
+
+                    <input-comp 
+                    class="creator-product__input" 
+                    id="name" 
+                    placeholder="Наименование"
+                    :inputType="'text'"
+                    v-model="name"
+                    >
+                    </input-comp>
+                    <button-comp @click="confirmName">Подтвердить</button-comp>
+                </div>
 
 
                 <!-- Ввод ЦЕНЫ товара -->
-                    <label class="for_input" for="price">Укажите цену товара</label>
-                    <div class="creator-product__item">
-                        <input-comp 
-                        class="creator-product__input" 
-                        id="price" 
-                        placeholder="Цена"
-                        :inputType="'number'"
-                        ></input-comp>
-                        <button-comp>Подтвердить</button-comp>
-                    </div>
+                <label 
+                class="for_input" 
+                :style="(sendProductData.price !== null)? {color: '#15ea15'} : {color: ''}"
+                for="price"
+                >
+                    <i-ok class="ready-icon-success" v-show="(sendProductData.price !== null)"></i-ok> 
+                    Укажите цену товара
+                </label>
+                <div class="creator-product__item">
+
+                    <!-- Уведомление о незаполненном поле -->
+                    <notification-mini-error 
+                    :show="priceIsEmpty"
+                    class="error-input"
+                    @click="priceIsEmpty = false"
+                    >
+                        Это поле пустое!
+                    </notification-mini-error>
+
+                    <notification-mini-success 
+                    class="success-input" 
+                    :show="priceSuccess"
+                    @click="priceSuccess = false"
+                    >
+                        Цена сохранена!
+                    </notification-mini-success>
+
+                    <input-comp 
+                    class="creator-product__input" 
+                    id="price" 
+                    placeholder="Цена"
+                    :inputType="'number'"
+                    v-model="price"
+                    ></input-comp>
+                    <button-comp @click="confirmPrice">Подтвердить</button-comp>
+                </div>
 
 
                 <!-- Ввод наименования ГРУППЫ товара -->
-                <label class="for_radio-select" for="group_name">К какой группе товара будет относиться данный товар</label>
+                <label 
+                class="for_radio-select" 
+                for="group_name"
+                :style="(sendProductData.group_name !== null)? {color: '#15ea15'} : {color: ''}"
+                >
+                    <i-ok class="ready-icon-success" v-show="(sendProductData.group_name !== null)"></i-ok> 
+                    К какой группе товара будет относиться данный товар
+                </label>
                 <div class="creator-product__item">
+
+
+                    <!-- Уведомление о не выбранной радио-кнопке -->
+                    <notification-mini-error 
+                    :show="groupNameIsEmpty"
+                    class="error-input"
+                    @click="groupNameIsEmpty = false"
+                    >
+                        Вы не выбрали группу товара!
+                    </notification-mini-error>
+
+                    <notification-mini-success 
+                    class="success-input" 
+                    :show="groupNameSuccess"
+                    @click="groupNameSuccess = false"
+                    >
+                        Группа товара сохранена!
+                    </notification-mini-success>
+
                     <div class="creator-product__select-radio">
                         <radio-button
                         v-for="group in groups"
@@ -65,13 +208,30 @@
                         >
                         </radio-button>
                     </div>
-                    <button-comp>Подтвердить</button-comp>
+                    <button-comp @click="confirmGroupName">Подтвердить</button-comp>
                 </div>
 
 
                 <!-- Ввод наименования КАТЕГОРИИ товара -->
-                <label class="for_radio-select" for="category_name">К какой категории товара будет относиться данный товар</label>
+                <label 
+                class="for_radio-select" 
+                for="category_name"
+                :style="(sendProductData.category_name !== null)? {color: '#15ea15'} : {color: ''}"
+                >
+                    <i-ok class="ready-icon-success" v-show="(sendProductData.category_name !== null)"></i-ok> 
+                    К какой категории товара будет относиться данный товар
+                </label>
                 <div class="creator-product__item">
+
+
+                    <notification-mini-success 
+                    class="success-input" 
+                    :show="categoryNameSuccess"
+                    @click="categoryNameSuccess = false"
+                    >
+                        Категория товара сохранена!
+                    </notification-mini-success>
+
                     <div class="creator-product__select-radio">
                         <radio-button
                         v-for="category in (group_name === 'Лето')? categories['Лето'] : categories['Зима']"
@@ -83,7 +243,7 @@
                         >
                         </radio-button>
                     </div>
-                    <button-comp>Подтвердить</button-comp>
+                    <button-comp @click="confirmCategoryName">Подтвердить</button-comp>
                 </div>
 
 
@@ -92,18 +252,18 @@
                 <!-- Компонент для отрисовки добавленных тегов -->
                 <span class="tags_array">
 
-                <!-- Уведомление о том что цвет был уже выбран -->
-                    <notification-mini-error 
-                    :show="isTagAlreadyHas"
-                    class="error-select-tag"
+                    <notification-mini-success 
+                    class="success-input" 
+                    :show="tagSuccess"
+                    @click="tagSuccess = false"
                     >
-                        Вы уже добавили этот тег
-                    </notification-mini-error>
+                        Тег добавлен!
+                    </notification-mini-success>
 
                     <!-- Подсказка -->
-                    <p v-show="!addedTags.length" class="tags_array__hint">Чтобы добавить теги нажмите на кнопку справа</p>
+                    <p v-show="!sendProductData.tags.length" class="tags_array__hint">Чтобы добавить теги нажмите на кнопку справа</p>
                     <!-- тег компонент -->
-                    <tag-comp class="tags_array__tag" v-for="tag in addedTags">{{ tag }}</tag-comp>
+                    <tag-comp class="tags_array__tag" v-for="tag in sendProductData.tags">{{ tag }}</tag-comp>
                     <!-- Кнопка добавления тега -->
                     <span class="append-tag-btn" v-show="!isAddTag" @click="isAddTag = true">
                         <i-upload></i-upload>
@@ -120,7 +280,7 @@
                     v-model="tag_input"
                     >
                     </input-comp>
-                    <!-- Кнопка подтверждает добавление тега и отправляет его в массив addedTags -->
+                    <!-- Кнопка подтверждает добавление тега и отправляет его в массив sendProductData.tags -->
                     <button-comp @click="addTag">Подтвердить</button-comp>
                 </div>
 
@@ -137,7 +297,10 @@
                         placeholder="Скидка"
                         :inputType="'number'"
                         v-model="discount"
-                        :style="(discount > 100 || !discount.length || discount < 0)? {border: '2px solid red'} : {border: '1px solid rgb(253, 148, 11)'}"
+                        :style="
+                            (discount > 100 || !discount.length || discount < 0)?
+                            {border: '2px solid red'} : {border: '1px solid rgb(253, 148, 11)'}
+                        "
                         >
                         </input-comp>
                         <button 
@@ -189,6 +352,15 @@
                 <!-- Компонент для отрисовки добавленных цветовых тегов -->
                 <span class="tags_array">
 
+                    <!-- Уведомление при успешном добавлении цвета в массив  -->
+                    <notification-mini-success 
+                    class="success-input" 
+                    :show="colorSuccess"
+                    @click="colorSuccess = false"
+                    >
+                        Цвет товара добавлен!
+                    </notification-mini-success>
+
                     <!-- Уведомление о том что цвет был уже выбран -->
                     <notification-mini-error 
                     :show="isColorAlreadyHas"
@@ -198,7 +370,7 @@
                     </notification-mini-error>
 
                     <!-- Подсказка -->
-                    <p v-show="!colors.length" class="tags_array__hint">
+                    <p v-show="!sendProductData.specifications.colors.length" class="tags_array__hint">
                         {{ 
                             (isAddColor)? 
                             'Сюда будут встраиваться теги цветов которые вы добавляете' : 
@@ -206,7 +378,7 @@
                         }}
                     </p>
                     <!-- тег компонент цвета -->
-                    <tag-comp class="tags_array__tag" v-for="color in colors">{{ color }}</tag-comp>
+                    <tag-comp class="tags_array__tag" v-for="color in sendProductData.specifications.colors">{{ color }}</tag-comp>
                     <!-- Кнопка добавления тега -->
                     <span class="append-tag-btn" v-show="!isAddColor" @click="isAddColor = true">
                         <i-upload></i-upload>
@@ -274,16 +446,42 @@
 
 
                 <!-- Ввод СТРАНЫ ПРОИЗВОДСТВА товара -->
-                <label class="for_input" for="country_origin">Укажите страну-производителя товара</label>
+                <label 
+                class="for_input" 
+                for="country_origin"
+                :style="(sendProductData.country_origin !== null)? {color: '#15ea15'} : {color: ''}"
+                >   
+                    <i-ok class="ready-icon-success" v-show="(sendProductData.country_origin !== null)"></i-ok> 
+                    Укажите страну-производителя товара
+                </label>
                 <div class="creator-product__item">
+
+                    <!-- Уведомление о незаполненном поле -->
+                    <notification-mini-error 
+                    :show="countryOriginIsEmpty"
+                    class="error-input"
+                    @click="countryOriginIsEmpty = false"
+                    >
+                        Это поле пустое!
+                    </notification-mini-error>
+
+                    <notification-mini-success 
+                    class="success-input" 
+                    :show="countryOriginSuccess"
+                    @click="countryOriginSuccess = false"
+                    >
+                        Страна производства сохранена!
+                    </notification-mini-success>
+
                     <input-comp 
                     class="creator-product__input" 
                     id="country_origin" 
                     placeholder="Страна производства"
                     :inputType="'text'"
+                    v-model="country_origin"
                     >
                     </input-comp>
-                    <button-comp>Подтвердить</button-comp>
+                    <button-comp @click="confirmCountryOrigin">Подтвердить</button-comp>
                 </div>
 
 
@@ -445,8 +643,13 @@
 
                 </div>
 
+
                 <div class="form--btns">
-                    <button-comp class="form--btns__send-cheking-btn">Отправить данные на проверку</button-comp>
+                    <button-comp 
+                    class="form--btns__send-cheking-btn"
+                    @click="sendDataChecking"
+                    >   Отправить данные на проверку
+                    </button-comp>
                 </div>
 
             </form>
@@ -473,35 +676,99 @@ export default {
     },
     data: () => ({
 
+        // Обьект данных который отправляется на сервер для отправки и создания нового товара
+        sendProductData: {
+            MODERATOR_KEY: null,
+            article: null,
+            name: null,
+            price: null,
+            group_name: null,
+            category_name: null,
+            tags: [],
+            discount: null,     // =Необязательный параметр
+            specifications: {colors: [], materials: []},
+            country_origin: null,
+            description: null,
+            images: [],
+            promotion: null,     // =Необязательный параметр
+            remains: null,
+              // эти параметры отправляются на сервер на сторе в экшне 
+            // creation_time: null,
+            // creation_manager_UUID: null, 
+        },
+
+        // Ключ Доступа
+        MODERATOR_KEY: '',
+        MODERATOR_KEY_isEmpty: false,
+        MODERATOR_KEY_success: false,
+
         // Артикул
-        article: null,
+        article: '',
+        articleIsEmpty: false,
+        articleSuccess: false,
+
+        // Name
+        name: '',
+        nameIsEmpty: false,
+        nameSuccess: false,
+
+        // Цена
+        price: '',
+        priceIsEmpty: false,
+        priceSuccess: false,
+
+        // Группа
+        group_name: '',
+        groupNameIsEmpty: false,
+        groupNameSuccess: false,
+        groups: [
+            {id: 1, name: 'Зима'},
+            {id: 2, name: 'Лето'},
+        ],
+
+        // Категория
+        category_name: '',
+        categoryNameIsEmpty: false,
+        categoryNameSuccess: false,
+        categories: {
+            'Зима': [{id: 1, name: 'Головные уборы'}, {id: 2, name: 'Куртки'},],
+            'Лето': [{id: 1, name: 'Головные уборы'}, {id: 2, name: 'Футболки'},],
+        },
 
         // Теги
         isAddTag: false,
         // addedTags: [ "шерстяные изделия", "что-то ещё", "шапки",  "шерстяные изделия", "что-то ещё",],
-        addedTags: [],
         tag_input: '',
+        tagIsEmpty: false,
         isTagAlreadyHas: false,
+        tagSuccess: false,
+
+        // Цвета
+        isAddColor: false,
+        colorSuccess: false,
+        color_input: '',
+        isColorAlreadyHas: false,
+
+
+        // Страна производства
+        country_origin: '',
+        countryOriginIsEmpty: false,
+        countryOriginSuccess: false,
+
+
 
         // Скидка
         discount: 0,
         isEditDiscount: false,
         isSuccessConfirmDiscount: false,
 
-        // Цвета
-        colors: [],
-        isAddColor: false,
-        color_input: '',
-        isColorAlreadyHas: false,
         
         // Материалы
         materials: [],
         isAddMaterial: false,
         material_input: '',
         isMaterialAlreadyHas: false,
-
-        // Страна производства
-        country_origin: '',
+        
 
         // Описание товара
         description: '',
@@ -511,33 +778,170 @@ export default {
         // Изображения товара
         images: [],
 
-        // Скидка
+        // Остаток
         remains: 0,
         isEditRemains: false,
         isSuccessConfirmRemains: false,
 
-        group_name: '',
-        category_name: '',
-        groups: [
-            {id: 1, name: 'Зима'},
-            {id: 2, name: 'Лето'},
-        ],
-        categories: {
-            'Зима': [{id: 1, name: 'Головные уборы'}, {id: 2, name: 'Куртки'},],
-            'Лето': [{id: 1, name: 'Головные уборы'}, {id: 2, name: 'Футболки'},],
-        }
+
     }),
     methods: {
         log(){
-            console.log(this.images);
+            console.log(this.sendProductData);
         },
 
-        // Метод добавляет теги в массив addedTags
+        // Метод добавляет ключ доступа сотрудника в обьект sendProductData
+        confirmKeyAccess(){
+
+            if(this.MODERATOR_KEY !== ''){
+                this.sendProductData.MODERATOR_KEY = this.MODERATOR_KEY
+                this.MODERATOR_KEY = ''
+                this.MODERATOR_KEY_success = true
+                setTimeout(() => {
+                    this.MODERATOR_KEY_success = false
+                }, 1500)
+            
+            }else{
+                this.MODERATOR_KEY_isEmpty = true
+                setTimeout(() => {
+                    this.MODERATOR_KEY_isEmpty = false
+                }, 1500)
+            }
+
+        },
+
+        // Метод добавляет Артикул в обьект sendProductData
+        confirmArticle(){
+
+            if(this.article !== ''){
+                this.sendProductData.article = this.article
+                this.article = ''
+                this.articleSuccess = true
+                setTimeout(() => {
+                    this.articleSuccess = false
+                }, 1500)
+            
+            }else{
+                this.articleIsEmpty = true
+                setTimeout(() => {
+                    this.articleIsEmpty = false
+                }, 1500)
+            }
+
+        },
+
+        // Метод добавляет Наименование товара в обьект sendProductData
+        confirmName(){
+
+            if(this.name !== ''){
+                this.sendProductData.name = this.name
+                this.name = ''
+                this.nameSuccess = true
+                setTimeout(() => {
+                    this.nameSuccess = false
+                }, 1500)
+                this.log()
+
+            }else{
+                this.nameIsEmpty = true
+                setTimeout(() => {
+                    this.nameIsEmpty = false
+                }, 1500)
+            }
+
+        },
+
+        // Метод добавляет Цену товара в обьект sendProductData
+        confirmPrice(){
+
+            if(this.price !== ''){
+                this.sendProductData.price = this.price
+                this.price = ''
+                this.priceSuccess = true
+                setTimeout(() => {
+                    this.priceSuccess = false
+                }, 1500)
+                this.log()
+
+            }else{
+                this.priceIsEmpty = true
+                setTimeout(() => {
+                    this.priceIsEmpty = false
+                }, 1500)
+            }
+        },
+
+        // Метод добавляет Название группы товара в обьект sendProductData
+        confirmGroupName(){
+
+            if(this.group_name !== ''){
+                this.sendProductData.group_name = this.group_name
+                // this.group_name = ''
+                this.groupNameSuccess = true
+                setTimeout(() => {
+                    this.groupNameSuccess = false
+                }, 1500)
+                this.log()
+
+            }else{
+                this.groupNameIsEmpty = true
+                setTimeout(() => {
+                    this.groupNameIsEmpty = false
+                }, 1500)
+            }
+        },
+
+        // Метод добавляет Название категории товара в обьект sendProductData
+        confirmCategoryName(){
+            if(this.category_name !== ''){
+                this.sendProductData.category_name = this.category_name
+                // this.category_name = ''
+                this.categoryNameSuccess = true
+                setTimeout(() => {
+                    this.categoryNameSuccess = false
+                }, 1500)
+                this.log()
+
+            }else{
+                this.categoryNameIsEmpty = true
+                setTimeout(() => {
+                    this.categoryNameIsEmpty = false
+                }, 1500)
+            }
+        },
+
+
+        // Метод добавляет Страну производства товара в обьект sendProductData
+        confirmCountryOrigin(){
+
+            if(this.country_origin !== ''){
+                this.sendProductData.country_origin = this.country_origin
+                this.country_origin = ''
+                this.countryOriginSuccess = true
+                setTimeout(() => {
+                    this.countryOriginSuccess = false
+                }, 1500)
+                this.log()
+            
+            }else{
+                this.countryOriginIsEmpty = true
+                setTimeout(() => {
+                    this.countryOriginIsEmpty = false
+                }, 1500)
+            }
+        },
+
+        // Метод добавляет теги в массив sendProductData.tags
         addTag(){
-            if(!this.addedTags.includes(this.tag_input.toLowerCase())){
-                this.addedTags.push(this.tag_input.toLowerCase())
+            if(!this.sendProductData.tags.includes(this.tag_input.toLowerCase())){
+                this.sendProductData.tags.push(this.tag_input.toLowerCase())
+                this.tagSuccess = true
+                setTimeout(() => {
+                    this.tagSuccess = false
+                }, 1500)
                 this.tag_input = ''
                 this.isAddTag = false
+                this.log()
             }else{
                 this.isTagAlreadyHas = true
                 setTimeout(() => {
@@ -546,12 +950,17 @@ export default {
             }
         },
 
-        // Метод добавляет цвета в массив colors
+        // Метод добавляет цвета в массив sendProductData.specifications.colors
         addColor(){
-            if(!this.colors.includes(this.color_input.toLowerCase())){
-                this.colors.push(this.color_input.toLowerCase())
+            if(!this.sendProductData.specifications.colors.includes(this.color_input.toLowerCase())){
+                this.sendProductData.specifications.colors.push(this.color_input.toLowerCase())
                 this.color_input = ''
                 this.isAddColor = false
+                this.colorSuccess = true
+                setTimeout(() => {
+                    this.colorSuccess = false
+                }, 1500)
+                this.log()
             }else{
                 this.isColorAlreadyHas = true
                 setTimeout(() => {
@@ -589,7 +998,9 @@ export default {
         },
 
         confirmDiscount(){
+            this.sendProductData.discount = (this.discount / 100)
             this.isSuccessConfirmDiscount = true
+            this.log()
             setTimeout(() => {
                 this.isSuccessConfirmDiscount = false
             }, 1500)
@@ -637,15 +1048,22 @@ export default {
                 this.remains = 0
             }
         },
+
         editRemains(){
             this.isEditRemains = true
 
         },
+
         confirmRemains(){
             this.isSuccessConfirmRemains = true
             setTimeout(() => {
                 this.isSuccessConfirmRemains = false
             }, 1500)
+        },
+
+        // Метод отправляет данные товара на сервер для проверки
+        sendDataChecking(){
+            this.$store.dispatch('ManagerModule/sendDataProductChecking', {productData: {}})
         },
 
     },
@@ -656,6 +1074,20 @@ export default {
 
     },
     mounted(){
+        /*
+        onmousemove
+        onmousedown
+        onmouseenter
+        onmouseleave
+        onmouseout
+        onmouseover
+        onmouseup
+        onmousewheel
+        */
+        // console.log(window);
+        window.onmousedown = (e) => {
+            console.log(e);
+        }
     },
   
 }
@@ -677,6 +1109,15 @@ export default {
     right: 0;
     bottom: -30px;
 }
+.success-input{
+    top: -36px;
+    right: 10px;
+}
+.error-input{
+    top: -36px;
+    right: 10px;
+}
+
 .preview-images{
     display: flex;
     align-items: center;
@@ -768,7 +1209,7 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-
+        padding-top: 20px;
 
         .creator-product__item{
             position: relative;
@@ -780,6 +1221,7 @@ export default {
             border-radius: $radius;
             box-shadow: $shadow;
             margin-bottom: 40px;
+
 
             .description-ready-text{
                 display: flex;
@@ -966,6 +1408,13 @@ export default {
             margin-bottom: 2px;
             left: 30px;
             font-size: 18px;
+            .ready-icon-success{
+                position: absolute;
+                fill: #15ea15;
+                left: -28px;
+                width: 20px;
+                height: 20px;
+            }
         }
         .for_radio-select{
             position: relative;
@@ -975,6 +1424,13 @@ export default {
             margin-bottom: 7px;
             left: 30px;
             font-size: 19px;
+            .ready-icon-success{
+                position: absolute;
+                fill: #15ea15;
+                left: -28px;
+                width: 20px;
+                height: 20px;
+            }
         }
         .creator-product__input{
             width: 80%;

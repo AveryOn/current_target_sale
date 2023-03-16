@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 // ХРАНИИЩЕ ДЛЯ ДЕЙСТВИЙ ПО МОДЕРАЦИИ МАГАЗИНА
 export const ManagerModule = {
     state: () => ({
@@ -84,6 +86,14 @@ export const ManagerModule = {
         // откл. спиннер
         isLoadingImagesPreviewFalse(state, newValue){
             state.isLoadingImagesPreview = false
+        },
+
+    },
+
+    actions: {
+
+        sendDataProductChecking({state, commit}, {productData}){
+            console.log(productData);
         },
 
     },

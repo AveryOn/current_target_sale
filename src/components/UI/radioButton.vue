@@ -51,7 +51,7 @@ export default {
   methods: {
     log(e){
       this.$emit('update:modelValue', e.target.value)
-      console.log(e.target.value);
+      // console.log(e.target.value);
     },
     // e => $emit('update:modelValue', e.target.value)
   }
