@@ -47,7 +47,11 @@
                 <list-moderator></list-moderator>
 
                 <!-- ИСТОРИЯ РАБОТЫ -->
-                <editHistory :historyData="historyData"></editHistory>    
+                <editHistory
+                :historyData="historyData"
+                :style="(!darkMode)? {backgroundColor: 'white'} : {backgroundColor: ''}"
+                >
+                </editHistory>    
 
             </div>
             <!-- ПАНЕЛЬ ИНСТРУМЕНТОВ МОДЕРАТОРА -->
@@ -76,6 +80,8 @@ import EventProduct from '@/components/ManagerPage/EventProduct.vue'
 
 // Миксин OwnerManagerTools 
 import OwnerToolMixin from '@/mixins/OwnerToolMixin'
+import { mapState } from 'vuex';
+
 export default {
     // ЛОГИКА ПО УПРАВЛЕНИЮ ПАНЕЛЬЮ МОДЕРАТОРА
     mixins: [OwnerToolMixin],
@@ -109,6 +115,11 @@ export default {
             ],
         }
     },
+    computed: {
+        ...mapState({
+            darkMode: state => state.darkMode,
+        }),
+    }
 
 }
 </script>
@@ -117,6 +128,7 @@ export default {
 .manager-tools-block-owner{
     margin-bottom: 0;
 }
+
 hr{
     display: flex;
     width: 95%;
@@ -128,6 +140,7 @@ hr{
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
+    // background-color: white;
     // border: $border;
     // border-radius: $radius;
     .navbar-owner-page{

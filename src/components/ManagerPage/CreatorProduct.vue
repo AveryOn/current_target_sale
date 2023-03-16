@@ -8,9 +8,7 @@
         </div>
 
         <div class="creator-product__body">
-            <form v-show="false" class="creator-product__form" @submit.prevent>
-                <div class="blockX"></div>
-            </form>
+
             <form v-show="true" class="creator-product__form" @submit.prevent>
 
                 <!-- Ввод АРТИКУЛА Товара -->
@@ -378,9 +376,78 @@
                 </div>
                 
                 <inputImages class="input-images"  @getImages="appendImages">Добавить</inputImages>
-                <!-- <div class="creator-product__item">
-                </div> -->
                 
+                
+                <!-- Ввод ОСТАТКОВ товара -->
+                <label class="for_input" for="remains">Укажите количество этого товара на складе (в наличии)</label>
+                <div class="select-discount-block">
+                    <h1 v-show="!isEditRemains" class="discount-value">{{remains}}</h1>
+      
+                    
+                    <!-- Поле ручного ввода количества товара -->
+                    <div class="select-discount-block__change-block" v-show="isEditRemains" >
+                        <input-comp 
+                        class="select-discount-block__input" 
+                        id="remains"
+                        placeholder="Количество"
+                        :inputType="'number'"
+                        v-model="remains"
+                        :style="(!remains.length || remains < 0)? {border: '2px solid red'} : {border: '1px solid rgb(253, 148, 11)'}"
+                        >
+                        </input-comp>
+                        <button 
+                        title="Подтвердить" 
+                        class="select-discount-block__input-btn"
+                        @click="closeInputRemains"
+                        >
+                            <i-ok class="select-discount-block__confirm-btn-ok"></i-ok>
+                        </button>
+                    </div>
+
+                    <div class="select-discount-block__increment-btns">
+                        <button @click="(remains > 0)? remains-- : false" class="select-discount-block__increment-btn">-</button>
+                        <button @click="remains++" class="select-discount-block__increment-btn">+</button>
+                    </div>
+
+                    <div class="select-discount-block__confirm-btns">
+
+                        <button 
+                        title="Изменить" 
+                        class="select-discount-block__confirm-btn"
+                        @click="editRemains"
+                        >
+                            <i-pencil class="select-discount-block__confirm-btn-edit"></i-pencil>
+                        </button>
+
+                        <button 
+                        title="Подтвердить" 
+                        class="select-discount-block__confirm-btn"
+                        @click="confirmRemains"
+                        >
+                            <i-ok class="select-discount-block__confirm-btn-ok"></i-ok>
+                        </button>
+                        <notification-mini-success 
+                        class="success-confirm-dicsount" 
+                        :show="isSuccessConfirmRemains"
+                        >
+                            Количество товара сохранено!
+                        </notification-mini-success>
+
+                    </div>
+                    
+                </div>
+
+
+                <!-- Акционный блок -->
+                <div class="creator-product__item">
+                    
+                    <h2>[ Акционный блок, в стадии разработки ]</h2>
+
+                </div>
+
+                <div class="form--btns">
+                    <button-comp class="form--btns__send-cheking-btn">Отправить данные на проверку</button-comp>
+                </div>
 
             </form>
         </div>
@@ -443,6 +510,11 @@ export default {
 
         // Изображения товара
         images: [],
+
+        // Скидка
+        remains: 0,
+        isEditRemains: false,
+        isSuccessConfirmRemains: false,
 
         group_name: '',
         category_name: '',
@@ -555,7 +627,26 @@ export default {
         // Метод удаляет картинку из блока превью (массив images) 
         removeImage(image){
             this.images = this.images.filter(i => i !== image)
-        }
+        },
+
+        closeInputRemains(){
+            if(this.remains >= 0){
+                this.isEditRemains = false
+            }
+            if(!this.remains.length){
+                this.remains = 0
+            }
+        },
+        editRemains(){
+            this.isEditRemains = true
+
+        },
+        confirmRemains(){
+            this.isSuccessConfirmRemains = true
+            setTimeout(() => {
+                this.isSuccessConfirmRemains = false
+            }, 1500)
+        },
 
     },
     computed: {
@@ -891,6 +982,21 @@ export default {
         .creator-product__select-radio{
             margin-left: 30px;
             width: 80%;
+        }
+        .form--btns{
+            width: 100%;
+            height: max-content;
+            display: flex;
+            align-items: center;
+            padding: 5px 20px;
+            margin-top: 10px;
+            .form--btns__send-cheking-btn{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                font-size: 18px;
+            }
         }
     }
 }

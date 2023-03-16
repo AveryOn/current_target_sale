@@ -2,6 +2,7 @@
     <!-- ИСТОРИЯ РАБОТЫ -->
     <div 
     class="history"
+    :class="{'dark': darkMode}"
     :style=" (historyData.length <= 3)? 
         {   border: '1px solid rgb(253, 148, 11)', 
             borderRadius: '20px', 
@@ -176,6 +177,8 @@ export default {
     justify-content: center;
     align-items: flex-end;
     background-color: rgba(234, 216, 76, 0.557);
+    // border-bottom-left-radius: $radius;
+    // border-bottom-right-radius: $radius;
     background: linear-gradient(
         360deg, 
         white, 
