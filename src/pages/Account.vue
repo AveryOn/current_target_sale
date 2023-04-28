@@ -7,7 +7,7 @@
 
         <!-- МОДАЛЬНОЕ ОКНО ДЛЯ РЕДАКТИРОВАНИЯ ДАННЫХ АККАУНТА -->
         <modal-comp @click="editDataMode = false" :show="editDataMode">
-            <div 
+            <div
             class="account__menu-change-client-data" 
             :class="{'dark': darkMode}" 
             :style="(!darkMode)? {backgroundColor: 'white'} : {backgroundColor: ''}"

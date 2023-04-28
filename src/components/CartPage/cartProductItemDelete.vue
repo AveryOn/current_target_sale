@@ -7,7 +7,7 @@
             <div class="description-title">Название: {{ cartProduct.name }}</div>
         </div>
         <div class="buttons-item">
-            <button-comp @click="$router.push({name: 'product', params: {productId: cartProduct.id}})" class="btn-item">Открыть</button-comp>
+            <button-comp @click="openDeleteProduct" class="btn-item">Открыть</button-comp>
             <button-comp @click="removeProductCart">Восстановить</button-comp>
         </div>
     </div>
@@ -28,6 +28,10 @@ export default {
         }
     },
     methods:{
+        openDeleteProduct(){
+            this.$router.push({name: 'product', params: {productId: this.cartProduct.id}})
+        },
+
         removeProductCart(){
             this.$emit('removeProductCart')
         }

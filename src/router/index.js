@@ -5,7 +5,6 @@ import MainAppRendering from '@/pages/MainAppRendering.vue'
 import Main from '@/pages/Main'
 import Manager from '@/pages/Manager'
 import Owner from '@/pages/Owner'
-import Product from '@/pages/Product'
 import CatalogProducts from '@/pages/CatalogProducts'
 import SortedCatalog from '@/components/CatalogPage/SortedCatalog'
 import CategoryProducts from '@/components/CatalogPage/CategoryProducts'
@@ -94,7 +93,8 @@ const routes = [
             {
                 path: 'product/:productId?', 
                 name: 'product',
-                component: Product
+                // component: Product
+                component: () => import('@/pages/Product.vue'),
             },
             
             // Корзина

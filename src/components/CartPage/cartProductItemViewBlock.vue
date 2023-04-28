@@ -25,7 +25,7 @@
             Нажмите на этот товар если хотите его выбрать
         </div>
 
-        <div class="image"></div>
+        <div class="image" :class="{'dark': darkMode}"></div>
         <div class="description-item">
             <div class="description-title">Название: {{ cartProduct.name }}</div>
         </div>
@@ -41,7 +41,7 @@
 
             <!-- Блок для нижних кнопок на карточке товара -->
             <div class="buttons-item__bottom">
-                <button-comp class="btn-item-bottom">Купить!</button-comp>
+                <button-comp class="btn-item-bottom">Перейти к оформлению</button-comp>
             </div>
         </div>
     </div>
@@ -80,6 +80,7 @@ export default {
     },  
     computed: {
         ...mapState({
+            darkMode: state => state.darkMode,
             deleteModeCart: state => state.CartModule.deleteModeCart,
             selectCartProduct: state => state.CartModule.selectCartProduct,
             removeSelectAll: state => state.CartModule.removeSelectAll,

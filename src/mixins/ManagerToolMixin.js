@@ -32,5 +32,4 @@ export default {
             isEvent: state => state.ManagerModule.isEvent
         })
     }
-    // comment
 }
