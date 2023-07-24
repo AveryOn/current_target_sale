@@ -20,7 +20,6 @@ export default {
     background: $background-gr;
     color: rgb(255, 255, 255);
     font-size: 18px;
-    df
     &:hover{
         cursor: pointer;
         background-color: rgba(0,0,0, .2);

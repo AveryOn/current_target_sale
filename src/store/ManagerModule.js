@@ -16,7 +16,7 @@ export const ManagerModule = {
     mutations: {
         // Мутация для закрытия открытых инструментов
         closeAllTools(state){
-            state.isCreatedProduct = true
+            state.isCreatedProduct = false
             state.isCreatedGroup = false
             state.isEditorProduct = false
             state.isPromotion = false

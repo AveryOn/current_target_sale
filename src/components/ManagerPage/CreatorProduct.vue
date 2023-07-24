@@ -98,6 +98,7 @@
                     <i-ok class="ready-icon-success" v-show="(sendProductData.name !== null)"></i-ok> 
                     Укажите наименование товара
                 </label>
+
                 <div class="creator-product__item">
 
                     <!-- Уведомление о незаполненном поле -->
@@ -692,7 +693,7 @@ export default {
             images: [],
             promotion: null,     // =Необязательный параметр
             remains: null,
-              // эти параметры отправляются на сервер на сторе в экшне 
+            // эти параметры отправляются на сервер на сторе в экшне 
             // creation_time: null,
             // creation_manager_UUID: null, 
         },

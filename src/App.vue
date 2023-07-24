@@ -76,7 +76,7 @@ export default {
     },
 //     created(){
 // //          лучше не трогай этот кусок кода, ну его науй :)  ¯\_(ツ)_/¯
-        
+
 
 //         if(this.auth){
 //             if(this.auth.role === 'manager' || this.auth.role === 'owner'){

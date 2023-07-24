@@ -19,10 +19,10 @@
                     <creator-product :show="isCreatedProduct"></creator-product>
                     
                     <!-- Блок редактирования товара -->
-                    <editor-product :show="isCreatedGroup"></editor-product>
+                    <editor-product :show="isEditorProduct"></editor-product>
 
                     <!-- Блок Создания новой группы товара -->
-                    <creator-group :show="isEditorProduct"></creator-group>
+                    <creator-group :show="isCreatedGroup"></creator-group>
 
                     <!-- Блок Обьявления Скидок -->
                     <promotion-product :show="isPromotion"></promotion-product>
